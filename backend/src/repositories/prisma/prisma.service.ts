@@ -9,6 +9,11 @@ export class PrismaService
 {
   constructor() {
     super({
+      omit: {
+        user: {
+          password: true,
+        },
+      },
       adapter: new PrismaPg({
         connectionString: process.env.DATABASE_URL,
       }),
