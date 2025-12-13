@@ -2,7 +2,8 @@ import { Inject, Injectable, Logger } from '@nestjs/common';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { PrismaService } from '../repositories/prisma/prisma.service';
-import { User } from '#generated/prisma/client';
+import { Prisma, User } from '#generated/prisma/client';
+import { FindManyUsersDto } from './dto/find-many-user.dto';
 
 @Injectable()
 export class UsersService {
@@ -16,6 +17,49 @@ export class UsersService {
       return await this.prisma.user.create({
         data: createUserDto,
       });
+    } catch (error) {
+      this.logger.error(error);
+
+      throw error;
+    }
+  }
+
+  async findMany(findManyUsersDto: FindManyUsersDto) {
+    const { page, limit, search, order, sortBy } = findManyUsersDto;
+
+    const skip = (page - 1) * limit;
+
+    const where: Prisma.UserWhereInput = search
+      ? {
+          OR: [
+            { email: { contains: search, mode: 'insensitive' } },
+            { name: { contains: search, mode: 'insensitive' } },
+          ],
+        }
+      : {};
+
+    try {
+      const [users, total] = await Promise.all([
+        this.prisma.user.findMany({
+          where,
+          skip,
+          take: limit,
+          orderBy: {
+            [sortBy]: order,
+          },
+        }),
+        this.prisma.user.count({ where }),
+      ]);
+
+      return {
+        data: users,
+        meta: {
+          total,
+          page,
+          limit,
+          totalPages: Math.ceil(total / limit),
+        },
+      };
     } catch (error) {
       this.logger.error(error);
 

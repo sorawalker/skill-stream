@@ -8,11 +8,14 @@ import {
   Delete,
   HttpException,
   HttpStatus,
+  Query,
 } from '@nestjs/common';
 import { UsersService } from './users.service';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { Prisma } from '#generated/prisma/client';
+import * as bcrypt from 'bcrypt';
+import { FindManyUsersDto } from './dto/find-many-user.dto';
 
 @Controller('users')
 export class UsersController {
@@ -21,7 +24,12 @@ export class UsersController {
   @Post()
   async create(@Body() createUserDto: CreateUserDto) {
     try {
-      return await this.usersService.create(createUserDto);
+      const hashedPassword = await bcrypt.hash(createUserDto.password, 12);
+
+      return await this.usersService.create({
+        ...createUserDto,
+        password: hashedPassword,
+      });
     } catch (error) {
       if (error instanceof Prisma.PrismaClientKnownRequestError) {
         switch (error.code) {
@@ -54,6 +62,27 @@ export class UsersController {
         {
           message: 'Failed to create user',
         },
+        HttpStatus.INTERNAL_SERVER_ERROR,
+      );
+    }
+  }
+
+  @Get()
+  async findMany(@Query() findManyUsersDto: FindManyUsersDto) {
+    try {
+      return await this.usersService.findMany(findManyUsersDto);
+    } catch (error) {
+      if (error instanceof Prisma.PrismaClientValidationError) {
+        throw new HttpException(
+          {
+            message: 'Bad query params',
+          },
+          HttpStatus.BAD_REQUEST,
+        );
+      }
+
+      throw new HttpException(
+        'Failed to get users',
         HttpStatus.INTERNAL_SERVER_ERROR,
       );
     }
