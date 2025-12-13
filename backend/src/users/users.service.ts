@@ -67,9 +67,18 @@ export class UsersService {
     }
   }
 
-  async findOne(id: number): Promise<User | null> {
+  async findById(id: number, auth: boolean = false): Promise<User | null> {
     try {
       return await this.prisma.user.findFirst({
+        select: {
+          id: true,
+          email: true,
+          name: true,
+          role: true,
+          createdAt: true,
+          updatedAt: true,
+          password: auth,
+        },
         where: {
           id,
         },
@@ -77,6 +86,31 @@ export class UsersService {
     } catch (error) {
       this.logger.error(error);
 
+      throw error;
+    }
+  }
+
+  async findByLogin(
+    identifier: string,
+    auth: boolean = false,
+  ): Promise<User | null> {
+    try {
+      return await this.prisma.user.findFirst({
+        select: {
+          id: true,
+          email: true,
+          name: true,
+          role: true,
+          createdAt: true,
+          updatedAt: true,
+          password: auth,
+        },
+        where: {
+          OR: [{ email: identifier }, { name: identifier }],
+        },
+      });
+    } catch (error) {
+      this.logger.error(error);
       throw error;
     }
   }
