@@ -1,0 +1,9 @@
+{
+  "name": "skill-stream",
+  "version": "0.0.1",
+  "private": true,
+  "scripts": {
+    "dev": "pnpm --parallel --stream -r run dev",
+    "build": "pnpm --parallel --stream -r run build"
+  }
+}
