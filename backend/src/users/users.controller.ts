@@ -6,32 +6,143 @@ import {
   Patch,
   Param,
   Delete,
+  HttpException,
+  HttpStatus,
 } from '@nestjs/common';
 import { UsersService } from './users.service';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
+import { Prisma } from '#generated/prisma/client';
 
 @Controller('users')
 export class UsersController {
   constructor(private readonly usersService: UsersService) {}
 
   @Post()
-  create(@Body() createUserDto: CreateUserDto) {
-    return this.usersService.create(createUserDto);
+  async create(@Body() createUserDto: CreateUserDto) {
+    try {
+      return await this.usersService.create(createUserDto);
+    } catch (error) {
+      if (error instanceof Prisma.PrismaClientKnownRequestError) {
+        switch (error.code) {
+          case 'P2002':
+            throw new HttpException(
+              {
+                message: 'The user with this email already exists',
+              },
+              HttpStatus.CONFLICT,
+            );
+
+          default:
+            throw new HttpException(
+              'Failed to create user',
+              HttpStatus.INTERNAL_SERVER_ERROR,
+            );
+        }
+      }
+
+      if (error instanceof Prisma.PrismaClientValidationError) {
+        throw new HttpException(
+          {
+            message: 'Incorrect data type',
+          },
+          HttpStatus.BAD_REQUEST,
+        );
+      }
+
+      throw new HttpException(
+        {
+          message: 'Failed to create user',
+        },
+        HttpStatus.INTERNAL_SERVER_ERROR,
+      );
+    }
   }
 
   @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.usersService.findOne(+id);
+  async findOne(@Param('id') id: number) {
+    const user = await this.usersService.findOne(id);
+
+    if (!user) {
+      throw new HttpException(
+        {
+          message: 'User does not exist',
+        },
+        HttpStatus.NOT_FOUND,
+      );
+    }
+
+    return user;
   }
 
   @Patch(':id')
-  update(@Param('id') id: string, @Body() updateUserDto: UpdateUserDto) {
-    return this.usersService.update(+id, updateUserDto);
+  async update(@Param('id') id: number, @Body() updateUserDto: UpdateUserDto) {
+    try {
+      return await this.usersService.update(id, updateUserDto);
+    } catch (error) {
+      if (error instanceof Prisma.PrismaClientKnownRequestError) {
+        switch (error.code) {
+          case 'P2025':
+            throw new HttpException(
+              {
+                message: 'User does not exist',
+              },
+              HttpStatus.NOT_FOUND,
+            );
+
+          case 'P2002':
+            throw new HttpException(
+              {
+                message: 'The user with this email already exists',
+              },
+              HttpStatus.CONFLICT,
+            );
+
+          default:
+            throw new HttpException(
+              'Failed to update user',
+              HttpStatus.INTERNAL_SERVER_ERROR,
+            );
+        }
+      }
+
+      if (error instanceof Prisma.PrismaClientValidationError) {
+        throw new HttpException(
+          {
+            message: 'Incorrect data type',
+          },
+          HttpStatus.BAD_REQUEST,
+        );
+      }
+
+      throw new HttpException(
+        'Failed to update user',
+        HttpStatus.INTERNAL_SERVER_ERROR,
+      );
+    }
   }
 
   @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.usersService.remove(+id);
+  async remove(@Param('id') id: number) {
+    try {
+      return await this.usersService.remove(id);
+    } catch (error) {
+      if (
+        error instanceof Prisma.PrismaClientKnownRequestError &&
+        error.code === 'P2025'
+      ) {
+        throw new HttpException(
+          {
+            message: 'User does not exist',
+          },
+          HttpStatus.NOT_FOUND,
+        );
+      }
+
+      throw new HttpException(
+        'Failed to delete user',
+        HttpStatus.INTERNAL_SERVER_ERROR,
+      );
+    }
   }
 }
