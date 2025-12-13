@@ -95,7 +95,7 @@ model QuizAttempt {
   userId      Int
   quizId      Int
   score       Float
-  answer json
+  answer Json
   attemptedAt DateTime @default(now())
 
   user        User     @relation(fields: [userId], references: [id])
