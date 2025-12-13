@@ -1,28 +1,68 @@
 import { Inject, Injectable, Logger } from '@nestjs/common';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
+import { PrismaService } from '../repositories/prisma/prisma.service';
+import { User } from '#generated/prisma/client';
 
 @Injectable()
 export class UsersService {
-  constructor(@Inject(Logger) private readonly logger: Logger) {}
+  constructor(
+    @Inject(Logger) private readonly logger: Logger,
+    private readonly prisma: PrismaService,
+  ) {}
 
-  create(createUserDto: CreateUserDto) {
-    return 'This action adds a new user';
+  async create(createUserDto: CreateUserDto): Promise<User> {
+    try {
+      return await this.prisma.user.create({
+        data: createUserDto,
+      });
+    } catch (error) {
+      this.logger.error(error);
+
+      throw error;
+    }
   }
 
-  findAll() {
-    return `This action returns all users`;
+  async findOne(id: number): Promise<User | null> {
+    try {
+      return await this.prisma.user.findFirst({
+        where: {
+          id,
+        },
+      });
+    } catch (error) {
+      this.logger.error(error);
+
+      throw error;
+    }
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} user`;
+  async update(id: number, updateUserDto: UpdateUserDto): Promise<User> {
+    try {
+      return await this.prisma.user.update({
+        where: {
+          id,
+        },
+        data: updateUserDto,
+      });
+    } catch (error) {
+      this.logger.error(error);
+
+      throw error;
+    }
   }
 
-  update(id: number, updateUserDto: UpdateUserDto) {
-    return `This action updates a #${id} user`;
-  }
+  async remove(id: number): Promise<User> {
+    try {
+      return await this.prisma.user.delete({
+        where: {
+          id,
+        },
+      });
+    } catch (error) {
+      this.logger.error(error);
 
-  remove(id: number) {
-    return `This action removes a #${id} user`;
+      throw error;
+    }
   }
 }
