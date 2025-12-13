@@ -13,7 +13,7 @@ import {
 import { UsersService } from './users.service';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
-import { Prisma } from '#generated/prisma/client';
+import { Prisma, User } from '#generated/prisma/client';
 import * as bcrypt from 'bcrypt';
 import { FindManyUsersDto } from './dto/find-many-user.dto';
 
@@ -88,9 +88,17 @@ export class UsersController {
     }
   }
 
-  @Get(':id')
-  async findOne(@Param('id') id: number) {
-    const user = await this.usersService.findOne(id);
+  @Get(':identifier')
+  async findOne(@Param('identifier') identifier: string) {
+    let user: User | null;
+
+    const parsedId = parseInt(identifier, 10);
+
+    if (!isNaN(parsedId)) {
+      user = await this.usersService.findById(parsedId);
+    } else {
+      user = await this.usersService.findByLogin(identifier);
+    }
 
     if (!user) {
       throw new HttpException(
