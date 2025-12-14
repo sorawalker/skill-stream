@@ -2,6 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { UsersService } from '../users/users.service';
 import * as bcrypt from 'bcrypt';
 import { JwtService } from '@nestjs/jwt';
+import { SignInResult } from '../shared/types/auth.types';
 
 @Injectable()
 export class AuthService {
@@ -13,7 +14,7 @@ export class AuthService {
   async signIn(
     login: string, // email or name
     pass: string,
-  ) {
+  ): Promise<SignInResult> {
     const user = await this.usersService.findByLogin(login, true);
 
     if (!user) throw new Error('User not found');

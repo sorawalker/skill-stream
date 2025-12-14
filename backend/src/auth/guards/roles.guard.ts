@@ -6,7 +6,7 @@ import {
   CanActivate,
 } from '@nestjs/common';
 import { Reflector } from '@nestjs/core';
-import { ROLES_KEY } from '../../decorators/roles.decorator';
+import { ROLES_KEY } from '../../common/decorators/roles.decorator';
 import { UsersService } from '../../users/users.service';
 import { RequestWithUser } from '../types/jwt-payload.interface';
 

@@ -16,13 +16,22 @@ import { UpdateUserDto } from './dto/update-user.dto';
 import { Prisma, User } from '#generated/prisma/client';
 import * as bcrypt from 'bcrypt';
 import { FindManyUsersDto } from './dto/find-many-user.dto';
+import {
+  CreateUserResponse,
+  DeleteUserResponse,
+  FindManyUsersResponse,
+  FindOneUserResponse,
+  UpdateUserResponse,
+} from '../shared/types';
 
 @Controller('users')
 export class UsersController {
   constructor(private readonly usersService: UsersService) {}
 
   @Post()
-  async create(@Body() createUserDto: CreateUserDto) {
+  async create(
+    @Body() createUserDto: CreateUserDto,
+  ): Promise<CreateUserResponse> {
     try {
       const hashedPassword = await bcrypt.hash(createUserDto.password, 12);
 
@@ -68,7 +77,9 @@ export class UsersController {
   }
 
   @Get()
-  async findMany(@Query() findManyUsersDto: FindManyUsersDto) {
+  async findMany(
+    @Query() findManyUsersDto: FindManyUsersDto,
+  ): Promise<FindManyUsersResponse> {
     try {
       return await this.usersService.findMany(findManyUsersDto);
     } catch (error) {
@@ -89,7 +100,9 @@ export class UsersController {
   }
 
   @Get(':identifier')
-  async findOne(@Param('identifier') identifier: string) {
+  async findOne(
+    @Param('identifier') identifier: string,
+  ): Promise<FindOneUserResponse> {
     let user: User | null;
 
     const parsedId = parseInt(identifier, 10);
@@ -113,7 +126,10 @@ export class UsersController {
   }
 
   @Patch(':id')
-  async update(@Param('id') id: number, @Body() updateUserDto: UpdateUserDto) {
+  async update(
+    @Param('id') id: number,
+    @Body() updateUserDto: UpdateUserDto,
+  ): Promise<UpdateUserResponse> {
     try {
       return await this.usersService.update(id, updateUserDto);
     } catch (error) {
@@ -160,7 +176,7 @@ export class UsersController {
   }
 
   @Delete(':id')
-  async remove(@Param('id') id: number) {
+  async remove(@Param('id') id: number): Promise<DeleteUserResponse> {
     try {
       return await this.usersService.remove(id);
     } catch (error) {
