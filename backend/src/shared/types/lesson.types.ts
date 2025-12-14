@@ -6,6 +6,10 @@ export interface Lesson {
   order: number;
   createdAt: Date | string;
   updatedAt: Date | string;
+  course?: {
+    id: number;
+    title: string;
+  };
   _count?: {
     quizzes?: number;
   };

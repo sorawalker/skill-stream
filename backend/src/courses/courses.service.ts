@@ -19,6 +19,7 @@ export class CoursesService {
       });
     } catch (error) {
       this.logger.error(error);
+
       throw error;
     }
   }
@@ -69,6 +70,7 @@ export class CoursesService {
       };
     } catch (error) {
       this.logger.error(error);
+
       throw error;
     }
   }
@@ -101,6 +103,7 @@ export class CoursesService {
       });
     } catch (error) {
       this.logger.error(error);
+
       throw error;
     }
   }
@@ -115,6 +118,7 @@ export class CoursesService {
       });
     } catch (error) {
       this.logger.error(error);
+
       throw error;
     }
   }
@@ -128,6 +132,7 @@ export class CoursesService {
       });
     } catch (error) {
       this.logger.error(error);
+
       throw error;
     }
   }

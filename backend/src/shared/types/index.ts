@@ -19,4 +19,10 @@ export type {
   UpdateCourseResponse,
   DeleteCourseResponse,
   FindManyCoursesRequest,
+  CreateLessonResponse,
+  FindManyLessonsResponse,
+  FindOneLessonResponse,
+  UpdateLessonResponse,
+  DeleteLessonResponse,
+  FindManyLessonsRequest,
 } from './api.types';
