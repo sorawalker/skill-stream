@@ -4,6 +4,8 @@ export type {
   SignInResponse,
 } from './auth.types';
 export type { User, UserRole } from './user.types';
+export type { Course } from './course.types';
+export type { Lesson } from './lesson.types';
 export type {
   CreateUserResponse,
   FindManyUsersResponse,
@@ -11,4 +13,10 @@ export type {
   UpdateUserResponse,
   DeleteUserResponse,
   FindManyUsersRequest,
+  CreateCourseResponse,
+  FindManyCoursesResponse,
+  FindOneCourseResponse,
+  UpdateCourseResponse,
+  DeleteCourseResponse,
+  FindManyCoursesRequest,
 } from './api.types';
