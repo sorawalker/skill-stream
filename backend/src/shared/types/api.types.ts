@@ -1,6 +1,7 @@
 import type { User } from './user.types';
 import type { Course } from './course.types';
 import type { Lesson } from './lesson.types';
+import type { Enrollment } from './enrollment.types';
 import type { FindManyUsersDto } from '../../users/dto/find-many-user.dto';
 import type { FindManyCoursesDto } from '../../courses/dto/find-many-courses.dto';
 import type { FindManyLessonsDto } from '../../lessons/dto/find-many-lessons.dto';
@@ -67,3 +68,22 @@ export type UpdateLessonResponse = Lesson;
 export type DeleteLessonResponse = Lesson;
 
 export type FindManyLessonsRequest = FindManyLessonsDto;
+
+// Enrollment API responses
+export type CreateEnrollmentResponse = Enrollment;
+
+export interface FindManyEnrollmentsResponse {
+  data: Enrollment[];
+  meta: {
+    total: number;
+    page: number;
+    limit: number;
+    totalPages: number;
+  };
+}
+
+export type FindOneEnrollmentResponse = Enrollment;
+
+export type UpdateEnrollmentResponse = Enrollment;
+
+export type DeleteEnrollmentResponse = Enrollment;
