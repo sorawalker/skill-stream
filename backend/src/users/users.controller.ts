@@ -9,12 +9,12 @@ import {
   HttpException,
   HttpStatus,
   Query,
+  UseGuards,
 } from '@nestjs/common';
 import { UsersService } from './users.service';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { Prisma, User } from '#generated/prisma/client';
-import * as bcrypt from 'bcrypt';
 import { FindManyUsersDto } from './dto/find-many-user.dto';
 import {
   CreateUserResponse,
@@ -23,22 +23,22 @@ import {
   FindOneUserResponse,
   UpdateUserResponse,
 } from '../shared/types';
+import { JwtAuthGuard } from '../auth/guards/jwt.guard';
+import { RolesGuard } from '../auth/guards/roles.guard';
+import { Roles } from '../common/decorators/roles.decorator';
 
 @Controller('users')
 export class UsersController {
   constructor(private readonly usersService: UsersService) {}
 
   @Post()
+  @UseGuards(JwtAuthGuard, RolesGuard)
+  @Roles('ADMIN')
   async create(
     @Body() createUserDto: CreateUserDto,
   ): Promise<CreateUserResponse> {
     try {
-      const hashedPassword = await bcrypt.hash(createUserDto.password, 12);
-
-      return await this.usersService.create({
-        ...createUserDto,
-        password: hashedPassword,
-      });
+      return await this.usersService.create(createUserDto);
     } catch (error) {
       if (error instanceof Prisma.PrismaClientKnownRequestError) {
         switch (error.code) {
@@ -77,6 +77,8 @@ export class UsersController {
   }
 
   @Get()
+  @UseGuards(JwtAuthGuard, RolesGuard)
+  @Roles('ADMIN')
   async findMany(
     @Query() findManyUsersDto: FindManyUsersDto,
   ): Promise<FindManyUsersResponse> {
@@ -126,6 +128,8 @@ export class UsersController {
   }
 
   @Patch(':id')
+  @UseGuards(JwtAuthGuard, RolesGuard)
+  @Roles('ADMIN')
   async update(
     @Param('id') id: number,
     @Body() updateUserDto: UpdateUserDto,
@@ -176,6 +180,8 @@ export class UsersController {
   }
 
   @Delete(':id')
+  @UseGuards(JwtAuthGuard, RolesGuard)
+  @Roles('ADMIN')
   async remove(@Param('id') id: number): Promise<DeleteUserResponse> {
     try {
       return await this.usersService.remove(id);

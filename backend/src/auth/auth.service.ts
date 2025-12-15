@@ -3,6 +3,8 @@ import { UsersService } from '../users/users.service';
 import * as bcrypt from 'bcrypt';
 import { JwtService } from '@nestjs/jwt';
 import { SignInResult } from '../shared/types/auth.types';
+import { CreateUserDto } from '../users/dto/create-user.dto';
+import { User } from '#generated/prisma/client';
 
 @Injectable()
 export class AuthService {
@@ -17,15 +19,23 @@ export class AuthService {
   ): Promise<SignInResult> {
     const user = await this.usersService.findByLogin(login, true);
 
-    if (!user) throw new Error('User not found');
+    if (!user) {
+      throw new Error('User not found');
+    }
 
     const isValid = await bcrypt.compare(pass, user.password);
-    if (!isValid) throw new Error('Invalid password');
+    if (!isValid) {
+      throw new Error('Invalid password');
+    }
 
     const payload = { sub: user.id, username: user.name };
 
     return {
       accessToken: await this.jwtService.signAsync(payload),
     };
+  }
+
+  async signUp(createUserDto: CreateUserDto): Promise<User> {
+    return await this.usersService.create(createUserDto);
   }
 }

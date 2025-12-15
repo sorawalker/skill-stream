@@ -19,7 +19,7 @@ export const authService = {
   },
 
   register: async (userData: RegisterRequest): Promise<CreateUserResponse> => {
-    return api.post<CreateUserResponse>('/users', userData);
+    return api.post<CreateUserResponse>('/auth/sign-up', userData);
   },
 };
 
