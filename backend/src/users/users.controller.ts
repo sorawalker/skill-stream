@@ -14,7 +14,6 @@ import { UsersService } from './users.service';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { Prisma, User } from '#generated/prisma/client';
-import * as bcrypt from 'bcrypt';
 import { FindManyUsersDto } from './dto/find-many-user.dto';
 import {
   CreateUserResponse,
@@ -33,12 +32,7 @@ export class UsersController {
     @Body() createUserDto: CreateUserDto,
   ): Promise<CreateUserResponse> {
     try {
-      const hashedPassword = await bcrypt.hash(createUserDto.password, 12);
-
-      return await this.usersService.create({
-        ...createUserDto,
-        password: hashedPassword,
-      });
+      return await this.usersService.create(createUserDto);
     } catch (error) {
       if (error instanceof Prisma.PrismaClientKnownRequestError) {
         switch (error.code) {
