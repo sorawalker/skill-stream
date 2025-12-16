@@ -10,6 +10,12 @@ export type { Enrollment } from './enrollment.types';
 export type { UserProgress } from './progress.types';
 export type { Quiz, QuizQuestion } from './quiz.types';
 export type {
+  QuizAttempt,
+  QuizAttemptAnswer,
+  QuizAttemptWithDetails,
+  QuizAttemptResult,
+} from './quiz-attempt.types';
+export type {
   CreateUserResponse,
   FindManyUsersResponse,
   FindOneUserResponse,
@@ -42,4 +48,7 @@ export type {
   FindOneQuizResponse,
   UpdateQuizResponse,
   DeleteQuizResponse,
+  CreateQuizAttemptResponse,
+  FindManyQuizAttemptsResponse,
+  FindOneQuizAttemptResponse,
 } from './api.types';

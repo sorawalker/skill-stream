@@ -7,6 +7,7 @@ import { LessonsModule } from './lessons/lessons.module';
 import { EnrollmentsModule } from './enrollments/enrollments.module';
 import { ProgressModule } from './progress/progress.module';
 import { QuizzesModule } from './quizzes/quizzes.module';
+import { QuizAttemptsModule } from './quiz-attempts/quiz-attempts.module';
 import { PrismaModule } from './repositories/prisma/prisma.module';
 import { ConfigModule } from '@nestjs/config';
 import { AuthModule } from './auth/auth.module';
@@ -19,6 +20,7 @@ import { AuthModule } from './auth/auth.module';
     EnrollmentsModule,
     ProgressModule,
     QuizzesModule,
+    QuizAttemptsModule,
     AuthModule,
     PrismaModule,
     ConfigModule.forRoot({
