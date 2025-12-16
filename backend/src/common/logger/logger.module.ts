@@ -1,6 +1,7 @@
-import { Module, Scope, Logger } from '@nestjs/common';
+import { Module, Scope, Logger, Global } from '@nestjs/common';
 import { INQUIRER } from '@nestjs/core';
 
+@Global()
 @Module({
   providers: [
     {
