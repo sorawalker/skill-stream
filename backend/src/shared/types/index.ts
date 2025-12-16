@@ -8,6 +8,7 @@ export type { Course } from './course.types';
 export type { Lesson } from './lesson.types';
 export type { Enrollment } from './enrollment.types';
 export type { UserProgress } from './progress.types';
+export type { Quiz, QuizQuestion } from './quiz.types';
 export type {
   CreateUserResponse,
   FindManyUsersResponse,
@@ -36,4 +37,9 @@ export type {
   FindManyProgressResponse,
   FindOneProgressResponse,
   UpdateProgressResponse,
+  CreateQuizResponse,
+  FindManyQuizzesResponse,
+  FindOneQuizResponse,
+  UpdateQuizResponse,
+  DeleteQuizResponse,
 } from './api.types';
