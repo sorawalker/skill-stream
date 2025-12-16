@@ -2,6 +2,7 @@ import type { User } from './user.types';
 import type { Course } from './course.types';
 import type { Lesson } from './lesson.types';
 import type { Enrollment } from './enrollment.types';
+import type { UserProgress } from './progress.types';
 import type { FindManyUsersDto } from '../../users/dto/find-many-user.dto';
 import type { FindManyCoursesDto } from '../../courses/dto/find-many-courses.dto';
 import type { FindManyLessonsDto } from '../../lessons/dto/find-many-lessons.dto';
@@ -87,3 +88,17 @@ export type FindOneEnrollmentResponse = Enrollment;
 export type UpdateEnrollmentResponse = Enrollment;
 
 export type DeleteEnrollmentResponse = Enrollment;
+
+// Progress API responses
+export type CreateProgressResponse = UserProgress;
+
+export interface FindManyProgressResponse {
+  data: UserProgress[];
+  meta: {
+    total: number;
+  };
+}
+
+export type FindOneProgressResponse = UserProgress | null;
+
+export type UpdateProgressResponse = UserProgress;
