@@ -7,6 +7,7 @@ export type { User, UserRole } from './user.types';
 export type { Course } from './course.types';
 export type { Lesson } from './lesson.types';
 export type { Enrollment } from './enrollment.types';
+export type { UserProgress } from './progress.types';
 export type {
   CreateUserResponse,
   FindManyUsersResponse,
@@ -31,4 +32,8 @@ export type {
   FindOneEnrollmentResponse,
   UpdateEnrollmentResponse,
   DeleteEnrollmentResponse,
+  CreateProgressResponse,
+  FindManyProgressResponse,
+  FindOneProgressResponse,
+  UpdateProgressResponse,
 } from './api.types';
