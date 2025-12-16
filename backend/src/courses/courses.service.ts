@@ -96,6 +96,7 @@ export class CoursesService {
           },
           _count: {
             select: {
+              lessons: true,
               enrollments: true,
             },
           },
