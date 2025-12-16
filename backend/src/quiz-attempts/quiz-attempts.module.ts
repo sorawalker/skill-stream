@@ -4,9 +4,10 @@ import { QuizAttemptsService } from './quiz-attempts.service';
 import { PrismaModule } from '../repositories/prisma/prisma.module';
 import { QuizzesModule } from '../quizzes/quizzes.module';
 import { UsersModule } from 'src/users/users.module';
+import { LoggerModule } from '../common/logger/logger.module';
 
 @Module({
-  imports: [PrismaModule, QuizzesModule, UsersModule],
+  imports: [LoggerModule, PrismaModule, QuizzesModule, UsersModule],
   controllers: [QuizAttemptsController],
   providers: [QuizAttemptsService],
   exports: [QuizAttemptsService],
