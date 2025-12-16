@@ -1,2 +1,63 @@
-.home-page {}
+.home-page {
+  min-height: 100vh;
+  padding: 24px;
+
+  &__container {
+    max-width: 1200px;
+    margin: 0 auto;
+  }
+
+  &__header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 24px;
+  }
+
+  &__title {
+    margin: 0;
+    font-size: 2rem;
+    font-weight: 700;
+  }
+
+  &__sign-out {
+    padding: 8px 16px;
+    background-color: #dc3545;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 0.875rem;
+    transition: background-color 0.2s;
+
+    &:hover {
+      background-color: #c82333;
+    }
+  }
+
+  &__content {
+    margin-top: 32px;
+  }
+
+  &__subtitle {
+    margin: 0 0 24px 0;
+    font-size: 1.5rem;
+    font-weight: 600;
+  }
+
+  &__courses-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 16px;
+  }
+
+  &__loading,
+  &__empty,
+  &__message {
+    text-align: center;
+    color: #666;
+    font-size: 1.125rem;
+    margin: 48px 0;
+  }
+}
 
