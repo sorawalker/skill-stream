@@ -184,7 +184,7 @@ export class QuizAttemptsService {
     }
   }
 
-  async findBestAttemptByUserAndQuiz(
+  async findAttemptByUserAndQuiz(
     userId: number,
     quizId: number,
   ): Promise<QuizAttemptWithDetails | null> {
@@ -195,7 +195,7 @@ export class QuizAttemptsService {
           quizId,
         },
         orderBy: {
-          score: 'desc',
+          attemptedAt: 'desc',
         },
         include: {
           quiz: {
@@ -220,6 +220,50 @@ export class QuizAttemptsService {
       }
 
       return this.mapPrismaAttemptToAttemptWithDetails(attempt);
+    } catch (error) {
+      this.logger.error(error);
+
+      throw error;
+    }
+  }
+
+  async getAttemptResult(
+    userId: number,
+    quizId: number,
+  ): Promise<QuizAttemptResult | null> {
+    try {
+      const attempt = await this.findAttemptByUserAndQuiz(userId, quizId);
+
+      if (!attempt) {
+        return null;
+      }
+
+      const quizResult = await this.quizzesService.findById(quizId, true);
+
+      if (!quizResult) {
+        throw new Error('Quiz does not exist');
+      }
+
+      const isFullQuiz = this.isQuizWithAnswers(quizResult);
+      if (!isFullQuiz) {
+        throw new Error('Quiz answers are required');
+      }
+
+      const quiz: Quiz = quizResult;
+      const mappedAttempt = this.mapPrismaAttemptToAttempt({
+        id: attempt.id,
+        userId: attempt.userId,
+        quizId: attempt.quizId,
+        score: attempt.score,
+        answer: attempt.answers as unknown as Prisma.JsonValue,
+        attemptedAt: new Date(attempt.attemptedAt),
+      });
+
+      return this.buildAttemptResult(
+        mappedAttempt,
+        quiz.questions,
+        attempt.answers,
+      );
     } catch (error) {
       this.logger.error(error);
 
