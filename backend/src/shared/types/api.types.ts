@@ -3,6 +3,11 @@ import type { Course } from './course.types';
 import type { Lesson } from './lesson.types';
 import type { Enrollment } from './enrollment.types';
 import type { UserProgress } from './progress.types';
+import type { Quiz, QuizQuestion } from './quiz.types';
+import type {
+  QuizAttemptWithDetails,
+  QuizAttemptResult,
+} from './quiz-attempt.types';
 import type { FindManyUsersDto } from '../../users/dto/find-many-user.dto';
 import type { FindManyCoursesDto } from '../../courses/dto/find-many-courses.dto';
 import type { FindManyLessonsDto } from '../../lessons/dto/find-many-lessons.dto';
@@ -102,3 +107,40 @@ export interface FindManyProgressResponse {
 export type FindOneProgressResponse = UserProgress | null;
 
 export type UpdateProgressResponse = UserProgress;
+
+// Quiz API responses
+export type CreateQuizResponse = Quiz;
+
+export interface FindManyQuizzesResponse {
+  data: Quiz[];
+  meta: {
+    total: number;
+  };
+}
+
+export type FindOneQuizResponse =
+  | Quiz
+  | {
+      id: number;
+      lessonId: number;
+      title: string;
+      questions: Array<Omit<QuizQuestion, 'rightAnswer'>>;
+      createdAt: Date | string;
+      updatedAt: Date | string;
+    };
+
+export type UpdateQuizResponse = Quiz;
+
+export type DeleteQuizResponse = Quiz;
+
+// Quiz Attempt API responses
+export type CreateQuizAttemptResponse = QuizAttemptResult;
+
+export interface FindManyQuizAttemptsResponse {
+  data: QuizAttemptWithDetails[];
+  meta: {
+    total: number;
+  };
+}
+
+export type FindOneQuizAttemptResponse = QuizAttemptWithDetails;
