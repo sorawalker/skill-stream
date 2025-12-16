@@ -49,7 +49,7 @@ export const Home = () => {
     <div className="home-page">
       <div className="home-page__container">
         <div className="home-page__header">
-          <h1 className="home-page__title">Skill Stream</h1>
+        <h1 className="home-page__title">Skill Stream</h1>
           {isAuthenticated && (
             <button onClick={signOut} className="home-page__sign-out">
               Sign Out

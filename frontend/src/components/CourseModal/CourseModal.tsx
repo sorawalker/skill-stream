@@ -1,6 +1,5 @@
 import { useEffect } from 'react';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
-import { useNavigate } from 'react-router-dom';
 import { enrollmentsService } from '../../services/enrollments.service';
 import { coursesService } from '../../services/courses.service';
 import type { Course, Enrollment } from 'skill-stream-backend/shared/types';
@@ -13,7 +12,7 @@ interface CourseModalProps {
   onGoToCourse: () => void;
 }
 
-export const CourseModal = ({ course, enrollment, onClose, onGoToCourse }: CourseModalProps) => {
+export const CourseModal = ({ course, onClose, onGoToCourse }: CourseModalProps) => {
   const queryClient = useQueryClient();
 
   const { data: courseData, refetch: refetchCourse } = useQuery({
