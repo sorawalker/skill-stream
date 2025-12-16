@@ -28,7 +28,6 @@ export class EnrollmentGuard implements CanActivate {
 
     const { userId } = request.user;
 
-    // Get user to check role
     const user = await this.usersService.findById(userId);
 
     if (!user) {

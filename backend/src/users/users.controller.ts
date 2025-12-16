@@ -10,10 +10,12 @@ import {
   HttpStatus,
   Query,
   UseGuards,
+  ParseIntPipe,
 } from '@nestjs/common';
 import { UsersService } from './users.service';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
+import { ChangePasswordDto } from './dto/change-password.dto';
 import { Prisma, User } from '#generated/prisma/client';
 import { FindManyUsersDto } from './dto/find-many-user.dto';
 import {
@@ -25,6 +27,7 @@ import {
 } from '../shared/types';
 import { JwtAuthGuard } from '../auth/guards/jwt.guard';
 import { RolesGuard } from '../auth/guards/roles.guard';
+import { SelfOrAdminGuard } from '../auth/guards/self-or-admin.guard';
 import { Roles } from '../common/decorators/roles.decorator';
 
 @Controller('users')
@@ -200,6 +203,56 @@ export class UsersController {
 
       throw new HttpException(
         'Failed to delete user',
+        HttpStatus.INTERNAL_SERVER_ERROR,
+      );
+    }
+  }
+
+  @Patch(':id/password')
+  @UseGuards(JwtAuthGuard, SelfOrAdminGuard)
+  async changePassword(
+    @Param('id', ParseIntPipe) id: number,
+    @Body() changePasswordDto: ChangePasswordDto,
+  ): Promise<{ message: string }> {
+    try {
+      return await this.usersService.changePassword(
+        id,
+        changePasswordDto.newPassword,
+      );
+    } catch (error) {
+      if (error instanceof Prisma.PrismaClientKnownRequestError) {
+        switch (error.code) {
+          case 'P2025':
+            throw new HttpException(
+              {
+                message: 'User does not exist',
+              },
+              HttpStatus.NOT_FOUND,
+            );
+
+          default:
+            throw new HttpException(
+              'Failed to change password',
+              HttpStatus.INTERNAL_SERVER_ERROR,
+            );
+        }
+      }
+
+      if (error instanceof Prisma.PrismaClientValidationError) {
+        throw new HttpException(
+          {
+            message: 'Incorrect data type',
+          },
+          HttpStatus.BAD_REQUEST,
+        );
+      }
+
+      if (error instanceof HttpException) {
+        throw error;
+      }
+
+      throw new HttpException(
+        'Failed to change password',
         HttpStatus.INTERNAL_SERVER_ERROR,
       );
     }

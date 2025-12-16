@@ -36,5 +36,13 @@ export const quizAttemptsService = {
       `/quizzes/${quizId}/attempts`,
     );
   },
+
+  findUserAttempt: async (
+    quizId: number,
+  ): Promise<CreateQuizAttemptResponse> => {
+    return api.get<CreateQuizAttemptResponse>(
+      `/quizzes/${quizId}/user-attempt`,
+    );
+  },
 };
 
