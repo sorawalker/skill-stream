@@ -212,6 +212,24 @@ export class EnrollmentsService {
     }
   }
 
+  async findByCourseAndUser(
+    courseId: number,
+    userId: number,
+  ): Promise<Enrollment | null> {
+    try {
+      return await this.prisma.enrollment.findFirst({
+        where: {
+          courseId,
+          userId,
+        },
+      });
+    } catch (error) {
+      this.logger.error(error);
+
+      throw error;
+    }
+  }
+
   async calculateProgress(userId: number, courseId: number): Promise<number> {
     try {
       const [totalLessons, completedLessons] = await Promise.all([

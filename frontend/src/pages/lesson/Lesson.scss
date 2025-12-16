@@ -1,0 +1,124 @@
+.lesson-page {
+  min-height: 100vh;
+  padding: 24px;
+
+  &__container {
+    max-width: 900px;
+    margin: 0 auto;
+  }
+
+  &__header {
+    margin-bottom: 32px;
+  }
+
+  &__back {
+    display: inline-block;
+    margin-bottom: 16px;
+    padding: 8px 16px;
+    background-color: #f8f9fa;
+    border: 1px solid #dee2e6;
+    border-radius: 4px;
+    color: #333;
+    text-decoration: none;
+    font-size: 0.875rem;
+    cursor: pointer;
+    transition: background-color 0.2s, border-color 0.2s;
+
+    &:hover {
+      background-color: #e9ecef;
+      border-color: #adb5bd;
+    }
+  }
+
+  &__title {
+    margin: 0;
+    font-size: 2rem;
+    font-weight: 700;
+    color: #333;
+  }
+
+  &__content {
+    background-color: white;
+    border: 1px solid #dee2e6;
+    border-radius: 8px;
+    padding: 32px;
+    margin-bottom: 24px;
+  }
+
+  &__text {
+    font-size: 1.125rem;
+    line-height: 1.8;
+    color: #333;
+
+    h1,
+    h2,
+    h3,
+    h4,
+    h5,
+    h6 {
+      margin-top: 24px;
+      margin-bottom: 16px;
+      font-weight: 600;
+    }
+
+    h1 {
+      font-size: 2rem;
+    }
+
+    h2 {
+      font-size: 1.75rem;
+    }
+
+    h3 {
+      font-size: 1.5rem;
+    }
+
+    p {
+      margin-bottom: 16px;
+    }
+
+    ul,
+    ol {
+      margin-bottom: 16px;
+      padding-left: 24px;
+    }
+
+    li {
+      margin-bottom: 8px;
+    }
+
+    code {
+      background-color: #f8f9fa;
+      padding: 2px 6px;
+      border-radius: 3px;
+      font-family: 'Courier New', monospace;
+      font-size: 0.9em;
+    }
+
+    pre {
+      background-color: #f8f9fa;
+      padding: 16px;
+      border-radius: 4px;
+      overflow-x: auto;
+      margin-bottom: 16px;
+    }
+
+    blockquote {
+      border-left: 4px solid #007bff;
+      padding-left: 16px;
+      margin: 16px 0;
+      color: #666;
+      font-style: italic;
+    }
+  }
+
+  &__quizzes {
+    background-color: #e7f3ff;
+    border: 1px solid #b3d9ff;
+    border-radius: 8px;
+    padding: 16px;
+    color: #004085;
+    font-size: 0.875rem;
+  }
+}
+

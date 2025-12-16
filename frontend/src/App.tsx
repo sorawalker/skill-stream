@@ -2,6 +2,8 @@ import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
 import { Login } from './pages/login/Login.tsx';
 import { Register } from './pages/register/Register.tsx';
 import { Home } from './pages/home/Home.tsx';
+import { Course } from './pages/course/Course.tsx';
+import { Lesson } from './pages/lesson/Lesson.tsx';
 import { AdminLayout } from './components/AdminLayout/AdminLayout.tsx';
 import { RoleProtectedRoute } from './components/RoleProtectedRoute/RoleProtectedRoute.tsx';
 import { Users } from './pages/admin/users/Users.tsx';
@@ -35,6 +37,22 @@ function App() {
           element={
             <ProtectedRoute>
               <Home />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/courses/:id"
+          element={
+            <ProtectedRoute>
+              <Course />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/lessons/:id"
+          element={
+            <ProtectedRoute>
+              <Lesson />
             </ProtectedRoute>
           }
         />
