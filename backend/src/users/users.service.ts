@@ -150,4 +150,28 @@ export class UsersService {
       throw error;
     }
   }
+
+  async changePassword(
+    userId: number,
+    newPassword: string,
+  ): Promise<{ message: string }> {
+    try {
+      const hashedPassword = await bcrypt.hash(newPassword, 12);
+
+      await this.prisma.user.update({
+        where: {
+          id: userId,
+        },
+        data: {
+          password: hashedPassword,
+        },
+      });
+
+      return { message: 'Password changed successfully' };
+    } catch (error) {
+      this.logger.error(error);
+
+      throw error;
+    }
+  }
 }
