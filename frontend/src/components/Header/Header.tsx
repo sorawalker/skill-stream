@@ -49,7 +49,8 @@ export const Header = () => {
       <header className="header">
         <div className="header__container">
           <Link to="/" className="header__logo">
-            Skill Stream
+            <img src="/logo.png" alt="Skill Stream" className="header__logo-image" />
+            <span className="header__logo-text">Skill Stream</span>
           </Link>
 
           <nav className="header__nav">

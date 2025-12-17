@@ -19,15 +19,28 @@
   }
 
   &__logo {
+    display: flex;
+    align-items: center;
+    gap: 0;
+    text-decoration: none;
+    transition: opacity $transition-base;
+
+    &:hover {
+      opacity: 0.8;
+    }
+  }
+
+  &__logo-image {
+    height: 100px;
+    width: auto;
+    object-fit: contain;
+  }
+
+  &__logo-text {
     font-size: $font-size-2xl;
     font-weight: $font-weight-bold;
     color: $primary;
-    text-decoration: none;
     transition: color $transition-base;
-
-    &:hover {
-      color: $primary-dark;
-    }
   }
 
   &__nav {
