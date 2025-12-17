@@ -1,11 +1,14 @@
 import {
   IsEmail,
+  IsEnum,
   IsNotEmpty,
+  IsOptional,
   IsString,
   IsStrongPassword,
   MaxLength,
   MinLength,
 } from 'class-validator';
+import type { UserRole } from '../../shared/types/user.types';
 
 export class CreateUserDto {
   @IsNotEmpty()
@@ -34,4 +37,10 @@ export class CreateUserDto {
   )
   @MaxLength(32)
   password: string;
+
+  @IsOptional()
+  @IsEnum(['USER', 'SUPPORT', 'MANAGER', 'ADMIN'], {
+    message: 'Role must be one of: USER, SUPPORT, MANAGER, ADMIN',
+  })
+  role?: UserRole;
 }

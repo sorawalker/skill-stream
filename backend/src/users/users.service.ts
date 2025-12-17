@@ -21,6 +21,7 @@ export class UsersService {
         data: {
           ...createUserDto,
           password: hashedPassword,
+          role: createUserDto.role || 'USER',
         },
       });
     } catch (error) {

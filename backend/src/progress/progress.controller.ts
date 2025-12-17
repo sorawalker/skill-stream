@@ -22,11 +22,17 @@ import {
   UpdateProgressResponse,
 } from '../shared/types';
 import { JwtAuthGuard } from '../auth/guards/jwt.guard';
+import { RolesGuard } from '../auth/guards/roles.guard';
+import { Roles } from '../common/decorators/roles.decorator';
+import { UsersService } from '../users/users.service';
 import { type RequestWithUser } from '../auth/types/jwt-payload.interface';
 
 @Controller()
 export class ProgressController {
-  constructor(private readonly progressService: ProgressService) {}
+  constructor(
+    private readonly progressService: ProgressService,
+    private readonly usersService: UsersService,
+  ) {}
 
   @Post('lessons/:lessonId/progress')
   @UseGuards(JwtAuthGuard)
@@ -80,13 +86,18 @@ export class ProgressController {
   }
 
   @Get('progress')
-  @UseGuards(JwtAuthGuard)
+  @UseGuards(JwtAuthGuard, RolesGuard)
+  @Roles('ADMIN', 'MANAGER', 'USER')
   async findMany(
     @Request() req: RequestWithUser,
   ): Promise<FindManyProgressResponse> {
     try {
       const userId = req.user.userId;
-      return await this.progressService.findMany(userId);
+
+      const user = await this.usersService.findById(userId);
+      const isAdmin = user?.role === 'ADMIN' || user?.role === 'MANAGER';
+
+      return await this.progressService.findMany(isAdmin ? undefined : userId);
     } catch (error) {
       if (error instanceof Prisma.PrismaClientValidationError) {
         throw new HttpException(
