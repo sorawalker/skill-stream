@@ -9,10 +9,15 @@ import {
   UseGuards,
   ParseIntPipe,
   Request,
+  Query,
 } from '@nestjs/common';
 import { QuizAttemptsService } from './quiz-attempts.service';
 import { CreateQuizAttemptDto } from './dto/create-quiz-attempt.dto';
+import { FindManyQuizAttemptsDto } from './dto/find-many-quiz-attempts.dto';
 import { Prisma } from '#generated/prisma/client';
+import { RolesGuard } from '../auth/guards/roles.guard';
+import { Roles } from '../common/decorators/roles.decorator';
+import { UsersService } from '../users/users.service';
 import {
   CreateQuizAttemptResponse,
   FindManyQuizAttemptsResponse,
@@ -23,7 +28,10 @@ import { type RequestWithUser } from '../auth/types/jwt-payload.interface';
 
 @Controller()
 export class QuizAttemptsController {
-  constructor(private readonly quizAttemptsService: QuizAttemptsService) {}
+  constructor(
+    private readonly quizAttemptsService: QuizAttemptsService,
+    private readonly usersService: UsersService,
+  ) {}
 
   @Post('quizzes/:quizId/attempt')
   @UseGuards(JwtAuthGuard)
@@ -88,20 +96,22 @@ export class QuizAttemptsController {
   }
 
   @Get('quiz-attempts')
-  @UseGuards(JwtAuthGuard)
+  @UseGuards(JwtAuthGuard, RolesGuard)
+  @Roles('ADMIN', 'MANAGER', 'USER')
   async findManyByUser(
+    @Query() findManyQuizAttemptsDto: FindManyQuizAttemptsDto,
     @Request() req: RequestWithUser,
   ): Promise<FindManyQuizAttemptsResponse> {
     try {
       const userId = req.user.userId;
-      const attempts = await this.quizAttemptsService.findManyByUser(userId);
+      const user = await this.usersService.findById(userId);
+      const isAdminOrManager =
+        user?.role === 'ADMIN' || user?.role === 'MANAGER';
 
-      return {
-        data: attempts,
-        meta: {
-          total: attempts.length,
-        },
-      };
+      return await this.quizAttemptsService.findManyByUser(
+        isAdminOrManager ? undefined : userId,
+        findManyQuizAttemptsDto,
+      );
     } catch (error) {
       if (error instanceof Prisma.PrismaClientValidationError) {
         throw new HttpException(
@@ -180,11 +190,15 @@ export class QuizAttemptsController {
   ): Promise<FindManyQuizAttemptsResponse> {
     try {
       const attempts = await this.quizAttemptsService.findManyByQuiz(quizId);
+      const total = attempts.length;
 
       return {
         data: attempts,
         meta: {
-          total: attempts.length,
+          total,
+          page: 1,
+          limit: total,
+          totalPages: 1,
         },
       };
     } catch (error) {
