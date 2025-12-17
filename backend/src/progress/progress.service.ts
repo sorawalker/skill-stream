@@ -1,6 +1,7 @@
 import { Inject, Injectable, Logger } from '@nestjs/common';
 import { CreateProgressDto } from './dto/create-progress.dto';
 import { UpdateProgressDto } from './dto/update-progress.dto';
+import { FindManyProgressDto } from './dto/find-many-progress.dto';
 import { PrismaService } from '../repositories/prisma/prisma.service';
 import { Prisma, UserProgress } from '#generated/prisma/client';
 
@@ -57,41 +58,65 @@ export class ProgressService {
     }
   }
 
-  async findMany(userId?: number) {
+  async findMany(
+    userId: number | undefined,
+    findManyProgressDto?: FindManyProgressDto,
+  ) {
+    const {
+      page = 1,
+      limit = 10,
+      order = 'desc',
+      sortBy = 'updatedAt',
+    } = findManyProgressDto || {};
+
+    const skip = (page - 1) * limit;
+
     try {
-      const progressList = await this.prisma.userProgress.findMany({
-        where: userId ? { userId } : undefined,
-        include: {
-          user: {
-            select: {
-              id: true,
-              name: true,
-              email: true,
-            },
+      const where: Prisma.UserProgressWhereInput = userId
+        ? { userId }
+        : {};
+
+      const [progressList, total] = await Promise.all([
+        this.prisma.userProgress.findMany({
+          where,
+          skip,
+          take: limit,
+          orderBy: {
+            [sortBy]: order,
           },
-          lesson: {
-            select: {
-              id: true,
-              title: true,
-              courseId: true,
-              course: {
-                select: {
-                  id: true,
-                  title: true,
+          include: {
+            user: {
+              select: {
+                id: true,
+                name: true,
+                email: true,
+              },
+            },
+            lesson: {
+              select: {
+                id: true,
+                title: true,
+                courseId: true,
+                course: {
+                  select: {
+                    id: true,
+                    title: true,
+                  },
                 },
               },
             },
           },
-        },
-        orderBy: {
-          updatedAt: 'desc',
-        },
-      });
+        }),
+        this.prisma.userProgress.count({ where }),
+      ]);
 
       return {
         data: progressList,
         meta: {
-          total: progressList.length,
+          total,
+          page,
+          limit,
+          totalPages: Math.ceil(total / limit),
         },
       };
     } catch (error) {
@@ -150,10 +175,15 @@ export class ProgressService {
         },
       });
 
+      const total = progressList.length;
+
       return {
         data: progressList,
         meta: {
-          total: progressList.length,
+          total,
+          page: 1,
+          limit: total,
+          totalPages: 1,
         },
       };
     } catch (error) {

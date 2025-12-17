@@ -1,11 +1,15 @@
 import { useQuery } from '@tanstack/react-query';
+import { useState } from 'react';
 import { quizAttemptsService } from '../../../services/quiz-attempts.service';
 import '../admin-common.scss';
 
 export const QuizAttempts = () => {
+  const [page, setPage] = useState(1);
+  const [limit] = useState(10);
+
   const { data, isLoading, error } = useQuery({
-    queryKey: ['quiz-attempts'],
-    queryFn: () => quizAttemptsService.findMany(),
+    queryKey: ['quiz-attempts', page, limit],
+    queryFn: () => quizAttemptsService.findMany({ page, limit, order: 'desc', sortBy: 'attemptedAt' }),
   });
 
   if (isLoading) return <div className="admin-page__loading">Loading...</div>;
@@ -39,8 +43,24 @@ export const QuizAttempts = () => {
         </tbody>
       </table>
       {data?.meta && (
-        <div>
-          <p>Total: {data.meta.total}</p>
+        <div className="admin-page__pagination">
+          <button
+            className="admin-page__pagination-button"
+            onClick={() => setPage((p) => Math.max(1, p - 1))}
+            disabled={page === 1}
+          >
+            Previous
+          </button>
+          <span className="admin-page__pagination-info">
+            Page {data.meta.page} of {data.meta.totalPages}
+          </span>
+          <button
+            className="admin-page__pagination-button"
+            onClick={() => setPage((p) => Math.min(data.meta.totalPages, p + 1))}
+            disabled={page >= data.meta.totalPages}
+          >
+            Next
+          </button>
         </div>
       )}
     </div>

@@ -10,10 +10,12 @@ import {
   UseGuards,
   ParseIntPipe,
   Request,
+  Query,
 } from '@nestjs/common';
 import { ProgressService } from './progress.service';
 import { CreateProgressDto } from './dto/create-progress.dto';
 import { UpdateProgressDto } from './dto/update-progress.dto';
+import { FindManyProgressDto } from './dto/find-many-progress.dto';
 import { Prisma } from '#generated/prisma/client';
 import {
   CreateProgressResponse,
@@ -89,6 +91,7 @@ export class ProgressController {
   @UseGuards(JwtAuthGuard, RolesGuard)
   @Roles('ADMIN', 'MANAGER', 'USER')
   async findMany(
+    @Query() findManyProgressDto: FindManyProgressDto,
     @Request() req: RequestWithUser,
   ): Promise<FindManyProgressResponse> {
     try {
@@ -97,7 +100,10 @@ export class ProgressController {
       const user = await this.usersService.findById(userId);
       const isAdmin = user?.role === 'ADMIN' || user?.role === 'MANAGER';
 
-      return await this.progressService.findMany(isAdmin ? undefined : userId);
+      return await this.progressService.findMany(
+        isAdmin ? undefined : userId,
+        findManyProgressDto,
+      );
     } catch (error) {
       if (error instanceof Prisma.PrismaClientValidationError) {
         throw new HttpException(

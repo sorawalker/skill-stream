@@ -15,8 +15,24 @@ export const enrollmentsService = {
     );
   },
 
-  findMany: async (): Promise<FindManyEnrollmentsResponse> => {
-    return api.get<FindManyEnrollmentsResponse>('/enrollments');
+  findMany: async (params?: {
+    page?: number;
+    limit?: number;
+    search?: string;
+    order?: 'asc' | 'desc';
+    sortBy?: string;
+  }): Promise<FindManyEnrollmentsResponse> => {
+    const queryParams = new URLSearchParams();
+    if (params?.page) queryParams.append('page', params.page.toString());
+    if (params?.limit) queryParams.append('limit', params.limit.toString());
+    if (params?.search) queryParams.append('search', params.search);
+    if (params?.sortBy) queryParams.append('sortBy', params.sortBy);
+    if (params?.order) queryParams.append('order', params.order);
+
+    const query = queryParams.toString();
+    return api.get<FindManyEnrollmentsResponse>(
+      `/enrollments${query ? `?${query}` : ''}`,
+    );
   },
 
   findOne: async (id: number): Promise<FindOneEnrollmentResponse> => {

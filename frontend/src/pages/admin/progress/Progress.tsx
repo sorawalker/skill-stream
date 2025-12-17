@@ -1,11 +1,15 @@
 import { useQuery } from '@tanstack/react-query';
+import { useState } from 'react';
 import { progressService } from '../../../services/progress.service';
 import '../admin-common.scss';
 
 export const Progress = () => {
+  const [page, setPage] = useState(1);
+  const [limit] = useState(10);
+
   const { data, isLoading, error } = useQuery({
-    queryKey: ['progress'],
-    queryFn: () => progressService.findMany(),
+    queryKey: ['progress', page, limit],
+    queryFn: () => progressService.findMany({ page, limit, order: 'desc', sortBy: 'updatedAt' }),
   });
 
   if (isLoading) return <div className="admin-page__loading">Loading...</div>;
@@ -41,8 +45,24 @@ export const Progress = () => {
         </tbody>
       </table>
       {data?.meta && (
-        <div>
-          <p>Total: {data.meta.total}</p>
+        <div className="admin-page__pagination">
+          <button
+            className="admin-page__pagination-button"
+            onClick={() => setPage((p) => Math.max(1, p - 1))}
+            disabled={page === 1}
+          >
+            Previous
+          </button>
+          <span className="admin-page__pagination-info">
+            Page {data.meta.page} of {data.meta.totalPages}
+          </span>
+          <button
+            className="admin-page__pagination-button"
+            onClick={() => setPage((p) => Math.min(data.meta.totalPages, p + 1))}
+            disabled={page >= data.meta.totalPages}
+          >
+            Next
+          </button>
         </div>
       )}
     </div>
