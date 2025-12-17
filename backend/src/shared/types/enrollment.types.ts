@@ -8,7 +8,13 @@ export interface Enrollment {
   enrolledAt: Date | string;
   completed: boolean;
   progress: number;
-  user?: User;
+  user?:
+    | User
+    | {
+        id: number;
+        name: string;
+        email: string;
+      };
   course?:
     | Course
     | {

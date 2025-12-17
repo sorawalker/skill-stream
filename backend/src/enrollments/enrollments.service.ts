@@ -48,15 +48,21 @@ export class EnrollmentsService {
   }
 
   async findMany(
-    userId: number,
-    findManyEnrollmentsDto: FindManyEnrollmentsDto,
+    userId?: number,
+    findManyEnrollmentsDto?: FindManyEnrollmentsDto,
   ) {
-    const { page, limit, search, order, sortBy } = findManyEnrollmentsDto;
+    const {
+      page = 1,
+      limit = 10,
+      search,
+      order = 'desc',
+      sortBy = 'enrolledAt',
+    } = findManyEnrollmentsDto || {};
 
     const skip = (page - 1) * limit;
 
     const where: Prisma.EnrollmentWhereInput = {
-      userId,
+      ...(userId ? { userId } : {}),
       ...(search
         ? {
             course: {
@@ -79,6 +85,13 @@ export class EnrollmentsService {
             [sortBy]: order,
           },
           include: {
+            user: {
+              select: {
+                id: true,
+                name: true,
+                email: true,
+              },
+            },
             course: {
               select: {
                 id: true,
@@ -203,6 +216,24 @@ export class EnrollmentsService {
       return await this.prisma.enrollment.delete({
         where: {
           id,
+        },
+      });
+    } catch (error) {
+      this.logger.error(error);
+
+      throw error;
+    }
+  }
+
+  async findByCourseAndUser(
+    courseId: number,
+    userId: number,
+  ): Promise<Enrollment | null> {
+    try {
+      return await this.prisma.enrollment.findFirst({
+        where: {
+          courseId,
+          userId,
         },
       });
     } catch (error) {

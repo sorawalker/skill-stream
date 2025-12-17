@@ -1,0 +1,214 @@
+@import '../../styles/variables';
+
+.quiz {
+  background-color: $bg-primary;
+  border: none;
+  border-radius: $radius-xl;
+  margin-bottom: $spacing-md;
+  overflow: hidden;
+  box-shadow: $shadow-md;
+  transition: box-shadow $transition-base;
+
+  &:hover {
+    box-shadow: $shadow-lg;
+  }
+
+  &__header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: $spacing-md $spacing-lg;
+    background-color: $gray-50;
+    cursor: pointer;
+    transition: background-color $transition-base;
+
+    &:hover {
+      background-color: $gray-100;
+    }
+  }
+
+  &__title {
+    margin: 0;
+    font-size: $font-size-lg;
+    font-weight: $font-weight-semibold;
+    color: $text-primary;
+  }
+
+  &__toggle {
+    font-size: $font-size-2xl;
+    font-weight: $font-weight-normal;
+    color: $text-secondary;
+    user-select: none;
+    line-height: 1;
+  }
+
+  &__content {
+    padding: $spacing-xl;
+  }
+
+  &__previous-attempt-notice {
+    background-color: rgba($warning, 0.1);
+    border: 1px solid $warning;
+    border-radius: $radius-lg;
+    padding: $spacing-md $spacing-lg;
+    margin-bottom: $spacing-xl;
+    color: $warning-dark;
+    font-size: $font-size-base;
+    font-weight: $font-weight-medium;
+  }
+
+  &__question {
+    margin-bottom: $spacing-xl;
+    padding-bottom: $spacing-xl;
+    border-bottom: 1px solid $border-color;
+
+    &:last-child {
+      border-bottom: none;
+      margin-bottom: 0;
+    }
+  }
+
+  &__question-title {
+    margin: 0 0 $spacing-md 0;
+    font-size: $font-size-base;
+    font-weight: $font-weight-semibold;
+    color: $text-primary;
+    line-height: $line-height-normal;
+  }
+
+  &__options {
+    display: flex;
+    flex-direction: column;
+    gap: $spacing-md;
+  }
+
+  &__option {
+    display: flex;
+    align-items: center;
+    padding: $spacing-md $spacing-lg;
+    border: 2px solid $border-color;
+    border-radius: $radius-lg;
+    cursor: pointer;
+    transition: all $transition-base;
+    background-color: $bg-primary;
+
+    &:hover {
+      border-color: $border-color-dark;
+      background-color: $gray-50;
+    }
+
+    input[type='radio'] {
+      margin-right: $spacing-md;
+      cursor: pointer;
+      width: 18px;
+      height: 18px;
+    }
+
+    span {
+      flex: 1;
+      color: $text-primary;
+    }
+
+    &--selected {
+      border-color: $primary;
+      background-color: rgba($primary, 0.1);
+    }
+
+    &--correct {
+      border-color: $success;
+      background-color: rgba($success, 0.1);
+    }
+
+    &--incorrect {
+      border-color: $danger;
+      background-color: rgba($danger, 0.1);
+    }
+
+    &:has(input:disabled) {
+      cursor: not-allowed;
+      opacity: 0.7;
+    }
+  }
+
+  &__result {
+    margin-top: $spacing-md;
+  }
+
+  &__result-message {
+    padding: $spacing-md $spacing-lg;
+    border-radius: $radius-lg;
+    font-size: $font-size-base;
+    margin-bottom: $spacing-md;
+    font-weight: $font-weight-medium;
+
+    &--correct {
+      background-color: rgba($success, 0.1);
+      color: $success-dark;
+      border: 1px solid rgba($success, 0.3);
+    }
+
+    &--incorrect {
+      background-color: rgba($danger, 0.1);
+      color: $danger-dark;
+      border: 1px solid rgba($danger, 0.3);
+    }
+  }
+
+  &__correct-answer {
+    margin-top: $spacing-sm;
+    padding-top: $spacing-sm;
+    border-top: 1px solid rgba($danger-dark, 0.2);
+    font-size: $font-size-sm;
+
+    strong {
+      color: $success-dark;
+      background-color: rgba($success, 0.2);
+      padding: 2px $spacing-sm;
+      border-radius: $radius-sm;
+      font-weight: $font-weight-semibold;
+    }
+  }
+
+  &__button {
+    padding: $spacing-sm $spacing-md;
+    border: none;
+    border-radius: $radius-lg;
+    font-size: $font-size-sm;
+    font-weight: $font-weight-medium;
+    cursor: pointer;
+    transition: all $transition-base;
+    box-shadow: $shadow-sm;
+
+    &--submit {
+      background-color: $primary;
+      color: white;
+      padding: $spacing-md $spacing-xl;
+      font-size: $font-size-base;
+
+      &:hover:not(:disabled) {
+        background-color: $primary-dark;
+        transform: translateY(-2px);
+        box-shadow: $shadow-md;
+      }
+
+      &:active:not(:disabled) {
+        transform: translateY(0);
+      }
+
+      &:disabled {
+        background-color: $gray-400;
+        cursor: not-allowed;
+        opacity: 0.6;
+      }
+    }
+  }
+
+  &__submit {
+    margin-top: $spacing-xl;
+    padding-top: $spacing-xl;
+    border-top: 1px solid $border-color;
+    display: flex;
+    justify-content: center;
+  }
+}
+

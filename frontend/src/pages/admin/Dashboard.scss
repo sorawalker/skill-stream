@@ -1,0 +1,118 @@
+@import '../../styles/variables';
+
+.dashboard {
+  &__welcome {
+    background: $bg-primary;
+    padding: $spacing-2xl;
+    border-radius: $radius-xl;
+    box-shadow: $shadow-md;
+    margin-bottom: $spacing-2xl;
+
+    h2 {
+      margin: 0 0 $spacing-md 0;
+      font-size: $font-size-2xl;
+      font-weight: $font-weight-semibold;
+      color: $text-primary;
+    }
+
+    p {
+      margin: 0;
+      color: $text-secondary;
+      font-size: $font-size-base;
+      line-height: $line-height-relaxed;
+    }
+  }
+
+  &__stats {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: $spacing-lg;
+    margin-bottom: $spacing-2xl;
+  }
+
+  &__stat {
+    background: $bg-primary;
+    padding: $spacing-xl;
+    border-radius: $radius-xl;
+    box-shadow: $shadow-md;
+    text-decoration: none;
+    transition: all $transition-base;
+    border-left: 4px solid;
+
+    &:hover {
+      transform: translateY(-4px);
+      box-shadow: $shadow-lg;
+    }
+
+    &--primary {
+      border-left-color: $primary;
+    }
+
+    &--success {
+      border-left-color: $success;
+    }
+
+    &--secondary {
+      border-left-color: $secondary;
+    }
+
+    &--warning {
+      border-left-color: $warning;
+    }
+
+    &--danger {
+      border-left-color: $danger;
+    }
+  }
+
+  &__stat-value {
+    font-size: $font-size-4xl;
+    font-weight: $font-weight-bold;
+    color: $text-primary;
+    margin-bottom: $spacing-sm;
+  }
+
+  &__stat-title {
+    font-size: $font-size-base;
+    color: $text-secondary;
+    font-weight: $font-weight-medium;
+  }
+
+  &__quick-links {
+    background: $bg-primary;
+    padding: $spacing-2xl;
+    border-radius: $radius-xl;
+    box-shadow: $shadow-md;
+
+    h3 {
+      margin: 0 0 $spacing-lg 0;
+      font-size: $font-size-xl;
+      font-weight: $font-weight-semibold;
+      color: $text-primary;
+    }
+  }
+
+  &__links {
+    display: flex;
+    flex-wrap: wrap;
+    gap: $spacing-md;
+  }
+
+  &__link {
+    padding: $spacing-md $spacing-xl;
+    background: $primary;
+    color: white;
+    border-radius: $radius-lg;
+    text-decoration: none;
+    font-weight: $font-weight-medium;
+    transition: all $transition-base;
+    box-shadow: $shadow-sm;
+
+    &:hover {
+      background: $primary-dark;
+      transform: translateY(-2px);
+      box-shadow: $shadow-md;
+    }
+  }
+}
+

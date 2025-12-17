@@ -1,0 +1,108 @@
+@import '../../styles/variables';
+
+.admin-layout {
+  display: flex;
+  min-height: 100vh;
+  background: $bg-secondary;
+
+  &__sidebar {
+    width: 280px;
+    background: $bg-primary;
+    border-right: 1px solid $border-color;
+    display: flex;
+    flex-direction: column;
+    position: sticky;
+    top: 0;
+    height: 100vh;
+    overflow-y: auto;
+    box-shadow: $shadow-md;
+  }
+
+  &__header {
+    padding: $spacing-xl;
+    border-bottom: 1px solid $border-color;
+    background: $primary;
+    color: white;
+  }
+
+  &__title {
+    margin: 0 0 $spacing-sm 0;
+    font-size: $font-size-2xl;
+    font-weight: $font-weight-bold;
+    color: white;
+  }
+
+  &__user-info {
+    display: flex;
+    align-items: center;
+    gap: $spacing-sm;
+    margin-bottom: $spacing-md;
+  }
+
+  &__user-name {
+    font-size: $font-size-sm;
+    color: rgba(255, 255, 255, 0.9);
+  }
+
+  &__sign-out {
+    padding: $spacing-xs $spacing-md;
+    background: rgba(255, 255, 255, 0.2);
+    color: white;
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    border-radius: $radius-md;
+    font-size: $font-size-sm;
+    font-weight: $font-weight-medium;
+    cursor: pointer;
+    transition: all $transition-base;
+
+    &:hover {
+      background: rgba(255, 255, 255, 0.3);
+      border-color: rgba(255, 255, 255, 0.4);
+    }
+  }
+
+  &__nav {
+    flex: 1;
+    padding: $spacing-md 0;
+  }
+
+  &__nav-list {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+  }
+
+  &__nav-item {
+    margin: 0;
+  }
+
+  &__nav-link {
+    display: block;
+    padding: $spacing-md $spacing-xl;
+    color: $text-primary;
+    text-decoration: none;
+    font-size: $font-size-base;
+    font-weight: $font-weight-medium;
+    transition: all $transition-base;
+    border-left: 3px solid transparent;
+
+    &:hover {
+      background: $gray-50;
+      color: $primary;
+    }
+
+    &.active {
+      background: rgba($primary, 0.1);
+      color: $primary;
+      border-left-color: $primary;
+      font-weight: $font-weight-semibold;
+    }
+  }
+
+  &__main {
+    flex: 1;
+    padding: $spacing-2xl;
+    overflow-y: auto;
+  }
+}
+

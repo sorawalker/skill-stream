@@ -1,0 +1,71 @@
+@import '../../styles/variables';
+
+.my-courses-page {
+  min-height: 100vh;
+  background: $bg-secondary;
+
+  &__container {
+    max-width: 1280px;
+    margin: 0 auto;
+    padding: $spacing-xl;
+  }
+
+  &__title {
+    margin: 0 0 $spacing-xl 0;
+    font-size: $font-size-3xl;
+    font-weight: $font-weight-bold;
+    color: $text-primary;
+    line-height: $line-height-tight;
+  }
+
+  &__loading {
+    font-size: $font-size-lg;
+    color: $text-secondary;
+    text-align: center;
+    padding: $spacing-2xl;
+  }
+
+  &__empty {
+    text-align: center;
+    padding: $spacing-2xl;
+    background: $bg-primary;
+    border-radius: $radius-xl;
+    box-shadow: $shadow-md;
+
+    p {
+      font-size: $font-size-lg;
+      color: $text-secondary;
+      margin-bottom: $spacing-lg;
+    }
+  }
+
+  &__browse-button {
+    padding: $spacing-md $spacing-xl;
+    background: $primary;
+    color: white;
+    border: none;
+    border-radius: $radius-lg;
+    font-size: $font-size-base;
+    font-weight: $font-weight-medium;
+    cursor: pointer;
+    transition: all $transition-base;
+    box-shadow: $shadow-sm;
+
+    &:hover {
+      background: $primary-dark;
+      transform: translateY(-2px);
+      box-shadow: $shadow-md;
+    }
+
+    &:active {
+      transform: translateY(0);
+    }
+  }
+
+  &__courses-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: $spacing-xl;
+  }
+}
+

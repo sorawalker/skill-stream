@@ -225,4 +225,61 @@ export class QuizAttemptsController {
       );
     }
   }
+
+  @Get('quizzes/:quizId/user-attempt')
+  @UseGuards(JwtAuthGuard)
+  async findUserAttempt(
+    @Param('quizId', ParseIntPipe) quizId: number,
+    @Request() req: RequestWithUser,
+  ): Promise<CreateQuizAttemptResponse> {
+    try {
+      const userId = req.user.userId;
+      const result = await this.quizAttemptsService.getAttemptResult(
+        userId,
+        quizId,
+      );
+
+      if (!result) {
+        throw new HttpException(
+          {
+            message: 'Quiz attempt does not exist',
+          },
+          HttpStatus.NOT_FOUND,
+        );
+      }
+
+      return result;
+    } catch (error) {
+      if (error instanceof HttpException) {
+        throw error;
+      }
+
+      if (error instanceof Prisma.PrismaClientKnownRequestError) {
+        switch (error.code) {
+          case 'P2003':
+            throw new HttpException(
+              {
+                message: 'Quiz does not exist',
+              },
+              HttpStatus.NOT_FOUND,
+            );
+
+          default:
+            throw new HttpException(
+              {
+                message: 'Failed to get quiz attempt',
+              },
+              HttpStatus.INTERNAL_SERVER_ERROR,
+            );
+        }
+      }
+
+      throw new HttpException(
+        {
+          message: 'Failed to get quiz attempt',
+        },
+        HttpStatus.INTERNAL_SERVER_ERROR,
+      );
+    }
+  }
 }

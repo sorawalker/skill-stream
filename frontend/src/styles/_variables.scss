@@ -1,0 +1,115 @@
+// Color Palette - Inspired by modern LMS platforms
+$primary: #6366f1;
+$primary-dark: #4f46e5;
+$primary-light: #818cf8;
+
+$secondary: #8b5cf6;
+$secondary-dark: #7c3aed;
+$secondary-light: #a78bfa;
+
+$success: #10b981;
+$success-dark: #059669;
+$success-light: #34d399;
+
+$warning: #f59e0b;
+$warning-dark: #d97706;
+$warning-light: #fbbf24;
+
+$danger: #ef4444;
+$danger-dark: #dc2626;
+$danger-light: #f87171;
+
+// Grays
+$gray-50: #f9fafb;
+$gray-100: #f3f4f6;
+$gray-200: #e5e7eb;
+$gray-300: #d1d5db;
+$gray-400: #9ca3af;
+$gray-500: #6b7280;
+$gray-600: #4b5563;
+$gray-700: #374151;
+$gray-800: #1f2937;
+$gray-900: #111827;
+
+// Semantic colors
+$text-primary: $gray-900;
+$text-secondary: $gray-600;
+$text-muted: $gray-500;
+
+$bg-primary: #ffffff;
+$bg-secondary: $gray-50;
+$bg-tertiary: $gray-100;
+
+$border-color: $gray-200;
+$border-color-dark: $gray-300;
+
+// Typography
+$font-family-base: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
+  'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif;
+$font-family-mono: 'Courier New', 'Monaco', 'Menlo', monospace;
+
+$font-size-xs: 0.75rem; // 12px
+$font-size-sm: 0.875rem; // 14px
+$font-size-base: 1rem; // 16px
+$font-size-lg: 1.125rem; // 18px
+$font-size-xl: 1.25rem; // 20px
+$font-size-2xl: 1.5rem; // 24px
+$font-size-3xl: 2rem; // 32px
+$font-size-4xl: 2.5rem; // 40px
+
+$font-weight-normal: 400;
+$font-weight-medium: 500;
+$font-weight-semibold: 600;
+$font-weight-bold: 700;
+
+$line-height-tight: 1.25;
+$line-height-normal: 1.5;
+$line-height-relaxed: 1.6;
+$line-height-loose: 1.8;
+
+// Spacing
+$spacing-xs: 4px;
+$spacing-sm: 8px;
+$spacing-md: 16px;
+$spacing-lg: 24px;
+$spacing-xl: 32px;
+$spacing-2xl: 48px;
+$spacing-3xl: 64px;
+
+// Border radius
+$radius-sm: 4px;
+$radius-md: 6px;
+$radius-lg: 8px;
+$radius-xl: 12px;
+$radius-2xl: 16px;
+$radius-full: 9999px;
+
+// Shadows
+$shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+$shadow-md: 0 2px 8px rgba(0, 0, 0, 0.08);
+$shadow-lg: 0 4px 16px rgba(0, 0, 0, 0.1);
+$shadow-xl: 0 8px 24px rgba(0, 0, 0, 0.12);
+$shadow-2xl: 0 12px 32px rgba(0, 0, 0, 0.15);
+
+// Transitions
+$transition-fast: 0.15s ease;
+$transition-base: 0.2s ease;
+$transition-slow: 0.3s ease;
+
+// Z-index
+$z-dropdown: 1000;
+$z-sticky: 1020;
+$z-fixed: 1030;
+$z-modal-backdrop: 1040;
+$z-modal: 1050;
+$z-popover: 1060;
+$z-tooltip: 1070;
+
+// Breakpoints
+$breakpoint-sm: 640px;
+$breakpoint-md: 768px;
+$breakpoint-lg: 1024px;
+$breakpoint-xl: 1280px;
+$breakpoint-2xl: 1536px;
+
+

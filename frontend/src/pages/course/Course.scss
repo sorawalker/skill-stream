@@ -1,0 +1,156 @@
+@import '../../styles/variables';
+
+.course-page {
+  min-height: 100vh;
+  padding: $spacing-xl;
+  background: $bg-secondary;
+
+  &__container {
+    max-width: 1200px;
+    margin: 0 auto;
+  }
+
+  &__header {
+    margin-bottom: $spacing-xl;
+  }
+
+  &__back {
+    display: inline-flex;
+    align-items: center;
+    gap: $spacing-sm;
+    margin-bottom: $spacing-md;
+    color: $primary;
+    text-decoration: none;
+    font-size: $font-size-sm;
+    font-weight: $font-weight-medium;
+    transition: color $transition-base;
+
+    &:hover {
+      color: $primary-dark;
+    }
+
+    &::before {
+      content: '←';
+      font-size: $font-size-base;
+    }
+  }
+
+  &__title {
+    margin: 0 0 $spacing-lg 0;
+    font-size: $font-size-4xl;
+    font-weight: $font-weight-bold;
+    color: $text-primary;
+    line-height: $line-height-tight;
+  }
+
+  &__image {
+    width: 100%;
+    max-height: 450px;
+    object-fit: cover;
+    border-radius: $radius-xl;
+    margin-bottom: $spacing-xl;
+    box-shadow: $shadow-lg;
+  }
+
+  &__description {
+    font-size: $font-size-lg;
+    line-height: $line-height-relaxed;
+    color: $text-primary;
+    margin-bottom: $spacing-xl;
+    background: $bg-primary;
+    padding: $spacing-xl;
+    border-radius: $radius-lg;
+    box-shadow: $shadow-sm;
+  }
+
+  &__stats {
+    margin-bottom: $spacing-xl;
+    color: $text-secondary;
+    font-size: $font-size-sm;
+    display: flex;
+    gap: $spacing-lg;
+    flex-wrap: wrap;
+  }
+
+  &__lessons {
+    margin-top: $spacing-2xl;
+  }
+
+  &__lessons-title {
+    margin: 0 0 $spacing-xl 0;
+    font-size: $font-size-2xl;
+    font-weight: $font-weight-semibold;
+    color: $text-primary;
+    line-height: $line-height-tight;
+  }
+
+  &__lessons-list {
+    display: flex;
+    flex-direction: column;
+    gap: $spacing-md;
+  }
+
+  &__lesson-card {
+    background: $bg-primary;
+    border: none;
+    border-radius: $radius-xl;
+    padding: $spacing-xl;
+    cursor: pointer;
+    box-shadow: $shadow-md;
+    transition: transform $transition-base, box-shadow $transition-base;
+
+    &:hover {
+      transform: translateY(-4px);
+      box-shadow: $shadow-lg;
+    }
+  }
+
+  &__lesson-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: $spacing-md;
+  }
+
+  &__lesson-order {
+    font-size: $font-size-sm;
+    color: $text-muted;
+    font-weight: $font-weight-semibold;
+    background: $gray-100;
+    padding: $spacing-xs $spacing-md;
+    border-radius: $radius-full;
+  }
+
+  &__lesson-quizzes {
+    font-size: $font-size-sm;
+    color: $success;
+    font-weight: $font-weight-medium;
+    display: inline-flex;
+    align-items: center;
+    gap: $spacing-xs;
+
+    &::before {
+      content: '✓';
+      font-weight: $font-weight-bold;
+    }
+  }
+
+  &__lesson-title {
+    margin: 0;
+    font-size: $font-size-xl;
+    font-weight: $font-weight-semibold;
+    color: $text-primary;
+    line-height: $line-height-tight;
+  }
+
+  &__no-lessons {
+    text-align: center;
+    color: $text-secondary;
+    font-size: $font-size-lg;
+    padding: $spacing-3xl 0;
+    background: $bg-primary;
+    border-radius: $radius-lg;
+    box-shadow: $shadow-sm;
+  }
+}
+

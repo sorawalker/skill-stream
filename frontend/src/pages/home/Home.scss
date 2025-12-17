@@ -1,2 +1,41 @@
-.home-page {}
+@import '../../styles/variables';
+
+.home-page {
+  min-height: 100vh;
+  background: $bg-secondary;
+
+  &__container {
+    max-width: 1280px;
+    margin: 0 auto;
+    padding: $spacing-xl;
+  }
+
+  &__content {
+    margin-top: $spacing-xl;
+  }
+
+  &__subtitle {
+    margin: 0 0 $spacing-xl 0;
+    font-size: $font-size-3xl;
+    font-weight: $font-weight-bold;
+    color: $text-primary;
+    line-height: $line-height-tight;
+  }
+
+  &__courses-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: $spacing-xl;
+  }
+
+  &__loading,
+  &__empty,
+  &__message {
+    text-align: center;
+    color: $text-secondary;
+    font-size: $font-size-lg;
+    margin: $spacing-3xl 0;
+    padding: $spacing-2xl;
+  }
+}
 

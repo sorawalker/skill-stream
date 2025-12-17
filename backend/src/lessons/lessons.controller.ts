@@ -26,6 +26,7 @@ import {
 } from '../shared/types';
 import { JwtAuthGuard } from '../auth/guards/jwt.guard';
 import { RolesGuard } from '../auth/guards/roles.guard';
+import { EnrollmentGuard } from '../auth/guards/enrollment.guard';
 import { Roles } from '../common/decorators/roles.decorator';
 
 @Controller()
@@ -106,6 +107,7 @@ export class LessonsController {
   }
 
   @Get('lessons/:id')
+  @UseGuards(JwtAuthGuard, EnrollmentGuard)
   async findOne(
     @Param('id', ParseIntPipe) id: number,
   ): Promise<FindOneLessonResponse> {
