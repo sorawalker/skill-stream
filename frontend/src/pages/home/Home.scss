@@ -8,10 +8,11 @@
     max-width: 1280px;
     margin: 0 auto;
     padding: $spacing-xl;
+    margin-top: $spacing-xl;
   }
 
   &__content {
-    margin-top: $spacing-xl;
+    // Content wrapper
   }
 
   &__subtitle {

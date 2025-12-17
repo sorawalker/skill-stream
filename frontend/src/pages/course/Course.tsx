@@ -36,6 +36,7 @@ export const Course = () => {
   if (courseLoading || lessonsLoading) {
     return (
       <div className="course-page">
+        <Header />
         <div className="course-page__container">
           <p>Loading...</p>
         </div>
@@ -46,6 +47,7 @@ export const Course = () => {
   if (!course) {
     return (
       <div className="course-page">
+        <Header />
         <div className="course-page__container">
           <p>Course not found</p>
           <Link to="/">Back to Home</Link>
@@ -77,11 +79,6 @@ export const Course = () => {
                 >
                   <div className="course-page__lesson-header">
                     <span className="course-page__lesson-order">Lesson {lesson.order}</span>
-                    {lesson._count && lesson._count.quizzes && lesson._count.quizzes > 0 && (
-                      <span className="course-page__lesson-quizzes">
-                        {lesson._count.quizzes} Quiz{lesson._count.quizzes !== 1 ? 'zes' : ''}
-                      </span>
-                    )}
                   </div>
                   <h3 className="course-page__lesson-title">{lesson.title}</h3>
                 </div>

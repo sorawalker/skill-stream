@@ -2,12 +2,13 @@
 
 .lesson-page {
   min-height: 100vh;
-  padding: $spacing-xl;
   background: $bg-secondary;
 
   &__container {
     max-width: 900px;
     margin: 0 auto;
+    padding: $spacing-xl;
+    margin-top: $spacing-xl;
   }
 
   &__header {

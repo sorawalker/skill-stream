@@ -46,16 +46,6 @@
     padding: $spacing-xl;
   }
 
-  &__previous-attempt-notice {
-    background-color: rgba($warning, 0.1);
-    border: 1px solid $warning;
-    border-radius: $radius-lg;
-    padding: $spacing-md $spacing-lg;
-    margin-bottom: $spacing-xl;
-    color: $warning-dark;
-    font-size: $font-size-base;
-    font-weight: $font-weight-medium;
-  }
 
   &__question {
     margin-bottom: $spacing-xl;
@@ -92,11 +82,6 @@
     transition: all $transition-base;
     background-color: $bg-primary;
 
-    &:hover {
-      border-color: $border-color-dark;
-      background-color: $gray-50;
-    }
-
     input[type='radio'] {
       margin-right: $spacing-md;
       cursor: pointer;
@@ -112,62 +97,56 @@
     &--selected {
       border-color: $primary;
       background-color: rgba($primary, 0.1);
+
+      &:hover {
+        border-color: $primary;
+        background-color: rgba($primary, 0.15);
+      }
     }
 
     &--correct {
       border-color: $success;
-      background-color: rgba($success, 0.1);
+      background-color: rgba($success, 0.15);
+      color: $success-dark;
+
+      &:hover {
+        border-color: $success;
+        background-color: rgba($success, 0.2);
+      }
+
+      span {
+        color: $success-dark;
+        font-weight: $font-weight-semibold;
+      }
     }
 
     &--incorrect {
       border-color: $danger;
-      background-color: rgba($danger, 0.1);
+      background-color: rgba($danger, 0.15);
+      color: $danger-dark;
+
+      &:hover {
+        border-color: $danger;
+        background-color: rgba($danger, 0.2);
+      }
+
+      span {
+        color: $danger-dark;
+        font-weight: $font-weight-semibold;
+      }
+    }
+
+    &:not(&--correct):not(&--incorrect):not(&--selected):hover {
+      border-color: $border-color-dark;
+      background-color: $gray-50;
     }
 
     &:has(input:disabled) {
       cursor: not-allowed;
-      opacity: 0.7;
+      opacity: 0.9;
     }
   }
 
-  &__result {
-    margin-top: $spacing-md;
-  }
-
-  &__result-message {
-    padding: $spacing-md $spacing-lg;
-    border-radius: $radius-lg;
-    font-size: $font-size-base;
-    margin-bottom: $spacing-md;
-    font-weight: $font-weight-medium;
-
-    &--correct {
-      background-color: rgba($success, 0.1);
-      color: $success-dark;
-      border: 1px solid rgba($success, 0.3);
-    }
-
-    &--incorrect {
-      background-color: rgba($danger, 0.1);
-      color: $danger-dark;
-      border: 1px solid rgba($danger, 0.3);
-    }
-  }
-
-  &__correct-answer {
-    margin-top: $spacing-sm;
-    padding-top: $spacing-sm;
-    border-top: 1px solid rgba($danger-dark, 0.2);
-    font-size: $font-size-sm;
-
-    strong {
-      color: $success-dark;
-      background-color: rgba($success, 0.2);
-      padding: 2px $spacing-sm;
-      border-radius: $radius-sm;
-      font-weight: $font-weight-semibold;
-    }
-  }
 
   &__button {
     padding: $spacing-sm $spacing-md;

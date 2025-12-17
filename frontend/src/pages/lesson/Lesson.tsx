@@ -139,6 +139,7 @@ export const Lesson = () => {
   if (isLoading) {
     return (
       <div className="lesson-page">
+        <Header />
         <div className="lesson-page__container">
           <p>Loading...</p>
         </div>
@@ -178,7 +179,7 @@ export const Lesson = () => {
             onClick={() => navigate(-1)}
             className="lesson-page__back"
           >
-            ← Back
+            Back
           </button>
           <h1 className="lesson-page__title">{lesson.title}</h1>
         </div>

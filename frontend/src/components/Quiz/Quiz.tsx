@@ -129,17 +129,13 @@ export const Quiz = ({ quizId }: QuizProps) => {
 
       {isExpanded && quiz && (
         <div className="quiz__content">
-          {hasPreviousAttempt && (
-            <div className="quiz__previous-attempt-notice">
-              You have already completed this quiz. Your previous answers are shown below.
-            </div>
-          )}
           {quiz.questions.map((question, index) => {
             const userAnswer = selectedAnswers[question.question];
             const result = attemptResult?.correctAnswersList.find(
               (r) => r.question === question.question,
             );
             const isCorrect = result?.isCorrect ?? false;
+            const correctAnswer = result?.correctAnswer;
 
             return (
               <div key={index} className="quiz__question">
@@ -148,48 +144,39 @@ export const Quiz = ({ quizId }: QuizProps) => {
                 </h4>
 
                 <div className="quiz__options">
-                  {question.variants.map((variant, variantIndex) => (
-                    <label
-                      key={variantIndex}
-                      className={`quiz__option ${
-                        hasAnswered && variant === userAnswer
-                          ? isCorrect
-                            ? 'quiz__option--correct'
-                            : 'quiz__option--incorrect'
-                          : ''
-                      } ${!hasAnswered && variant === userAnswer ? 'quiz__option--selected' : ''}`}
-                    >
-                      <input
-                        type="radio"
-                        name={`question-${index}`}
-                        value={variant}
-                        checked={userAnswer === variant}
-                        onChange={() => handleAnswerChange(question.question, variant)}
-                        disabled={hasAnswered || hasPreviousAttempt}
-                      />
-                      <span>{variant}</span>
-                    </label>
-                  ))}
-                </div>
+                  {question.variants.map((variant, variantIndex) => {
+                    const isUserAnswer = variant === userAnswer;
+                    const isCorrectAnswer = variant === correctAnswer;
+                    const isIncorrect = hasAnswered && isUserAnswer && !isCorrect;
 
-                {hasAnswered && (
-                  <div className="quiz__result">
-                    {isCorrect ? (
-                      <div className="quiz__result-message quiz__result-message--correct">
-                        ✓ Well done, the answer is correct!
-                      </div>
-                    ) : (
-                      <div className="quiz__result-message quiz__result-message--incorrect">
-                        ✗ Incorrect answer
-                        {result && (
-                          <div className="quiz__correct-answer">
-                            Correct answer: <strong>{result.correctAnswer}</strong>
-                          </div>
-                        )}
-                      </div>
-                    )}
-                  </div>
-                )}
+                    return (
+                      <label
+                        key={variantIndex}
+                        className={`quiz__option ${
+                          hasAnswered || hasPreviousAttempt
+                            ? isCorrectAnswer
+                              ? 'quiz__option--correct'
+                              : isIncorrect
+                              ? 'quiz__option--incorrect'
+                              : ''
+                            : isUserAnswer
+                            ? 'quiz__option--selected'
+                            : ''
+                        }`}
+                      >
+                        <input
+                          type="radio"
+                          name={`question-${index}`}
+                          value={variant}
+                          checked={isUserAnswer}
+                          onChange={() => handleAnswerChange(question.question, variant)}
+                          disabled={hasAnswered || hasPreviousAttempt}
+                        />
+                        <span>{variant}</span>
+                      </label>
+                    );
+                  })}
+                </div>
               </div>
             );
           })}

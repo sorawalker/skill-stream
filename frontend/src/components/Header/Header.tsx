@@ -53,10 +53,6 @@ export const Header = () => {
           </Link>
 
           <nav className="header__nav">
-            <Link to="/" className="header__nav-link">
-              Courses
-            </Link>
-
             <Link to="/my-courses" className="header__nav-link">
               My Courses
             </Link>
