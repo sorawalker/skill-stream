@@ -25,11 +25,17 @@ import {
   UpdateEnrollmentResponse,
 } from '../shared/types';
 import { JwtAuthGuard } from '../auth/guards/jwt.guard';
+import { RolesGuard } from '../auth/guards/roles.guard';
+import { Roles } from '../common/decorators/roles.decorator';
+import { UsersService } from '../users/users.service';
 import { type RequestWithUser } from '../auth/types/jwt-payload.interface';
 
 @Controller()
 export class EnrollmentsController {
-  constructor(private readonly enrollmentsService: EnrollmentsService) {}
+  constructor(
+    private readonly enrollmentsService: EnrollmentsService,
+    private readonly usersService: UsersService,
+  ) {}
 
   @Post('courses/:courseId/enroll')
   @UseGuards(JwtAuthGuard)
@@ -91,7 +97,8 @@ export class EnrollmentsController {
   }
 
   @Get('enrollments')
-  @UseGuards(JwtAuthGuard)
+  @UseGuards(JwtAuthGuard, RolesGuard)
+  @Roles('ADMIN', 'MANAGER', 'USER')
   async findMany(
     @Query() findManyEnrollmentsDto: FindManyEnrollmentsDto,
     @Request() req: RequestWithUser,
@@ -99,8 +106,11 @@ export class EnrollmentsController {
     try {
       const userId = req.user.userId;
 
+      const user = await this.usersService.findById(userId);
+      const isAdmin = user?.role === 'ADMIN' || user?.role === 'MANAGER';
+
       return await this.enrollmentsService.findMany(
-        userId,
+        isAdmin ? undefined : userId,
         findManyEnrollmentsDto,
       );
     } catch (error) {

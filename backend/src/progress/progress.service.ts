@@ -57,13 +57,18 @@ export class ProgressService {
     }
   }
 
-  async findMany(userId: number) {
+  async findMany(userId?: number) {
     try {
       const progressList = await this.prisma.userProgress.findMany({
-        where: {
-          userId,
-        },
+        where: userId ? { userId } : undefined,
         include: {
+          user: {
+            select: {
+              id: true,
+              name: true,
+              email: true,
+            },
+          },
           lesson: {
             select: {
               id: true,
