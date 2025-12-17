@@ -82,14 +82,32 @@ export const Quizzes = () => {
     createMutation.mutate(newQuiz);
   };
 
-  const handleEdit = (quiz: { id: number; title: string }) => {
+  const handleEdit = async (quiz: { id: number; title: string }) => {
     setEditingQuizId(quiz.id);
-    setEditQuiz({ title: quiz.title, questions: [] });
+    try {
+      const quizData = await quizzesService.findOne(quiz.id, true);
+      if (quizData && 'questions' in quizData) {
+        setEditQuiz({
+          title: quizData.title,
+          questions: quizData.questions.map((q: any) => ({
+            question: q.question,
+            rightAnswer: q.rightAnswer,
+            variants: q.variants,
+          })),
+        });
+      } else {
+        setEditQuiz({ title: quiz.title, questions: [{ question: '', rightAnswer: '', variants: [''] }] });
+      }
+    } catch (error) {
+      console.error('Failed to load quiz data:', error);
+      setEditQuiz({ title: quiz.title, questions: [{ question: '', rightAnswer: '', variants: [''] }] });
+    }
   };
 
-  const handleUpdate = () => {
+  const handleUpdate = (e: React.FormEvent) => {
+    e.preventDefault();
     if (editingQuizId) {
-      updateMutation.mutate({ id: editingQuizId, quizData: { title: editQuiz.title } });
+      updateMutation.mutate({ id: editingQuizId, quizData: editQuiz });
     }
   };
 
@@ -116,6 +134,42 @@ export const Quizzes = () => {
     const updated = [...newQuiz.questions];
     updated[questionIndex].variants[variantIndex] = value;
     setNewQuiz({ ...newQuiz, questions: updated });
+  };
+
+  const addEditQuestion = () => {
+    setEditQuiz({
+      ...editQuiz,
+      questions: [...editQuiz.questions, { question: '', rightAnswer: '', variants: [''] }],
+    });
+  };
+
+  const updateEditQuestion = (index: number, field: string, value: string) => {
+    const updated = [...editQuiz.questions];
+    updated[index] = { ...updated[index], [field]: value };
+    setEditQuiz({ ...editQuiz, questions: updated });
+  };
+
+  const addEditVariant = (questionIndex: number) => {
+    const updated = [...editQuiz.questions];
+    updated[questionIndex].variants.push('');
+    setEditQuiz({ ...editQuiz, questions: updated });
+  };
+
+  const updateEditVariant = (questionIndex: number, variantIndex: number, value: string) => {
+    const updated = [...editQuiz.questions];
+    updated[questionIndex].variants[variantIndex] = value;
+    setEditQuiz({ ...editQuiz, questions: updated });
+  };
+
+  const removeEditQuestion = (index: number) => {
+    const updated = editQuiz.questions.filter((_, i) => i !== index);
+    setEditQuiz({ ...editQuiz, questions: updated });
+  };
+
+  const removeEditVariant = (questionIndex: number, variantIndex: number) => {
+    const updated = [...editQuiz.questions];
+    updated[questionIndex].variants = updated[questionIndex].variants.filter((_, i) => i !== variantIndex);
+    setEditQuiz({ ...editQuiz, questions: updated });
   };
 
   const handleDelete = (id: number) => {
@@ -279,6 +333,7 @@ export const Quizzes = () => {
               setEditQuiz({ title: '', questions: [{ question: '', rightAnswer: '', variants: [''] }] });
             }}
             title="Edit Quiz"
+            size="large"
           >
             <form className="admin-page__form" onSubmit={handleUpdate}>
               <div className="admin-page__form-group">
@@ -293,7 +348,86 @@ export const Quizzes = () => {
                   />
                 </label>
               </div>
+              {editQuiz.questions.map((q, qIndex) => (
+                <div key={qIndex} className="admin-page__form-group" style={{ border: '1px solid var(--border-color)', padding: '16px', borderRadius: '8px', marginBottom: '16px' }}>
+                  <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '12px' }}>
+                    <h3 style={{ margin: 0 }}>Question {qIndex + 1}</h3>
+                    {editQuiz.questions.length > 1 && (
+                      <button
+                        className="admin-page__button admin-page__button--danger"
+                        type="button"
+                        onClick={() => removeEditQuestion(qIndex)}
+                        style={{ padding: '4px 8px', fontSize: '12px' }}
+                      >
+                        Remove Question
+                      </button>
+                    )}
+                  </div>
+                  <div className="admin-page__form-group">
+                    <label className="admin-page__form-label">
+                      Question:
+                      <input
+                        className="admin-page__form-input"
+                        type="text"
+                        value={q.question}
+                        onChange={(e) => updateEditQuestion(qIndex, 'question', e.target.value)}
+                        required
+                      />
+                    </label>
+                  </div>
+                  <div className="admin-page__form-group">
+                    <label className="admin-page__form-label">
+                      Right Answer:
+                      <input
+                        className="admin-page__form-input"
+                        type="text"
+                        value={q.rightAnswer}
+                        onChange={(e) => updateEditQuestion(qIndex, 'rightAnswer', e.target.value)}
+                        required
+                      />
+                    </label>
+                  </div>
+                  <div className="admin-page__form-group">
+                    <label className="admin-page__form-label">Variants:</label>
+                    {q.variants.map((variant, vIndex) => (
+                      <div key={vIndex} style={{ display: 'flex', gap: '8px', marginBottom: '8px' }}>
+                        <input
+                          className="admin-page__form-input"
+                          type="text"
+                          value={variant}
+                          onChange={(e) => updateEditVariant(qIndex, vIndex, e.target.value)}
+                          required
+                        />
+                        {q.variants.length > 1 && (
+                          <button
+                            className="admin-page__button admin-page__button--danger"
+                            type="button"
+                            onClick={() => removeEditVariant(qIndex, vIndex)}
+                            style={{ padding: '4px 8px', fontSize: '12px' }}
+                          >
+                            Remove
+                          </button>
+                        )}
+                      </div>
+                    ))}
+                    <button
+                      className="admin-page__button admin-page__button--secondary"
+                      type="button"
+                      onClick={() => addEditVariant(qIndex)}
+                    >
+                      Add Variant
+                    </button>
+                  </div>
+                </div>
+              ))}
               <div className="admin-page__form-actions">
+                <button
+                  className="admin-page__button admin-page__button--secondary"
+                  type="button"
+                  onClick={addEditQuestion}
+                >
+                  Add Question
+                </button>
                 <button
                   className="admin-page__button admin-page__button--success"
                   type="submit"
