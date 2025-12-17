@@ -1,5 +1,6 @@
 import { Inject, Injectable, Logger } from '@nestjs/common';
 import { CreateQuizAttemptDto } from './dto/create-quiz-attempt.dto';
+import { FindManyQuizAttemptsDto } from './dto/find-many-quiz-attempts.dto';
 import { PrismaService } from '../repositories/prisma/prisma.service';
 import { Prisma } from '#generated/prisma/client';
 import {
@@ -74,36 +75,65 @@ export class QuizAttemptsService {
     }
   }
 
-  async findManyByUser(userId: number): Promise<QuizAttemptWithDetails[]> {
-    try {
-      const attempts = await this.prisma.quizAttempt.findMany({
-        where: {
-          userId,
-        },
-        orderBy: {
-          attemptedAt: 'desc',
-        },
-        include: {
-          quiz: {
-            select: {
-              id: true,
-              title: true,
-              lessonId: true,
-            },
-          },
-          user: {
-            select: {
-              id: true,
-              name: true,
-              email: true,
-            },
-          },
-        },
-      });
+  async findManyByUser(
+    userId: number | undefined,
+    findManyQuizAttemptsDto?: FindManyQuizAttemptsDto,
+  ) {
+    const {
+      page = 1,
+      limit = 10,
+      order = 'desc',
+      sortBy = 'attemptedAt',
+    } = findManyQuizAttemptsDto || {};
 
-      return attempts.map((attempt) =>
+    const skip = (page - 1) * limit;
+
+    try {
+      const where: Prisma.QuizAttemptWhereInput = userId ? { userId } : {};
+
+      const [attempts, total] = await Promise.all([
+        this.prisma.quizAttempt.findMany({
+          where,
+          skip,
+          take: limit,
+          orderBy: {
+            [sortBy]: order,
+          },
+          include: {
+            quiz: {
+              select: {
+                id: true,
+                title: true,
+                lessonId: true,
+              },
+            },
+            user: {
+              select: {
+                id: true,
+                name: true,
+                email: true,
+              },
+            },
+          },
+        }),
+        this.prisma.quizAttempt.count({ where }),
+      ]);
+
+      const mappedAttempts = attempts.map((attempt) =>
         this.mapPrismaAttemptToAttemptWithDetails(attempt),
       );
+
+      const totalPages = limit > 0 ? Math.max(1, Math.ceil(total / limit)) : 1;
+
+      return {
+        data: mappedAttempts,
+        meta: {
+          total,
+          page,
+          limit,
+          totalPages,
+        },
+      };
     } catch (error) {
       this.logger.error(error);
 

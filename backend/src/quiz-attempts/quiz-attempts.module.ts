@@ -7,11 +7,12 @@ import { UsersModule } from 'src/users/users.module';
 import { LoggerModule } from '../common/logger/logger.module';
 import { AuthModule } from '../auth/auth.module';
 import { JwtAuthGuard } from '../auth/guards/jwt.guard';
+import { RolesGuard } from '../auth/guards/roles.guard';
 
 @Module({
   imports: [LoggerModule, PrismaModule, QuizzesModule, UsersModule, AuthModule],
   controllers: [QuizAttemptsController],
-  providers: [QuizAttemptsService, JwtAuthGuard],
+  providers: [QuizAttemptsService, JwtAuthGuard, RolesGuard],
   exports: [QuizAttemptsService],
 })
 export class QuizAttemptsModule {}

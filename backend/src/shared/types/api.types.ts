@@ -101,6 +101,9 @@ export interface FindManyProgressResponse {
   data: UserProgress[];
   meta: {
     total: number;
+    page: number;
+    limit: number;
+    totalPages: number;
   };
 }
 
@@ -140,6 +143,9 @@ export interface FindManyQuizAttemptsResponse {
   data: QuizAttemptWithDetails[];
   meta: {
     total: number;
+    page: number;
+    limit: number;
+    totalPages: number;
   };
 }
 
