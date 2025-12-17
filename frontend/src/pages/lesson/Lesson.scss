@@ -1,6 +1,9 @@
+@import '../../styles/variables';
+
 .lesson-page {
   min-height: 100vh;
-  padding: 24px;
+  padding: $spacing-xl;
+  background: $bg-secondary;
 
   &__container {
     max-width: 900px;
@@ -8,47 +11,59 @@
   }
 
   &__header {
-    margin-bottom: 32px;
+    margin-bottom: $spacing-xl;
   }
 
   &__back {
-    display: inline-block;
-    margin-bottom: 16px;
-    padding: 8px 16px;
-    background-color: #f8f9fa;
-    border: 1px solid #dee2e6;
-    border-radius: 4px;
-    color: #333;
+    display: inline-flex;
+    align-items: center;
+    gap: $spacing-sm;
+    margin-bottom: $spacing-md;
+    padding: $spacing-sm $spacing-md;
+    background-color: $bg-primary;
+    border: 1px solid $border-color;
+    border-radius: $radius-md;
+    color: $text-primary;
     text-decoration: none;
-    font-size: 0.875rem;
+    font-size: $font-size-sm;
+    font-weight: $font-weight-medium;
     cursor: pointer;
-    transition: background-color 0.2s, border-color 0.2s;
+    transition: background-color $transition-base, border-color $transition-base, transform $transition-fast;
+    box-shadow: $shadow-sm;
 
     &:hover {
-      background-color: #e9ecef;
-      border-color: #adb5bd;
+      background-color: $gray-50;
+      border-color: $border-color-dark;
+      transform: translateX(-2px);
+    }
+
+    &::before {
+      content: '←';
+      font-size: $font-size-base;
     }
   }
 
   &__title {
     margin: 0;
-    font-size: 2rem;
-    font-weight: 700;
-    color: #333;
+    font-size: $font-size-4xl;
+    font-weight: $font-weight-bold;
+    color: $text-primary;
+    line-height: $line-height-tight;
   }
 
   &__content {
-    background-color: white;
-    border: 1px solid #dee2e6;
-    border-radius: 8px;
-    padding: 32px;
-    margin-bottom: 24px;
+    background-color: $bg-primary;
+    border: none;
+    border-radius: $radius-xl;
+    padding: $spacing-2xl;
+    margin-bottom: $spacing-xl;
+    box-shadow: $shadow-md;
   }
 
   &__text {
-    font-size: 1.125rem;
-    line-height: 1.8;
-    color: #333;
+    font-size: $font-size-lg;
+    line-height: $line-height-loose;
+    color: $text-primary;
 
     h1,
     h2,
@@ -56,121 +71,141 @@
     h4,
     h5,
     h6 {
-      margin-top: 24px;
-      margin-bottom: 16px;
-      font-weight: 600;
+      margin-top: $spacing-xl;
+      margin-bottom: $spacing-md;
+      font-weight: $font-weight-semibold;
+      color: $text-primary;
+      line-height: $line-height-tight;
     }
 
     h1 {
-      font-size: 2rem;
+      font-size: $font-size-3xl;
     }
 
     h2 {
-      font-size: 1.75rem;
+      font-size: $font-size-2xl;
     }
 
     h3 {
-      font-size: 1.5rem;
+      font-size: $font-size-xl;
     }
 
     p {
-      margin-bottom: 16px;
+      margin-bottom: $spacing-md;
     }
 
     ul,
     ol {
-      margin-bottom: 16px;
-      padding-left: 24px;
+      margin-bottom: $spacing-md;
+      padding-left: $spacing-xl;
     }
 
     li {
-      margin-bottom: 8px;
+      margin-bottom: $spacing-sm;
     }
 
     code {
-      background-color: #f8f9fa;
-      padding: 2px 6px;
-      border-radius: 3px;
-      font-family: 'Courier New', monospace;
+      background-color: $gray-100;
+      padding: 2px $spacing-sm;
+      border-radius: $radius-sm;
+      font-family: $font-family-mono;
       font-size: 0.9em;
+      color: $primary-dark;
     }
 
     pre {
-      background-color: #f8f9fa;
-      padding: 16px;
-      border-radius: 4px;
+      background-color: $gray-100;
+      padding: $spacing-md;
+      border-radius: $radius-md;
       overflow-x: auto;
-      margin-bottom: 16px;
+      margin-bottom: $spacing-md;
+      border-left: 3px solid $primary;
     }
 
     blockquote {
-      border-left: 4px solid #007bff;
-      padding-left: 16px;
-      margin: 16px 0;
-      color: #666;
+      border-left: 4px solid $primary;
+      padding-left: $spacing-md;
+      margin: $spacing-md 0;
+      color: $text-secondary;
       font-style: italic;
+      background: $gray-50;
+      padding: $spacing-md $spacing-lg;
+      border-radius: $radius-md;
     }
   }
 
   &__quizzes-section {
-    margin-top: 32px;
-    margin-bottom: 32px;
+    margin-top: $spacing-2xl;
+    margin-bottom: $spacing-2xl;
   }
 
   &__quizzes-title {
-    margin: 0 0 20px 0;
-    font-size: 1.5rem;
-    font-weight: 600;
-    color: #333;
+    margin: 0 0 $spacing-lg 0;
+    font-size: $font-size-2xl;
+    font-weight: $font-weight-semibold;
+    color: $text-primary;
+    line-height: $line-height-tight;
   }
 
   &__navigation {
     display: flex;
     justify-content: space-between;
-    gap: 16px;
-    margin-top: 32px;
-    padding-top: 24px;
-    border-top: 1px solid #dee2e6;
+    align-items: center;
+    gap: $spacing-md;
+    margin-top: $spacing-2xl;
+    padding-top: $spacing-xl;
+    border-top: 1px solid $border-color;
+  }
+
+  &__nav-actions {
+    display: flex;
+    gap: $spacing-md;
+    align-items: center;
   }
 
   &__nav-button {
-    padding: 12px 24px;
-    border: 2px solid #007bff;
-    border-radius: 6px;
-    background-color: #007bff;
+    padding: $spacing-md $spacing-xl;
+    border: 2px solid $primary;
+    border-radius: $radius-lg;
+    background-color: $primary;
     color: white;
-    font-size: 0.9375rem;
-    font-weight: 500;
+    font-size: $font-size-base;
+    font-weight: $font-weight-medium;
     cursor: pointer;
-    transition: all 0.2s;
+    transition: all $transition-base;
+    box-shadow: $shadow-sm;
 
     &:hover:not(:disabled) {
-      background-color: #0056b3;
-      border-color: #0056b3;
+      background-color: $primary-dark;
+      border-color: $primary-dark;
+      transform: translateY(-2px);
+      box-shadow: $shadow-md;
+    }
+
+    &:active:not(:disabled) {
+      transform: translateY(0);
     }
 
     &:disabled {
-      background-color: #6c757d;
-      border-color: #6c757d;
+      background-color: $gray-400;
+      border-color: $gray-400;
       cursor: not-allowed;
       opacity: 0.6;
     }
 
     &--previous {
-      // Same as default
     }
 
     &--next {
-      // Same as default
     }
 
     &--finish {
-      background-color: #28a745;
-      border-color: #28a745;
+      background-color: $success;
+      border-color: $success;
 
       &:hover:not(:disabled) {
-        background-color: #218838;
-        border-color: #218838;
+        background-color: $success-dark;
+        border-color: $success-dark;
       }
     }
   }

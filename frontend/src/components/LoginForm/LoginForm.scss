@@ -1,2 +1,93 @@
-.login-form {}
+@import '../../styles/variables';
+
+.login-form {
+  background: $bg-primary;
+  padding: $spacing-2xl;
+  border-radius: $radius-xl;
+  box-shadow: $shadow-xl;
+  width: 100%;
+  max-width: 500px;
+
+  &__field {
+    margin-bottom: $spacing-lg;
+  }
+
+  &__label {
+    display: block;
+    margin-bottom: $spacing-sm;
+    font-size: $font-size-sm;
+    font-weight: $font-weight-medium;
+    color: $text-primary;
+  }
+
+  &__input {
+    width: 100%;
+    padding: $spacing-md;
+    border: 2px solid $border-color;
+    border-radius: $radius-lg;
+    font-size: $font-size-base;
+    transition: border-color $transition-base, box-shadow $transition-base;
+    background: $bg-primary;
+    color: $text-primary;
+
+    &:focus {
+      outline: none;
+      border-color: $primary;
+      box-shadow: 0 0 0 3px rgba($primary, 0.1);
+    }
+
+    &:disabled {
+      background: $gray-100;
+      cursor: not-allowed;
+      opacity: 0.6;
+    }
+  }
+
+  &__error {
+    display: block;
+    margin-top: $spacing-xs;
+    font-size: $font-size-sm;
+    color: $danger;
+  }
+
+  &__error-message {
+    padding: $spacing-md;
+    background: rgba($danger, 0.1);
+    border: 1px solid rgba($danger, 0.3);
+    border-radius: $radius-md;
+    color: $danger-dark;
+    font-size: $font-size-sm;
+    margin-bottom: $spacing-lg;
+  }
+
+  &__submit {
+    width: 100%;
+    padding: $spacing-md $spacing-xl;
+    background: $primary;
+    color: white;
+    border: none;
+    border-radius: $radius-lg;
+    font-size: $font-size-base;
+    font-weight: $font-weight-medium;
+    cursor: pointer;
+    transition: all $transition-base;
+    box-shadow: $shadow-sm;
+
+    &:hover:not(:disabled) {
+      background: $primary-dark;
+      transform: translateY(-2px);
+      box-shadow: $shadow-md;
+    }
+
+    &:active:not(:disabled) {
+      transform: translateY(0);
+    }
+
+    &:disabled {
+      background: $gray-400;
+      cursor: not-allowed;
+      opacity: 0.6;
+    }
+  }
+}
 

@@ -1,7 +1,8 @@
 import { useState, useEffect } from 'react';
-import { useMutation, useQuery } from '@tanstack/react-query';
+import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { quizzesService } from '../../services/quizzes.service';
 import { quizAttemptsService } from '../../services/quiz-attempts.service';
+import { progressService } from '../../services/progress.service';
 import type { QuizAttemptResult } from 'skill-stream-backend/shared/types';
 import './Quiz.scss';
 
@@ -10,6 +11,7 @@ interface QuizProps {
 }
 
 export const Quiz = ({ quizId }: QuizProps) => {
+  const queryClient = useQueryClient();
   const [isExpanded, setIsExpanded] = useState(false);
   const [selectedAnswers, setSelectedAnswers] = useState<Record<string, string>>({});
   const [attemptResult, setAttemptResult] = useState<QuizAttemptResult | null>(null);
@@ -30,7 +32,6 @@ export const Quiz = ({ quizId }: QuizProps) => {
   useEffect(() => {
     if (previousAttempt) {
       setAttemptResult(previousAttempt);
-      // Pre-fill selected answers from previous attempt
       const answers: Record<string, string> = {};
       previousAttempt.correctAnswersList.forEach((item) => {
         answers[item.question] = item.userAnswer;
@@ -42,8 +43,31 @@ export const Quiz = ({ quizId }: QuizProps) => {
   const attemptMutation = useMutation({
     mutationFn: (answers: Array<{ question: string; answer: string }>) =>
       quizAttemptsService.create(quizId, { answers }),
-    onSuccess: (result) => {
+    onSuccess: async (result) => {
       setAttemptResult(result);
+      
+      if (quiz?.lessonId) {
+        try {
+          const existingProgress = await progressService.findByLesson(quiz.lessonId);
+          
+          if (existingProgress) {
+            await progressService.update(existingProgress.id, {
+              completed: result.attempt.score === 100,
+              progress: Math.max(existingProgress.progress, result.attempt.score),
+            });
+          } else {
+            await progressService.create(quiz.lessonId, {
+              completed: result.attempt.score === 100,
+              progress: result.attempt.score,
+            });
+          }
+          
+          queryClient.invalidateQueries({ queryKey: ['progress'] });
+          queryClient.invalidateQueries({ queryKey: ['enrollments'] });
+        } catch (error) {
+          console.error('Failed to update progress:', error);
+        }
+      }
     },
   });
 
@@ -52,7 +76,6 @@ export const Quiz = ({ quizId }: QuizProps) => {
   };
 
   const handleAnswerChange = (question: string, answer: string) => {
-    // Only allow changes if there's no previous attempt
     if (!previousAttempt) {
       setSelectedAnswers((prev) => ({
         ...prev,

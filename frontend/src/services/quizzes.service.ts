@@ -1,6 +1,5 @@
 import { api } from '../utils/api';
 import type {
-  Quiz,
   CreateQuizResponse,
   FindManyQuizzesResponse,
   FindOneQuizResponse,

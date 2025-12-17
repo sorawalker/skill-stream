@@ -1,4 +1,5 @@
 import type { Lesson } from './lesson.types';
+import type { User } from './user.types';
 
 export interface UserProgress {
   id: number;
@@ -7,6 +8,13 @@ export interface UserProgress {
   completed: boolean;
   progress: number;
   updatedAt: Date | string;
+  user?:
+    | User
+    | {
+        id: number;
+        name: string;
+        email: string;
+      };
   lesson?:
     | Lesson
     | {

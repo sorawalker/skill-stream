@@ -3,6 +3,8 @@ import { useState } from 'react';
 import { quizzesService } from '../../../services/quizzes.service';
 import { lessonsService } from '../../../services/lessons.service';
 import { coursesService } from '../../../services/courses.service';
+import { AdminModal } from '../../../components/AdminModal/AdminModal';
+import '../admin-common.scss';
 
 export const Quizzes = () => {
   const queryClient = useQueryClient();
@@ -122,16 +124,19 @@ export const Quizzes = () => {
     }
   };
 
-  if (isLoading) return <div>Loading...</div>;
-  if (error) return <div>Error loading quizzes</div>;
+  if (isLoading) return <div className="admin-page__loading">Loading...</div>;
+  if (error) return <div className="admin-page__error">Error loading quizzes</div>;
 
   return (
-    <div>
-      <h1>Quiz Management</h1>
-      <div>
-        <label>
+    <div className="admin-page">
+      <div className="admin-page__header">
+        <h1 className="admin-page__title">Quiz Management</h1>
+      </div>
+      <div className="admin-page__form-group">
+        <label className="admin-page__form-label">
           Select Course:
           <select
+            className="admin-page__form-input"
             value={selectedCourseId || ''}
             onChange={(e) => {
               setSelectedCourseId(e.target.value ? parseInt(e.target.value) : null);
@@ -147,9 +152,10 @@ export const Quizzes = () => {
           </select>
         </label>
         {selectedCourseId && (
-          <label>
+          <label className="admin-page__form-label">
             Select Lesson:
             <select
+              className="admin-page__form-input"
               value={selectedLessonId || ''}
               onChange={(e) => {
                 setSelectedLessonId(e.target.value ? parseInt(e.target.value) : null);
@@ -167,15 +173,29 @@ export const Quizzes = () => {
       </div>
       {selectedLessonId && (
         <>
-          <button onClick={() => setShowCreateForm(!showCreateForm)}>
-            {showCreateForm ? 'Cancel' : 'Create New Quiz'}
-          </button>
-          {showCreateForm && (
-            <form onSubmit={handleCreate}>
-              <div>
-                <label>
+          <div className="admin-page__actions">
+            <button
+              className="admin-page__button admin-page__button--secondary"
+              onClick={() => setShowCreateForm(!showCreateForm)}
+            >
+              {showCreateForm ? 'Cancel' : 'Create New Quiz'}
+            </button>
+          </div>
+          <AdminModal
+            isOpen={showCreateForm}
+            onClose={() => {
+              setShowCreateForm(false);
+              setNewQuiz({ title: '', questions: [{ question: '', rightAnswer: '', variants: [''] }] });
+            }}
+            title="Create New Quiz"
+            size="large"
+          >
+            <form className="admin-page__form" onSubmit={handleCreate}>
+              <div className="admin-page__form-group">
+                <label className="admin-page__form-label">
                   Title:
                   <input
+                    className="admin-page__form-input"
                     type="text"
                     value={newQuiz.title}
                     onChange={(e) => setNewQuiz({ ...newQuiz, title: e.target.value })}
@@ -184,12 +204,13 @@ export const Quizzes = () => {
                 </label>
               </div>
               {newQuiz.questions.map((q, qIndex) => (
-                <div key={qIndex}>
-                  <h3>Question {qIndex + 1}</h3>
-                  <div>
-                    <label>
+                <div key={qIndex} className="admin-page__form-group" style={{ border: '1px solid var(--border-color)', padding: '16px', borderRadius: '8px', marginBottom: '16px' }}>
+                  <h3 style={{ marginBottom: '12px' }}>Question {qIndex + 1}</h3>
+                  <div className="admin-page__form-group">
+                    <label className="admin-page__form-label">
                       Question:
                       <input
+                        className="admin-page__form-input"
                         type="text"
                         value={q.question}
                         onChange={(e) => updateQuestion(qIndex, 'question', e.target.value)}
@@ -197,10 +218,11 @@ export const Quizzes = () => {
                       />
                     </label>
                   </div>
-                  <div>
-                    <label>
+                  <div className="admin-page__form-group">
+                    <label className="admin-page__form-label">
                       Right Answer:
                       <input
+                        className="admin-page__form-input"
                         type="text"
                         value={q.rightAnswer}
                         onChange={(e) => updateQuestion(qIndex, 'rightAnswer', e.target.value)}
@@ -208,31 +230,90 @@ export const Quizzes = () => {
                       />
                     </label>
                   </div>
-                  <div>
-                    <label>Variants:</label>
+                  <div className="admin-page__form-group">
+                    <label className="admin-page__form-label">Variants:</label>
                     {q.variants.map((variant, vIndex) => (
                       <input
                         key={vIndex}
+                        className="admin-page__form-input"
+                        style={{ marginBottom: '8px' }}
                         type="text"
                         value={variant}
                         onChange={(e) => updateVariant(qIndex, vIndex, e.target.value)}
                         required
                       />
                     ))}
-                    <button type="button" onClick={() => addVariant(qIndex)}>
+                    <button
+                      className="admin-page__button admin-page__button--secondary"
+                      type="button"
+                      onClick={() => addVariant(qIndex)}
+                    >
                       Add Variant
                     </button>
                   </div>
                 </div>
               ))}
-              <button type="button" onClick={addQuestion}>
-                Add Question
-              </button>
-              <button type="submit" disabled={createMutation.isPending}>
-                {createMutation.isPending ? 'Creating...' : 'Create Quiz'}
-              </button>
+              <div className="admin-page__form-actions">
+                <button
+                  className="admin-page__button admin-page__button--secondary"
+                  type="button"
+                  onClick={addQuestion}
+                >
+                  Add Question
+                </button>
+                <button
+                  className="admin-page__button admin-page__button--primary"
+                  type="submit"
+                  disabled={createMutation.isPending}
+                >
+                  {createMutation.isPending ? 'Creating...' : 'Create Quiz'}
+                </button>
+              </div>
             </form>
-          )}
+          </AdminModal>
+
+          <AdminModal
+            isOpen={editingQuizId !== null}
+            onClose={() => {
+              setEditingQuizId(null);
+              setEditQuiz({ title: '', questions: [{ question: '', rightAnswer: '', variants: [''] }] });
+            }}
+            title="Edit Quiz"
+          >
+            <form className="admin-page__form" onSubmit={handleUpdate}>
+              <div className="admin-page__form-group">
+                <label className="admin-page__form-label">
+                  Title:
+                  <input
+                    className="admin-page__form-input"
+                    type="text"
+                    value={editQuiz.title}
+                    onChange={(e) => setEditQuiz({ ...editQuiz, title: e.target.value })}
+                    required
+                  />
+                </label>
+              </div>
+              <div className="admin-page__form-actions">
+                <button
+                  className="admin-page__button admin-page__button--success"
+                  type="submit"
+                  disabled={updateMutation.isPending}
+                >
+                  {updateMutation.isPending ? 'Saving...' : 'Save Changes'}
+                </button>
+                <button
+                  className="admin-page__button admin-page__button--secondary"
+                  type="button"
+                  onClick={() => {
+                    setEditingQuizId(null);
+                    setEditQuiz({ title: '', questions: [{ question: '', rightAnswer: '', variants: [''] }] });
+                  }}
+                >
+                  Cancel
+                </button>
+              </div>
+            </form>
+          </AdminModal>
           <table>
           <thead>
             <tr>
@@ -245,41 +326,23 @@ export const Quizzes = () => {
           <tbody>
             {data?.data.map((quiz) => (
               <tr key={quiz.id}>
-                {editingQuizId === quiz.id ? (
-                  <>
-                    <td>{quiz.id}</td>
-                    <td>
-                      <input
-                        type="text"
-                        value={editQuiz.title}
-                        onChange={(e) => setEditQuiz({ ...editQuiz, title: e.target.value })}
-                        required
-                      />
-                    </td>
-                    <td>{quiz.questions.length}</td>
-                    <td>
-                      <button onClick={handleUpdate} disabled={updateMutation.isPending}>
-                        {updateMutation.isPending ? 'Saving...' : 'Save'}
-                      </button>
-                      <button onClick={() => {
-                        setEditingQuizId(null);
-                        setEditQuiz({ title: '', questions: [{ question: '', rightAnswer: '', variants: [''] }] });
-                      }}>
-                        Cancel
-                      </button>
-                    </td>
-                  </>
-                ) : (
-                  <>
-                    <td>{quiz.id}</td>
-                    <td>{quiz.title}</td>
-                    <td>{quiz.questions.length}</td>
-                    <td>
-                      <button onClick={() => handleEdit(quiz)}>Edit</button>
-                      <button onClick={() => handleDelete(quiz.id)}>Delete</button>
-                    </td>
-                  </>
-                )}
+                <td>{quiz.id}</td>
+                <td>{quiz.title}</td>
+                <td>{quiz.questions.length}</td>
+                <td>
+                  <button
+                    className="admin-page__button admin-page__button--primary"
+                    onClick={() => handleEdit(quiz)}
+                  >
+                    Edit
+                  </button>
+                  <button
+                    className="admin-page__button admin-page__button--danger"
+                    onClick={() => handleDelete(quiz.id)}
+                  >
+                    Delete
+                  </button>
+                </td>
               </tr>
             ))}
           </tbody>

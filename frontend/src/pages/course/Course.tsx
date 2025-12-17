@@ -2,6 +2,7 @@ import { useQuery } from '@tanstack/react-query';
 import { useParams, useNavigate, Link } from 'react-router-dom';
 import { coursesService } from '../../services/courses.service';
 import { lessonsService } from '../../services/lessons.service';
+import { Header } from '../../components/Header/Header';
 import type { Lesson } from 'skill-stream-backend/shared/types';
 import './Course.scss';
 
@@ -55,24 +56,15 @@ export const Course = () => {
 
   return (
     <div className="course-page">
+      <Header />
       <div className="course-page__container">
         <div className="course-page__header">
           <Link to="/" className="course-page__back">
-            ← Back to Courses
+            Back to Courses
           </Link>
           <h1 className="course-page__title">{course.title}</h1>
         </div>
-        {course.image && (
-          <img
-            src={course.image}
-            alt={course.title}
-            className="course-page__image"
-          />
-        )}
         <p className="course-page__description">{course.description}</p>
-        <div className="course-page__stats">
-          <p>Lessons: {course._count?.lessons || 0}</p>
-        </div>
         <div className="course-page__lessons">
           <h2 className="course-page__lessons-title">Lessons</h2>
           {lessons?.data && lessons.data.length > 0 ? (

@@ -11,10 +11,14 @@ export const RoleProtectedRoute = ({
   children,
   allowedRoles,
 }: RoleProtectedRouteProps) => {
-  const { isAuthenticated, hasRole } = useAuthContext();
+  const { isAuthenticated, user, hasRole } = useAuthContext();
 
   if (!isAuthenticated) {
     return <Navigate to="/login" replace />;
+  }
+
+  if (!user) {
+    return null;
   }
 
   if (!hasRole(allowedRoles)) {

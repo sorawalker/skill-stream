@@ -1,5 +1,6 @@
 import { useQuery } from '@tanstack/react-query';
 import { progressService } from '../../../services/progress.service';
+import '../admin-common.scss';
 
 export const Progress = () => {
   const { data, isLoading, error } = useQuery({
@@ -7,12 +8,14 @@ export const Progress = () => {
     queryFn: () => progressService.findMany(),
   });
 
-  if (isLoading) return <div>Loading...</div>;
-  if (error) return <div>Error loading progress</div>;
+  if (isLoading) return <div className="admin-page__loading">Loading...</div>;
+  if (error) return <div className="admin-page__error">Error loading progress</div>;
 
   return (
-    <div>
-      <h1>Progress Tracking</h1>
+    <div className="admin-page">
+      <div className="admin-page__header">
+        <h1 className="admin-page__title">Progress Tracking</h1>
+      </div>
       <table>
         <thead>
           <tr>

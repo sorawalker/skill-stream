@@ -1,5 +1,6 @@
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { enrollmentsService } from '../../../services/enrollments.service';
+import '../admin-common.scss';
 
 export const Enrollments = () => {
   const queryClient = useQueryClient();
@@ -22,12 +23,14 @@ export const Enrollments = () => {
     }
   };
 
-  if (isLoading) return <div>Loading...</div>;
-  if (error) return <div>Error loading enrollments</div>;
+  if (isLoading) return <div className="admin-page__loading">Loading...</div>;
+  if (error) return <div className="admin-page__error">Error loading enrollments</div>;
 
   return (
-    <div>
-      <h1>Enrollment Management</h1>
+    <div className="admin-page">
+      <div className="admin-page__header">
+        <h1 className="admin-page__title">Enrollment Management</h1>
+      </div>
       <table>
         <thead>
           <tr>
@@ -50,7 +53,12 @@ export const Enrollments = () => {
               <td>{enrollment.completed ? 'Yes' : 'No'}</td>
               <td>{new Date(enrollment.enrolledAt).toLocaleDateString()}</td>
               <td>
-                <button onClick={() => handleDelete(enrollment.id)}>Delete</button>
+                <button
+                  className="admin-page__button admin-page__button--danger"
+                  onClick={() => handleDelete(enrollment.id)}
+                >
+                  Delete
+                </button>
               </td>
             </tr>
           ))}

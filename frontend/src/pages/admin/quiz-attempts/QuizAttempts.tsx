@@ -1,5 +1,6 @@
 import { useQuery } from '@tanstack/react-query';
 import { quizAttemptsService } from '../../../services/quiz-attempts.service';
+import '../admin-common.scss';
 
 export const QuizAttempts = () => {
   const { data, isLoading, error } = useQuery({
@@ -7,12 +8,14 @@ export const QuizAttempts = () => {
     queryFn: () => quizAttemptsService.findMany(),
   });
 
-  if (isLoading) return <div>Loading...</div>;
-  if (error) return <div>Error loading quiz attempts</div>;
+  if (isLoading) return <div className="admin-page__loading">Loading...</div>;
+  if (error) return <div className="admin-page__error">Error loading quiz attempts</div>;
 
   return (
-    <div>
-      <h1>Quiz Attempts</h1>
+    <div className="admin-page">
+      <div className="admin-page__header">
+        <h1 className="admin-page__title">Quiz Attempts</h1>
+      </div>
       <table>
         <thead>
           <tr>

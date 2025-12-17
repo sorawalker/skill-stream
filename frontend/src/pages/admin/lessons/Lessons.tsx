@@ -2,6 +2,9 @@ import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { useState } from 'react';
 import { lessonsService } from '../../../services/lessons.service';
 import { coursesService } from '../../../services/courses.service';
+import { AdminModal } from '../../../components/AdminModal/AdminModal';
+import { LessonViewModal } from '../../../components/LessonViewModal/LessonViewModal';
+import '../admin-common.scss';
 
 export const Lessons = () => {
   const queryClient = useQueryClient();
@@ -34,6 +37,7 @@ export const Lessons = () => {
   const [newLesson, setNewLesson] = useState({ title: '', content: '', order: 1 });
   const [editingLessonId, setEditingLessonId] = useState<number | null>(null);
   const [editLesson, setEditLesson] = useState({ title: '', content: '', order: 1 });
+  const [viewingLessonId, setViewingLessonId] = useState<number | null>(null);
 
   const createMutation = useMutation({
     mutationFn: (lessonData: { title: string; content: string; order: number }) => {
@@ -80,16 +84,19 @@ export const Lessons = () => {
     }
   };
 
-  if (isLoading) return <div>Loading...</div>;
-  if (error) return <div>Error loading lessons</div>;
+  if (isLoading) return <div className="admin-page__loading">Loading...</div>;
+  if (error) return <div className="admin-page__error">Error loading lessons</div>;
 
   return (
-    <div>
-      <h1>Lesson Management</h1>
-      <div>
-        <label>
+    <div className="admin-page">
+      <div className="admin-page__header">
+        <h1 className="admin-page__title">Lesson Management</h1>
+      </div>
+      <div className="admin-page__form-group">
+        <label className="admin-page__form-label">
           Select Course:
           <select
+            className="admin-page__form-input"
             value={selectedCourseId || ''}
             onChange={(e) => {
               setSelectedCourseId(e.target.value ? parseInt(e.target.value) : null);
@@ -107,15 +114,29 @@ export const Lessons = () => {
       </div>
       {selectedCourseId && (
         <>
-          <button onClick={() => setShowCreateForm(!showCreateForm)}>
-            {showCreateForm ? 'Cancel' : 'Create New Lesson'}
-          </button>
-          {showCreateForm && (
-            <form onSubmit={handleCreate}>
-              <div>
-                <label>
+          <div className="admin-page__actions">
+            <button
+              className="admin-page__button admin-page__button--secondary"
+              onClick={() => setShowCreateForm(!showCreateForm)}
+            >
+              {showCreateForm ? 'Cancel' : 'Create New Lesson'}
+            </button>
+          </div>
+          <AdminModal
+            isOpen={showCreateForm}
+            onClose={() => {
+              setShowCreateForm(false);
+              setNewLesson({ title: '', content: '', order: 1 });
+            }}
+            title="Create New Lesson"
+            size="large"
+          >
+            <form className="admin-page__form" onSubmit={handleCreate}>
+              <div className="admin-page__form-group">
+                <label className="admin-page__form-label">
                   Title:
                   <input
+                    className="admin-page__form-input"
                     type="text"
                     value={newLesson.title}
                     onChange={(e) => setNewLesson({ ...newLesson, title: e.target.value })}
@@ -123,20 +144,23 @@ export const Lessons = () => {
                   />
                 </label>
               </div>
-              <div>
-                <label>
+              <div className="admin-page__form-group">
+                <label className="admin-page__form-label">
                   Content:
                   <textarea
+                    className="admin-page__form-textarea"
                     value={newLesson.content}
                     onChange={(e) => setNewLesson({ ...newLesson, content: e.target.value })}
                     required
+                    rows={10}
                   />
                 </label>
               </div>
-              <div>
-                <label>
+              <div className="admin-page__form-group">
+                <label className="admin-page__form-label">
                   Order:
                   <input
+                    className="admin-page__form-input"
                     type="number"
                     value={newLesson.order}
                     onChange={(e) => setNewLesson({ ...newLesson, order: parseInt(e.target.value) || 1 })}
@@ -144,11 +168,91 @@ export const Lessons = () => {
                   />
                 </label>
               </div>
-              <button type="submit" disabled={createMutation.isPending}>
-                {createMutation.isPending ? 'Creating...' : 'Create Lesson'}
-              </button>
+              <div className="admin-page__form-actions">
+                <button
+                  className="admin-page__button admin-page__button--primary"
+                  type="submit"
+                  disabled={createMutation.isPending}
+                >
+                  {createMutation.isPending ? 'Creating...' : 'Create Lesson'}
+                </button>
+              </div>
             </form>
-          )}
+          </AdminModal>
+
+          <AdminModal
+            isOpen={editingLessonId !== null}
+            onClose={() => {
+              setEditingLessonId(null);
+              setEditLesson({ title: '', content: '', order: 1 });
+            }}
+            title="Edit Lesson"
+            size="large"
+          >
+            <form className="admin-page__form" onSubmit={handleUpdate}>
+              <div className="admin-page__form-group">
+                <label className="admin-page__form-label">
+                  Title:
+                  <input
+                    className="admin-page__form-input"
+                    type="text"
+                    value={editLesson.title}
+                    onChange={(e) => setEditLesson({ ...editLesson, title: e.target.value })}
+                    required
+                  />
+                </label>
+              </div>
+              <div className="admin-page__form-group">
+                <label className="admin-page__form-label">
+                  Content:
+                  <textarea
+                    className="admin-page__form-textarea"
+                    value={editLesson.content}
+                    onChange={(e) => setEditLesson({ ...editLesson, content: e.target.value })}
+                    required
+                    rows={10}
+                  />
+                </label>
+              </div>
+              <div className="admin-page__form-group">
+                <label className="admin-page__form-label">
+                  Order:
+                  <input
+                    className="admin-page__form-input"
+                    type="number"
+                    value={editLesson.order}
+                    onChange={(e) => setEditLesson({ ...editLesson, order: parseInt(e.target.value) || 1 })}
+                    required
+                  />
+                </label>
+              </div>
+              <div className="admin-page__form-actions">
+                <button
+                  className="admin-page__button admin-page__button--success"
+                  type="submit"
+                  disabled={updateMutation.isPending}
+                >
+                  {updateMutation.isPending ? 'Saving...' : 'Save Changes'}
+                </button>
+                <button
+                  className="admin-page__button admin-page__button--secondary"
+                  type="button"
+                  onClick={() => {
+                    setEditingLessonId(null);
+                    setEditLesson({ title: '', content: '', order: 1 });
+                  }}
+                >
+                  Cancel
+                </button>
+              </div>
+            </form>
+          </AdminModal>
+
+          <LessonViewModal
+            isOpen={viewingLessonId !== null}
+            onClose={() => setViewingLessonId(null)}
+            lessonId={viewingLessonId}
+          />
           <table>
             <thead>
               <tr>
@@ -162,66 +266,48 @@ export const Lessons = () => {
             <tbody>
               {data?.data.map((lesson) => (
                 <tr key={lesson.id}>
-                  {editingLessonId === lesson.id ? (
-                    <>
-                      <td>{lesson.id}</td>
-                      <td>
-                        <input
-                          type="text"
-                          value={editLesson.title}
-                          onChange={(e) => setEditLesson({ ...editLesson, title: e.target.value })}
-                          required
-                        />
-                      </td>
-                      <td>
-                        <input
-                          type="number"
-                          value={editLesson.order}
-                          onChange={(e) => setEditLesson({ ...editLesson, order: parseInt(e.target.value) || 1 })}
-                          required
-                        />
-                      </td>
-                      <td>{lesson._count?.quizzes || 0}</td>
-                      <td>
-                        <button onClick={handleUpdate} disabled={updateMutation.isPending}>
-                          {updateMutation.isPending ? 'Saving...' : 'Save'}
-                        </button>
-                        <button onClick={() => {
-                          setEditingLessonId(null);
-                          setEditLesson({ title: '', content: '', order: 1 });
-                        }}>
-                          Cancel
-                        </button>
-                      </td>
-                    </>
-                  ) : (
-                    <>
-                      <td>{lesson.id}</td>
-                      <td>{lesson.title}</td>
-                      <td>{lesson.order}</td>
-                      <td>{lesson._count?.quizzes || 0}</td>
-                      <td>
-                        <button onClick={() => handleEdit(lesson)}>Edit</button>
-                        <button onClick={() => handleDelete(lesson.id)}>Delete</button>
-                      </td>
-                    </>
-                  )}
+                  <td>{lesson.id}</td>
+                  <td>{lesson.title}</td>
+                  <td>{lesson.order}</td>
+                  <td>{lesson._count?.quizzes || 0}</td>
+                  <td>
+                    <button
+                      className="admin-page__button admin-page__button--primary"
+                      onClick={() => setViewingLessonId(lesson.id)}
+                    >
+                      View
+                    </button>
+                    <button
+                      className="admin-page__button admin-page__button--primary"
+                      onClick={() => handleEdit(lesson)}
+                    >
+                      Edit
+                    </button>
+                    <button
+                      className="admin-page__button admin-page__button--danger"
+                      onClick={() => handleDelete(lesson.id)}
+                    >
+                      Delete
+                    </button>
+                  </td>
                 </tr>
               ))}
             </tbody>
           </table>
           {data?.meta && data.meta.totalPages > 0 && (
-            <div>
+            <div className="admin-page__pagination">
               <button
+                className="admin-page__pagination-button"
                 disabled={page === 1}
                 onClick={() => setPage(page - 1)}
               >
                 Previous
               </button>
-              <span>
+              <span className="admin-page__pagination-info">
                 Page {data.meta.page} of {data.meta.totalPages}
               </span>
               <button
+                className="admin-page__pagination-button"
                 disabled={page >= data.meta.totalPages}
                 onClick={() => setPage(page + 1)}
               >

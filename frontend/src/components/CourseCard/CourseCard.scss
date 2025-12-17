@@ -1,43 +1,122 @@
+@import '../../styles/variables';
+
 .course-card {
   cursor: pointer;
-  border: 1px solid #ccc;
-  padding: 16px;
-  margin: 8px;
-  border-radius: 8px;
-  transition: transform 0.2s, box-shadow 0.2s;
+  background: $bg-primary;
+  border: none;
+  padding: $spacing-lg;
+  margin: 0;
+  border-radius: $radius-xl;
+  box-shadow: $shadow-md;
+  transition: transform $transition-slow, box-shadow $transition-slow;
+  overflow: hidden;
+  position: relative;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
 
   &:hover {
-    transform: translateY(-4px);
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    transform: translateY(-8px);
+    box-shadow: $shadow-xl;
   }
 
   &__image {
     width: 100%;
     height: 200px;
     object-fit: cover;
-    border-radius: 4px;
-    margin-bottom: 12px;
+    border-radius: $radius-lg;
+    margin-bottom: $spacing-md;
+    background: $gray-100;
   }
 
   &__title {
-    margin: 0 0 8px 0;
-    font-size: 1.25rem;
-    font-weight: 600;
+    margin: 0 0 $spacing-sm 0;
+    font-size: $font-size-xl;
+    font-weight: $font-weight-semibold;
+    color: $text-primary;
+    line-height: $line-height-tight;
   }
 
   &__description {
-    margin: 0 0 12px 0;
-    color: #666;
-    line-height: 1.5;
+    margin: 0 0 $spacing-md 0;
+    color: $text-secondary;
+    line-height: $line-height-relaxed;
     display: -webkit-box;
     -webkit-line-clamp: 3;
     -webkit-box-orient: vertical;
     overflow: hidden;
+    flex-grow: 1;
+    font-size: $font-size-base;
   }
 
   &__stats {
-    font-size: 0.875rem;
-    color: #888;
+    font-size: $font-size-sm;
+    color: $text-muted;
+    margin-top: auto;
+    padding-top: $spacing-md;
+    border-top: 1px solid $border-color;
+    display: flex;
+    align-items: center;
+    gap: $spacing-md;
+  }
+
+  &__badge {
+    display: inline-block;
+    padding: $spacing-xs $spacing-md;
+    border-radius: $radius-full;
+    font-size: $font-size-xs;
+    font-weight: $font-weight-semibold;
+    background: $primary;
+    color: white;
+    position: absolute;
+    top: $spacing-md;
+    right: $spacing-md;
+  }
+
+  &__content {
+    display: flex;
+    flex-direction: column;
+    flex-grow: 1;
+  }
+
+  &__progress {
+    margin-top: $spacing-md;
+    padding-top: $spacing-md;
+    border-top: 1px solid $border-color;
+  }
+
+  &__progress-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: $spacing-xs;
+  }
+
+  &__progress-label {
+    font-size: $font-size-sm;
+    font-weight: $font-weight-medium;
+    color: $text-secondary;
+  }
+
+  &__progress-percentage {
+    font-size: $font-size-sm;
+    font-weight: $font-weight-semibold;
+    color: $primary;
+  }
+
+  &__progress-bar {
+    width: 100%;
+    height: 8px;
+    background: $gray-200;
+    border-radius: $radius-full;
+    overflow: hidden;
+  }
+
+  &__progress-fill {
+    height: 100%;
+    background: linear-gradient(90deg, $primary 0%, $primary-dark 100%);
+    border-radius: $radius-full;
+    transition: width $transition-base;
   }
 }
 

@@ -13,6 +13,7 @@ export const usersService = {
     email: string;
     name: string;
     password: string;
+    role?: string;
   }): Promise<CreateUserResponse> => {
     return api.post<CreateUserResponse>('/users', userData);
   },
@@ -39,13 +40,22 @@ export const usersService = {
 
   update: async (
     id: number,
-    userData: Partial<{ email: string; name: string; password: string }>,
+    userData: Partial<{ email: string; name: string; password: string; role: string }>,
   ): Promise<UpdateUserResponse> => {
     return api.patch<UpdateUserResponse>(`/users/${id}`, userData);
   },
 
   delete: async (id: number): Promise<DeleteUserResponse> => {
     return api.delete<DeleteUserResponse>(`/users/${id}`);
+  },
+
+  changePassword: async (
+    id: number,
+    newPassword: string,
+  ): Promise<{ message: string }> => {
+    return api.patch<{ message: string }>(`/users/${id}/password`, {
+      newPassword,
+    });
   },
 };
 

@@ -6,11 +6,12 @@ import { coursesService } from '../../services/courses.service';
 import { enrollmentsService } from '../../services/enrollments.service';
 import { CourseCard } from '../../components/CourseCard/CourseCard';
 import { CourseModal } from '../../components/CourseModal/CourseModal';
+import { Header } from '../../components/Header/Header';
 import type { Course, Enrollment } from 'skill-stream-backend/shared/types';
 import './Home.scss';
 
 export const Home = () => {
-  const { isAuthenticated, signOut } = useAuth();
+  const { isAuthenticated } = useAuth();
   const navigate = useNavigate();
   const [selectedCourse, setSelectedCourse] = useState<Course | null>(null);
 
@@ -47,15 +48,8 @@ export const Home = () => {
 
   return (
     <div className="home-page">
+      <Header />
       <div className="home-page__container">
-        <div className="home-page__header">
-        <h1 className="home-page__title">Skill Stream</h1>
-          {isAuthenticated && (
-            <button onClick={signOut} className="home-page__sign-out">
-              Sign Out
-            </button>
-          )}
-        </div>
         {isAuthenticated ? (
           <div className="home-page__content">
             {coursesLoading ? (

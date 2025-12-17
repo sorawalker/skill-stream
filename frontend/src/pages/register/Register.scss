@@ -1,2 +1,42 @@
-.register-page {}
+@import '../../styles/variables';
+
+.register-page {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: $spacing-xl;
+  background: $bg-secondary;
+
+  &__container {
+    width: 100%;
+    max-width: 550px;
+    text-align: center;
+  }
+
+  &__title {
+    margin: 0 0 $spacing-xl 0;
+    font-size: $font-size-3xl;
+    font-weight: $font-weight-bold;
+    color: $text-primary;
+  }
+
+  &__footer {
+    margin-top: $spacing-xl;
+    font-size: $font-size-base;
+    color: $text-secondary;
+  }
+
+  &__link {
+    color: $primary;
+    text-decoration: none;
+    font-weight: $font-weight-medium;
+    transition: color $transition-base;
+
+    &:hover {
+      color: $primary-dark;
+      text-decoration: underline;
+    }
+  }
+}
 

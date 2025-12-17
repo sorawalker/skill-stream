@@ -1,5 +1,5 @@
-import { ReactNode } from 'react';
-import { ApiError } from '../../utils/api';
+import type { ReactNode } from 'react';
+import type { ApiError } from '../../utils/api';
 import {
   UnauthorizedError,
   ForbiddenError,
@@ -77,11 +77,11 @@ export const ApiErrorHandler = ({
     );
   }
 
-  // If it's not an API error or no status, show children or generic error
   return children ? (
     <>{children}</>
   ) : (
     <GenericError message={message} showBackButton={showBackButton} />
   );
 };
+
 

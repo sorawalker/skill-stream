@@ -1,0 +1,121 @@
+@import '../../styles/variables';
+
+.lesson-view-modal {
+  &__content {
+    background: $bg-primary;
+    border-radius: $radius-lg;
+    padding: $spacing-xl;
+    margin-bottom: $spacing-xl;
+    box-shadow: $shadow-sm;
+  }
+
+  &__text {
+    font-size: $font-size-base;
+    line-height: $line-height-loose;
+    color: $text-primary;
+
+    h1,
+    h2,
+    h3,
+    h4,
+    h5,
+    h6 {
+      margin-top: $spacing-xl;
+      margin-bottom: $spacing-md;
+      font-weight: $font-weight-semibold;
+      color: $text-primary;
+      line-height: $line-height-tight;
+    }
+
+    h1 {
+      font-size: $font-size-3xl;
+    }
+
+    h2 {
+      font-size: $font-size-2xl;
+    }
+
+    h3 {
+      font-size: $font-size-xl;
+    }
+
+    p {
+      margin-bottom: $spacing-md;
+    }
+
+    ul,
+    ol {
+      margin-bottom: $spacing-md;
+      padding-left: $spacing-xl;
+    }
+
+    li {
+      margin-bottom: $spacing-sm;
+    }
+
+    code {
+      background-color: $gray-100;
+      padding: 2px $spacing-sm;
+      border-radius: $radius-sm;
+      font-family: $font-family-mono;
+      font-size: 0.9em;
+      color: $primary-dark;
+    }
+
+    pre {
+      background-color: $gray-100;
+      padding: $spacing-md;
+      border-radius: $radius-md;
+      overflow-x: auto;
+      margin-bottom: $spacing-md;
+      border-left: 3px solid $primary;
+    }
+
+    blockquote {
+      border-left: 4px solid $primary;
+      padding-left: $spacing-md;
+      margin: $spacing-md 0;
+      color: $text-secondary;
+      font-style: italic;
+      background: $gray-50;
+      padding: $spacing-md $spacing-lg;
+      border-radius: $radius-md;
+    }
+  }
+
+  &__quizzes {
+    margin-top: $spacing-2xl;
+    padding-top: $spacing-xl;
+    border-top: 2px solid $border-color;
+  }
+
+  &__quizzes-title {
+    margin: 0 0 $spacing-lg 0;
+    font-size: $font-size-2xl;
+    font-weight: $font-weight-semibold;
+    color: $text-primary;
+  }
+
+  &__no-quizzes {
+    margin-top: $spacing-xl;
+    padding: $spacing-lg;
+    text-align: center;
+    color: $text-secondary;
+    font-size: $font-size-base;
+    background: $gray-50;
+    border-radius: $radius-md;
+  }
+
+  &__loading,
+  &__error {
+    text-align: center;
+    padding: $spacing-2xl;
+    color: $text-secondary;
+    font-size: $font-size-lg;
+  }
+
+  &__error {
+    color: $danger;
+  }
+}
+

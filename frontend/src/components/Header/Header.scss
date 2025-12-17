@@ -1,0 +1,170 @@
+@import '../../styles/variables';
+
+.header {
+  background: $bg-primary;
+  border-bottom: 1px solid $border-color;
+  box-shadow: $shadow-sm;
+  position: sticky;
+  top: 0;
+  z-index: $z-sticky;
+  margin-bottom: $spacing-xl;
+
+  &__container {
+    max-width: 1280px;
+    margin: 0 auto;
+    padding: $spacing-md $spacing-xl;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  &__logo {
+    font-size: $font-size-2xl;
+    font-weight: $font-weight-bold;
+    color: $primary;
+    text-decoration: none;
+    transition: color $transition-base;
+
+    &:hover {
+      color: $primary-dark;
+    }
+  }
+
+  &__nav {
+    display: flex;
+    align-items: center;
+    gap: $spacing-xl;
+  }
+
+  &__nav-link {
+    font-size: $font-size-base;
+    font-weight: $font-weight-medium;
+    color: $text-primary;
+    text-decoration: none;
+    padding: $spacing-sm $spacing-md;
+    border-radius: $radius-md;
+    transition: all $transition-base;
+
+    &:hover {
+      color: $primary;
+      background: $gray-50;
+    }
+
+    &--admin {
+      background: $primary;
+      color: white;
+
+      &:hover {
+        background: $primary-dark;
+        color: white;
+      }
+    }
+  }
+
+  &__profile {
+    position: relative;
+  }
+
+  &__profile-button {
+    display: flex;
+    align-items: center;
+    gap: $spacing-sm;
+    padding: $spacing-xs $spacing-md;
+    background: none;
+    border: 1px solid $border-color;
+    border-radius: $radius-lg;
+    cursor: pointer;
+    transition: all $transition-base;
+
+    &:hover {
+      background: $gray-50;
+      border-color: $border-color-dark;
+    }
+  }
+
+  &__profile-avatar {
+    width: 32px;
+    height: 32px;
+    border-radius: $radius-full;
+    background: $primary;
+    color: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: $font-weight-semibold;
+    font-size: $font-size-sm;
+  }
+
+  &__profile-name {
+    font-size: $font-size-sm;
+    font-weight: $font-weight-medium;
+    color: $text-primary;
+  }
+
+  &__profile-arrow {
+    font-size: $font-size-xs;
+    color: $text-secondary;
+  }
+
+  &__profile-menu {
+    position: absolute;
+    top: calc(100% + $spacing-sm);
+    right: 0;
+    background: $bg-primary;
+    border: 1px solid $border-color;
+    border-radius: $radius-lg;
+    box-shadow: $shadow-lg;
+    min-width: 200px;
+    overflow: hidden;
+    z-index: $z-dropdown;
+  }
+
+  &__profile-info {
+    padding: $spacing-md;
+    background: $gray-50;
+  }
+
+  &__profile-email {
+    font-size: $font-size-sm;
+    color: $text-primary;
+    font-weight: $font-weight-medium;
+    margin-bottom: $spacing-xs;
+  }
+
+  &__profile-role {
+    font-size: $font-size-xs;
+    color: $text-secondary;
+    text-transform: uppercase;
+  }
+
+  &__profile-divider {
+    height: 1px;
+    background: $border-color;
+  }
+
+  &__profile-menu-item {
+    width: 100%;
+    padding: $spacing-md;
+    background: none;
+    border: none;
+    text-align: left;
+    font-size: $font-size-sm;
+    color: $text-primary;
+    cursor: pointer;
+    transition: background-color $transition-base;
+
+    &:hover {
+      background: $gray-50;
+    }
+
+    &--danger {
+      color: $danger;
+
+      &:hover {
+        background: rgba($danger, 0.1);
+      }
+    }
+  }
+}
+
+
