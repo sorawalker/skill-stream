@@ -64,6 +64,10 @@ export const Header = () => {
               </Link>
             )}
 
+            <Link to="/about" className="header__nav-link header__nav-link--about">
+              About the Author
+            </Link>
+
             <div className="header__profile" ref={profileRef}>
               <button
                 className="header__profile-button"

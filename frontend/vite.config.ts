@@ -13,4 +13,7 @@ export default defineConfig({
       ),
     },
   },
+  server: {
+    allowedHosts: ["sdxqvf-ip-91-84-107-75.tunnelmole.net"],
+  }
 });
