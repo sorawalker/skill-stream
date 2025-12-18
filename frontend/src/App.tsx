@@ -5,6 +5,7 @@ import { Home } from './pages/home/Home.tsx';
 import { MyCourses } from './pages/my-courses/MyCourses.tsx';
 import { Course } from './pages/course/Course.tsx';
 import { Lesson } from './pages/lesson/Lesson.tsx';
+import { About } from './pages/about/About.tsx';
 import { AdminLayout } from './components/AdminLayout/AdminLayout.tsx';
 import { RoleProtectedRoute } from './components/RoleProtectedRoute/RoleProtectedRoute.tsx';
 import { Users } from './pages/admin/users/Users.tsx';
@@ -63,6 +64,14 @@ function App() {
           element={
             <ProtectedRoute>
               <Lesson />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/about"
+          element={
+            <ProtectedRoute>
+              <About />
             </ProtectedRoute>
           }
         />

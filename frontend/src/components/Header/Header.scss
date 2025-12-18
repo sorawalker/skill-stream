@@ -72,6 +72,18 @@
         color: white;
       }
     }
+
+    &--about {
+      background: none;
+      border: 1px solid $border-color;
+      cursor: pointer;
+
+      &:hover {
+        border-color: $secondary;
+        color: $secondary;
+        background: rgba($secondary, 0.05);
+      }
+    }
   }
 
   &__profile {
