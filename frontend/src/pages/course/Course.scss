@@ -155,3 +155,78 @@
   }
 }
 
+.course-page {
+  @include md-down {
+    &__container {
+      padding: $spacing-md;
+      margin-top: $spacing-md;
+    }
+
+    &__title {
+      font-size: $font-size-2xl;
+    }
+
+    &__image {
+      max-height: 300px;
+      border-radius: $radius-lg;
+    }
+
+    &__description {
+      padding: $spacing-lg;
+      font-size: $font-size-base;
+    }
+
+    &__lessons-title {
+      font-size: $font-size-xl;
+    }
+
+    &__lesson-card {
+      padding: $spacing-lg;
+    }
+
+    &__lesson-title {
+      font-size: $font-size-lg;
+    }
+  }
+
+  @include sm-down {
+    &__container {
+      padding: $spacing-sm;
+      margin-top: $spacing-sm;
+    }
+
+    &__title {
+      font-size: $font-size-xl;
+      margin-bottom: $spacing-md;
+    }
+
+    &__image {
+      max-height: 200px;
+      margin-bottom: $spacing-lg;
+    }
+
+    &__description {
+      padding: $spacing-md;
+    }
+
+    &__stats {
+      flex-direction: column;
+      gap: $spacing-sm;
+    }
+
+    &__lesson-header {
+      flex-direction: column;
+      align-items: flex-start;
+      gap: $spacing-sm;
+    }
+
+    &__lesson-card {
+      padding: $spacing-md;
+    }
+
+    &__lesson-title {
+      font-size: $font-size-base;
+    }
+  }
+}
+

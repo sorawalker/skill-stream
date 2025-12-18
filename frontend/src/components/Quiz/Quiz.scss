@@ -191,3 +191,56 @@
   }
 }
 
+.quiz {
+  @include md-down {
+    &__header {
+      padding: $spacing-sm $spacing-md;
+    }
+
+    &__title {
+      font-size: $font-size-base;
+    }
+
+    &__content {
+      padding: $spacing-lg;
+    }
+
+    &__question {
+      margin-bottom: $spacing-lg;
+      padding-bottom: $spacing-lg;
+    }
+
+    &__option {
+      padding: $spacing-sm $spacing-md;
+
+      input[type='radio'] {
+        width: 16px;
+        height: 16px;
+      }
+    }
+  }
+
+  @include sm-down {
+    border-radius: $radius-lg;
+
+    &__content {
+      padding: $spacing-md;
+    }
+
+    &__question-title {
+      font-size: $font-size-sm;
+    }
+
+    &__option {
+      padding: $spacing-xs $spacing-sm;
+      font-size: $font-size-sm;
+      border-radius: $radius-md;
+    }
+
+    &__button--submit {
+      width: 100%;
+      padding: $spacing-sm $spacing-md;
+    }
+  }
+}
+

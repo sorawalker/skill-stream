@@ -70,3 +70,37 @@
   }
 }
 
+.my-courses-page {
+  @include md-down {
+    &__container {
+      padding: $spacing-md;
+      margin-top: $spacing-md;
+    }
+
+    &__title {
+      font-size: $font-size-2xl;
+      margin-bottom: $spacing-lg;
+    }
+
+    &__courses-grid {
+      grid-template-columns: 1fr;
+      gap: $spacing-lg;
+    }
+  }
+
+  @include sm-down {
+    &__container {
+      padding: $spacing-sm;
+      margin-top: $spacing-sm;
+    }
+
+    &__title {
+      font-size: $font-size-xl;
+    }
+
+    &__courses-grid {
+      gap: $spacing-md;
+    }
+  }
+}
+

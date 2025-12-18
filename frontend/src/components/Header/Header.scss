@@ -192,4 +192,88 @@
   }
 }
 
+// Responsive styles using mixins
+.header {
+  @include lg-down {
+    &__nav {
+      gap: $spacing-md;
+    }
 
+    &__logo-image {
+      height: 70px;
+    }
+
+    &__logo-text {
+      font-size: $font-size-xl;
+    }
+  }
+
+  @include md-down {
+    &__container {
+      padding: $spacing-sm $spacing-md;
+      flex-wrap: wrap;
+      gap: $spacing-sm;
+    }
+
+    &__logo-image {
+      height: 50px;
+    }
+
+    &__logo-text {
+      font-size: $font-size-lg;
+    }
+
+    &__nav {
+      gap: $spacing-sm;
+      flex-wrap: wrap;
+      justify-content: flex-end;
+    }
+
+    &__nav-link {
+      padding: $spacing-xs $spacing-sm;
+      font-size: $font-size-sm;
+    }
+
+    &__profile-name,
+    &__profile-arrow {
+      display: none;
+    }
+
+    &__profile-button {
+      padding: $spacing-xs;
+    }
+  }
+
+  @include sm-down {
+    margin-bottom: $spacing-md;
+
+    &__container {
+      padding: $spacing-xs $spacing-sm;
+    }
+
+    &__logo {
+      flex: 1;
+    }
+
+    &__logo-image {
+      height: 40px;
+    }
+
+    &__logo-text {
+      font-size: $font-size-base;
+    }
+
+    &__nav {
+      gap: $spacing-xs;
+    }
+
+    &__nav-link {
+      padding: $spacing-xs;
+      font-size: $font-size-xs;
+
+      &--about {
+        display: none;
+      }
+    }
+  }
+}

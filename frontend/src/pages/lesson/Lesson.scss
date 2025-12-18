@@ -194,12 +194,6 @@
       opacity: 0.6;
     }
 
-    &--previous {
-    }
-
-    &--next {
-    }
-
     &--finish {
       background-color: $success;
       border-color: $success;
@@ -208,6 +202,89 @@
         background-color: $success-dark;
         border-color: $success-dark;
       }
+    }
+  }
+}
+
+.lesson-page {
+  @include md-down {
+    &__container {
+      padding: $spacing-md;
+      margin-top: $spacing-md;
+    }
+
+    &__title {
+      font-size: $font-size-2xl;
+    }
+
+    &__content {
+      padding: $spacing-lg;
+    }
+
+    &__text {
+      font-size: $font-size-base;
+
+      h1 {
+        font-size: $font-size-2xl;
+      }
+
+      h2 {
+        font-size: $font-size-xl;
+      }
+
+      h3 {
+        font-size: $font-size-lg;
+      }
+    }
+
+    &__navigation {
+      flex-direction: column;
+      gap: $spacing-md;
+    }
+
+    &__nav-actions {
+      width: 100%;
+      justify-content: center;
+    }
+
+    &__nav-button {
+      flex: 1;
+      text-align: center;
+    }
+  }
+
+  @include sm-down {
+    &__container {
+      padding: $spacing-sm;
+      margin-top: $spacing-sm;
+    }
+
+    &__title {
+      font-size: $font-size-xl;
+    }
+
+    &__content {
+      padding: $spacing-md;
+      border-radius: $radius-lg;
+    }
+
+    &__text {
+      font-size: $font-size-sm;
+
+      pre {
+        font-size: $font-size-xs;
+        padding: $spacing-sm;
+      }
+    }
+
+    &__quizzes-title {
+      font-size: $font-size-lg;
+    }
+
+    &__nav-button {
+      padding: $spacing-sm $spacing-md;
+      font-size: $font-size-sm;
+      width: 100%;
     }
   }
 }
