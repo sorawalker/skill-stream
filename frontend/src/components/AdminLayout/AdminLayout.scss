@@ -104,5 +104,95 @@
     padding: $spacing-2xl;
     overflow-y: auto;
   }
+
+  &__mobile-header {
+    display: none;
+    padding: $spacing-md;
+    background: $primary;
+    color: white;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  &__mobile-title {
+    font-size: $font-size-lg;
+    font-weight: $font-weight-bold;
+  }
+
+  &__menu-toggle {
+    background: rgba(255, 255, 255, 0.2);
+    border: none;
+    color: white;
+    padding: $spacing-sm;
+    border-radius: $radius-md;
+    cursor: pointer;
+    font-size: $font-size-xl;
+
+    &:hover {
+      background: rgba(255, 255, 255, 0.3);
+    }
+  }
+
+  &__overlay {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.5);
+    z-index: $z-modal-backdrop;
+  }
+}
+
+.admin-layout {
+  @include lg-down {
+    &__sidebar {
+      width: 240px;
+    }
+
+    &__main {
+      padding: $spacing-xl;
+    }
+  }
+
+  @include md-down {
+    flex-direction: column;
+
+    &__mobile-header {
+      display: flex;
+    }
+
+    &__sidebar {
+      position: fixed;
+      left: -280px;
+      top: 0;
+      height: 100vh;
+      width: 280px;
+      z-index: $z-modal;
+      transition: left $transition-base;
+
+      &--open {
+        left: 0;
+      }
+    }
+
+    &__overlay {
+      &--visible {
+        display: block;
+      }
+    }
+
+    &__main {
+      padding: $spacing-lg;
+      min-height: calc(100vh - 60px);
+    }
+  }
+
+  @include sm-down {
+    &__main {
+      padding: $spacing-md;
+    }
+  }
 }
 

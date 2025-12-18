@@ -107,11 +107,42 @@
     font-weight: $font-weight-medium;
     transition: all $transition-base;
     box-shadow: $shadow-sm;
+    text-align: center;
 
     &:hover {
       background: $primary-dark;
       transform: translateY(-2px);
       box-shadow: $shadow-md;
+    }
+  }
+
+  @include sm-down {
+    &__welcome {
+      padding: $spacing-lg;
+
+      h2 {
+        font-size: $font-size-xl;
+      }
+    }
+
+    &__stats {
+      grid-template-columns: 1fr;
+    }
+
+    &__stat-value {
+      font-size: $font-size-3xl;
+    }
+
+    &__quick-links {
+      padding: $spacing-lg;
+    }
+
+    &__links {
+      flex-direction: column;
+    }
+
+    &__link {
+      width: 100%;
     }
   }
 }

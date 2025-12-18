@@ -112,4 +112,134 @@ $breakpoint-lg: 1024px;
 $breakpoint-xl: 1280px;
 $breakpoint-2xl: 1536px;
 
+// ============================================
+// Responsive Mixins
+// ============================================
 
+// Mobile first (min-width) - use for progressive enhancement
+@mixin sm-up {
+  @media (min-width: $breakpoint-sm) {
+    @content;
+  }
+}
+
+@mixin md-up {
+  @media (min-width: $breakpoint-md) {
+    @content;
+  }
+}
+
+@mixin lg-up {
+  @media (min-width: $breakpoint-lg) {
+    @content;
+  }
+}
+
+@mixin xl-up {
+  @media (min-width: $breakpoint-xl) {
+    @content;
+  }
+}
+
+// Desktop first (max-width) - use for graceful degradation
+@mixin sm-down {
+  @media (max-width: #{$breakpoint-sm - 1px}) {
+    @content;
+  }
+}
+
+@mixin md-down {
+  @media (max-width: #{$breakpoint-md - 1px}) {
+    @content;
+  }
+}
+
+@mixin lg-down {
+  @media (max-width: #{$breakpoint-lg - 1px}) {
+    @content;
+  }
+}
+
+@mixin xl-down {
+  @media (max-width: #{$breakpoint-xl - 1px}) {
+    @content;
+  }
+}
+
+// Specific range
+@mixin between($min, $max) {
+  @media (min-width: $min) and (max-width: #{$max - 1px}) {
+    @content;
+  }
+}
+
+// Common responsive patterns
+@mixin container-padding {
+  padding: $spacing-sm;
+  
+  @include sm-up {
+    padding: $spacing-md;
+  }
+  
+  @include md-up {
+    padding: $spacing-xl;
+  }
+}
+
+@mixin responsive-title($mobile: $font-size-xl, $tablet: $font-size-2xl, $desktop: $font-size-3xl) {
+  font-size: $mobile;
+  
+  @include md-up {
+    font-size: $tablet;
+  }
+  
+  @include lg-up {
+    font-size: $desktop;
+  }
+}
+
+@mixin responsive-grid($mobile-cols: 1, $tablet-cols: 2, $desktop-cols: 3, $gap: $spacing-lg) {
+  display: grid;
+  gap: $gap;
+  grid-template-columns: repeat($mobile-cols, 1fr);
+  
+  @include md-up {
+    grid-template-columns: repeat($tablet-cols, 1fr);
+  }
+  
+  @include lg-up {
+    grid-template-columns: repeat($desktop-cols, 1fr);
+  }
+}
+
+@mixin hide-on-mobile {
+  @include md-down {
+    display: none;
+  }
+}
+
+@mixin show-on-mobile {
+  display: none;
+  
+  @include md-down {
+    display: block;
+  }
+}
+
+@mixin flex-show-on-mobile {
+  display: none;
+  
+  @include md-down {
+    display: flex;
+  }
+}
+
+// Scrollable table wrapper
+@mixin scrollable-table {
+  @include md-down {
+    display: block;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    white-space: nowrap;
+  }
+}
