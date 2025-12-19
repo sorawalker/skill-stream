@@ -215,7 +215,7 @@ export const About = () => {
             <div className="about__meta about__meta--date">
               <span className="about__meta-item">
                 Development period: December 13, 2025 —
-                December 18, 2025
+                December 20, 2025
               </span>
             </div>
           </div>
