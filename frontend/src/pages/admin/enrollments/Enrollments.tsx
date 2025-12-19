@@ -1,4 +1,8 @@
-import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
+import {
+  useQuery,
+  useMutation,
+  useQueryClient,
+} from '@tanstack/react-query';
 import { useState } from 'react';
 import { enrollmentsService } from '../../../services/enrollments.service';
 import { Spinner } from '../../../components/Spinner/Spinner';
@@ -12,13 +16,22 @@ export const Enrollments = () => {
   const { data, isLoading, error } = useQuery({
     queryKey: ['enrollments', page, limit],
     queryFn: () =>
-      enrollmentsService.findMany({ page, limit, order: 'desc', sortBy: 'enrolledAt' }),
+      enrollmentsService.findMany({
+        page,
+        limit,
+        order: 'desc',
+        sortBy: 'enrolledAt',
+        all: true,
+      }),
   });
 
   const deleteMutation = useMutation({
-    mutationFn: (id: number) => enrollmentsService.delete(id),
+    mutationFn: (id: number) =>
+      enrollmentsService.delete(id),
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ['enrollments'] });
+      queryClient.invalidateQueries({
+        queryKey: ['enrollments'],
+      });
       // Reset to page 1 if current page becomes empty
       if (data && data.meta.total === 1 && page > 1) {
         setPage(1);
@@ -27,7 +40,11 @@ export const Enrollments = () => {
   });
 
   const handleDelete = (id: number) => {
-    if (confirm('Are you sure you want to delete this enrollment?')) {
+    if (
+      confirm(
+        'Are you sure you want to delete this enrollment?',
+      )
+    ) {
       deleteMutation.mutate(id);
     }
   };
@@ -35,7 +52,9 @@ export const Enrollments = () => {
   return (
     <div className="admin-page">
       <div className="admin-page__header">
-        <h1 className="admin-page__title">Enrollment Management</h1>
+        <h1 className="admin-page__title">
+          Enrollment Management
+        </h1>
       </div>
       <table>
         <thead>
@@ -52,43 +71,68 @@ export const Enrollments = () => {
         <tbody>
           {isLoading && !data && (
             <tr>
-              <td colSpan={7} style={{ textAlign: 'center', padding: '2rem' }}>
+              <td
+                colSpan={7}
+                style={{
+                  textAlign: 'center',
+                  padding: '2rem',
+                }}
+              >
                 <Spinner />
               </td>
             </tr>
           )}
           {error && !data && (
             <tr>
-              <td colSpan={7} style={{ textAlign: 'center', padding: '2rem', color: 'var(--danger)' }}>
+              <td
+                colSpan={7}
+                style={{
+                  textAlign: 'center',
+                  padding: '2rem',
+                  color: 'var(--danger)',
+                }}
+              >
                 Error loading enrollments
               </td>
             </tr>
           )}
-          {!isLoading && !error && data?.data.map((enrollment) => (
-            <tr key={enrollment.id}>
-              <td>{enrollment.id}</td>
-              <td>{enrollment.user?.name || 'N/A'}</td>
-              <td>{enrollment.course?.title || 'N/A'}</td>
-              <td>{enrollment.progress}%</td>
-              <td>{enrollment.completed ? 'Yes' : 'No'}</td>
-              <td>{new Date(enrollment.enrolledAt).toLocaleDateString()}</td>
-              <td>
-                <button
-                  className="admin-page__button admin-page__button--danger"
-                  onClick={() => handleDelete(enrollment.id)}
-                >
-                  Delete
-                </button>
-              </td>
-            </tr>
-          ))}
+          {!isLoading &&
+            !error &&
+            data?.data.map((enrollment) => (
+              <tr key={enrollment.id}>
+                <td>{enrollment.id}</td>
+                <td>{enrollment.user?.name || 'N/A'}</td>
+                <td>{enrollment.course?.title || 'N/A'}</td>
+                <td>{enrollment.progress}%</td>
+                <td>
+                  {enrollment.completed ? 'Yes' : 'No'}
+                </td>
+                <td>
+                  {new Date(
+                    enrollment.enrolledAt,
+                  ).toLocaleDateString()}
+                </td>
+                <td>
+                  <button
+                    className="admin-page__button admin-page__button--danger"
+                    onClick={() =>
+                      handleDelete(enrollment.id)
+                    }
+                  >
+                    Delete
+                  </button>
+                </td>
+              </tr>
+            ))}
         </tbody>
       </table>
       {data?.meta && (
         <div className="admin-page__pagination">
           <button
             className="admin-page__pagination-button"
-            onClick={() => setPage((p) => Math.max(1, p - 1))}
+            onClick={() =>
+              setPage((p) => Math.max(1, p - 1))
+            }
             disabled={page === 1}
           >
             Previous
@@ -98,7 +142,11 @@ export const Enrollments = () => {
           </span>
           <button
             className="admin-page__pagination-button"
-            onClick={() => setPage((p) => Math.min(data.meta.totalPages, p + 1))}
+            onClick={() =>
+              setPage((p) =>
+                Math.min(data.meta.totalPages, p + 1),
+              )
+            }
             disabled={page >= data.meta.totalPages}
           >
             Next

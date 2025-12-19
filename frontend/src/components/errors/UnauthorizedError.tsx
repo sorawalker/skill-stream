@@ -17,10 +17,15 @@ export const UnauthorizedError = ({
       <div className="error-page__container">
         <div className="error-page__content">
           <div className="error-page__icon">🔒</div>
-          <h1 className="error-page__title">401 - Unauthorized</h1>
+          <h1 className="error-page__title">
+            401 - Unauthorized
+          </h1>
           <p className="error-page__message">{message}</p>
           <div className="error-page__actions">
-            <Link to="/login" className="error-page__button error-page__button--primary">
+            <Link
+              to="/login"
+              className="error-page__button error-page__button--primary"
+            >
               Go to Login
             </Link>
             {showBackButton && (
@@ -31,7 +36,10 @@ export const UnauthorizedError = ({
                 Go Back
               </button>
             )}
-            <Link to="/" className="error-page__button error-page__button--secondary">
+            <Link
+              to="/"
+              className="error-page__button error-page__button--secondary"
+            >
               Back to Home
             </Link>
           </div>

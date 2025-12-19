@@ -1,6 +1,13 @@
-import { useMutation, useQueryClient } from '@tanstack/react-query';
+import {
+  useMutation,
+  useQueryClient,
+} from '@tanstack/react-query';
 import { useNavigate } from 'react-router-dom';
-import { authService, type SignInRequest, type RegisterRequest } from '../services/auth.service';
+import {
+  authService,
+  type SignInRequest,
+  type RegisterRequest,
+} from '../services/auth.service';
 import { useAuthContext } from '../contexts/auth.context';
 
 export const useAuth = () => {
@@ -9,7 +16,8 @@ export const useAuth = () => {
   const queryClient = useQueryClient();
 
   const signInMutation = useMutation({
-    mutationFn: (credentials: SignInRequest) => authService.signIn(credentials),
+    mutationFn: (credentials: SignInRequest) =>
+      authService.signIn(credentials),
     onSuccess: (data) => {
       setToken(data.accessToken);
       queryClient.invalidateQueries();
@@ -18,7 +26,8 @@ export const useAuth = () => {
   });
 
   const registerMutation = useMutation({
-    mutationFn: (userData: RegisterRequest) => authService.register(userData),
+    mutationFn: (userData: RegisterRequest) =>
+      authService.register(userData),
     onSuccess: () => {
       navigate('/login');
     },

@@ -1,5 +1,14 @@
-import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
-import { useState, useDeferredValue, useMemo, useCallback } from 'react';
+import {
+  useQuery,
+  useMutation,
+  useQueryClient,
+} from '@tanstack/react-query';
+import {
+  useState,
+  useDeferredValue,
+  useMemo,
+  useCallback,
+} from 'react';
 import { usersService } from '../../../services/users.service';
 import { AdminModal } from '../../../components/AdminModal/AdminModal';
 import { Spinner } from '../../../components/Spinner/Spinner';
@@ -16,24 +25,35 @@ export const Users = () => {
   const { data, isLoading, error } = useQuery({
     queryKey: ['users', page, limit, deferredSearch],
     queryFn: () =>
-      usersService.findMany({ page, limit, search: deferredSearch, order: 'asc', sortBy: 'id' }),
+      usersService.findMany({
+        page,
+        limit,
+        search: deferredSearch,
+        order: 'asc',
+        sortBy: 'id',
+      }),
   });
 
   const deleteMutation = useMutation({
     mutationFn: (id: number) => usersService.delete(id),
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ['users'] });
+      queryClient.invalidateQueries({
+        queryKey: ['users'],
+      });
     },
   });
 
-  const [showCreateForm, setShowCreateForm] = useState(false);
+  const [showCreateForm, setShowCreateForm] =
+    useState(false);
   const [newUser, setNewUser] = useState<{
     email: string;
     name: string;
     password: string;
     role: UserRole;
   }>({ email: '', name: '', password: '', role: 'USER' });
-  const [editingUserId, setEditingUserId] = useState<number | null>(null);
+  const [editingUserId, setEditingUserId] = useState<
+    number | null
+  >(null);
   const [editUser, setEditUser] = useState<{
     email: string;
     name: string;
@@ -42,12 +62,23 @@ export const Users = () => {
   }>({ email: '', name: '', password: '', role: 'USER' });
 
   const createMutation = useMutation({
-    mutationFn: (userData: { email: string; name: string; password: string; role?: string }) =>
-      usersService.create(userData),
+    mutationFn: (userData: {
+      email: string;
+      name: string;
+      password: string;
+      role?: string;
+    }) => usersService.create(userData),
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ['users'] });
+      queryClient.invalidateQueries({
+        queryKey: ['users'],
+      });
       setShowCreateForm(false);
-      setNewUser({ email: '', name: '', password: '', role: 'USER' });
+      setNewUser({
+        email: '',
+        name: '',
+        password: '',
+        role: 'USER',
+      });
     },
   });
 
@@ -57,12 +88,24 @@ export const Users = () => {
       userData,
     }: {
       id: number;
-      userData: Partial<{ email: string; name: string; password: string; role: string }>;
+      userData: Partial<{
+        email: string;
+        name: string;
+        password: string;
+        role: string;
+      }>;
     }) => usersService.update(id, userData),
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ['users'] });
+      queryClient.invalidateQueries({
+        queryKey: ['users'],
+      });
       setEditingUserId(null);
-      setEditUser({ email: '', name: '', password: '', role: 'USER' });
+      setEditUser({
+        email: '',
+        name: '',
+        password: '',
+        role: 'USER',
+      });
     },
   });
 
@@ -71,15 +114,30 @@ export const Users = () => {
     createMutation.mutate(newUser);
   };
 
-  const handleEdit = (user: { id: number; email: string; name: string; role: UserRole }) => {
+  const handleEdit = (user: {
+    id: number;
+    email: string;
+    name: string;
+    role: UserRole;
+  }) => {
     setEditingUserId(user.id);
-    setEditUser({ email: user.email, name: user.name, password: '', role: user.role });
+    setEditUser({
+      email: user.email,
+      name: user.name,
+      password: '',
+      role: user.role,
+    });
   };
 
   const handleUpdate = (e: React.FormEvent) => {
     e.preventDefault();
     if (editingUserId) {
-      const updateData: Partial<{ email: string; name: string; password: string; role: string }> = {
+      const updateData: Partial<{
+        email: string;
+        name: string;
+        password: string;
+        role: string;
+      }> = {
         email: editUser.email,
         name: editUser.name,
         role: editUser.role,
@@ -87,23 +145,33 @@ export const Users = () => {
       if (editUser.password) {
         updateData.password = editUser.password;
       }
-      updateMutation.mutate({ id: editingUserId, userData: updateData });
+      updateMutation.mutate({
+        id: editingUserId,
+        userData: updateData,
+      });
     }
   };
 
   const handleDelete = useCallback(
     (id: number) => {
-      if (confirm('Are you sure you want to delete this user?')) {
+      if (
+        confirm(
+          'Are you sure you want to delete this user?',
+        )
+      ) {
         deleteMutation.mutate(id);
       }
     },
     [deleteMutation],
   );
 
-  const handleSearchChange = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
-    setSearch(e.target.value);
-    setPage(1);
-  }, []);
+  const handleSearchChange = useCallback(
+    (e: React.ChangeEvent<HTMLInputElement>) => {
+      setSearch(e.target.value);
+      setPage(1);
+    },
+    [],
+  );
 
   const tableContent = useMemo(() => {
     return (
@@ -121,40 +189,55 @@ export const Users = () => {
           <tbody>
             {isLoading && !data && (
               <tr>
-                <td colSpan={5} style={{ textAlign: 'center', padding: '2rem' }}>
+                <td
+                  colSpan={5}
+                  style={{
+                    textAlign: 'center',
+                    padding: '2rem',
+                  }}
+                >
                   <Spinner />
                 </td>
               </tr>
             )}
             {error && !data && (
               <tr>
-                <td colSpan={5} style={{ textAlign: 'center', padding: '2rem', color: 'var(--danger)' }}>
+                <td
+                  colSpan={5}
+                  style={{
+                    textAlign: 'center',
+                    padding: '2rem',
+                    color: 'var(--danger)',
+                  }}
+                >
                   Error loading users
                 </td>
               </tr>
             )}
-            {!isLoading && !error && data?.data.map((user) => (
-              <tr key={user.id}>
-                <td>{user.id}</td>
-                <td>{user.name}</td>
-                <td>{user.email}</td>
-                <td>{user.role}</td>
-                <td>
-                  <button
-                    className="admin-page__button admin-page__button--primary"
-                    onClick={() => handleEdit(user)}
-                  >
-                    Edit
-                  </button>
-                  <button
-                    className="admin-page__button admin-page__button--danger"
-                    onClick={() => handleDelete(user.id)}
-                  >
-                    Delete
-                  </button>
-                </td>
-              </tr>
-            ))}
+            {!isLoading &&
+              !error &&
+              data?.data.map((user) => (
+                <tr key={user.id}>
+                  <td>{user.id}</td>
+                  <td>{user.name}</td>
+                  <td>{user.email}</td>
+                  <td>{user.role}</td>
+                  <td>
+                    <button
+                      className="admin-page__button admin-page__button--primary"
+                      onClick={() => handleEdit(user)}
+                    >
+                      Edit
+                    </button>
+                    <button
+                      className="admin-page__button admin-page__button--danger"
+                      onClick={() => handleDelete(user.id)}
+                    >
+                      Delete
+                    </button>
+                  </td>
+                </tr>
+              ))}
           </tbody>
         </table>
         {data?.meta && (
@@ -167,7 +250,8 @@ export const Users = () => {
               Previous
             </button>
             <span className="admin-page__pagination-info">
-              Page {data.meta.page} of {data.meta.totalPages}
+              Page {data.meta.page} of{' '}
+              {data.meta.totalPages}
             </span>
             <button
               className="admin-page__pagination-button"
@@ -185,11 +269,15 @@ export const Users = () => {
   return (
     <div className="admin-page">
       <div className="admin-page__header">
-        <h1 className="admin-page__title">User Management</h1>
+        <h1 className="admin-page__title">
+          User Management
+        </h1>
         <div className="admin-page__actions">
           <button
             className="admin-page__button admin-page__button--secondary"
-            onClick={() => setShowCreateForm(!showCreateForm)}
+            onClick={() =>
+              setShowCreateForm(!showCreateForm)
+            }
           >
             {showCreateForm ? 'Cancel' : 'Create New User'}
           </button>
@@ -199,11 +287,19 @@ export const Users = () => {
         isOpen={showCreateForm}
         onClose={() => {
           setShowCreateForm(false);
-          setNewUser({ email: '', name: '', password: '', role: 'USER' });
+          setNewUser({
+            email: '',
+            name: '',
+            password: '',
+            role: 'USER',
+          });
         }}
         title="Create New User"
       >
-        <form className="admin-page__form" onSubmit={handleCreate}>
+        <form
+          className="admin-page__form"
+          onSubmit={handleCreate}
+        >
           <div className="admin-page__form-group">
             <label className="admin-page__form-label">
               Email:
@@ -211,7 +307,12 @@ export const Users = () => {
                 className="admin-page__form-input"
                 type="email"
                 value={newUser.email}
-                onChange={(e) => setNewUser({ ...newUser, email: e.target.value })}
+                onChange={(e) =>
+                  setNewUser({
+                    ...newUser,
+                    email: e.target.value,
+                  })
+                }
                 required
               />
             </label>
@@ -223,7 +324,12 @@ export const Users = () => {
                 className="admin-page__form-input"
                 type="text"
                 value={newUser.name}
-                onChange={(e) => setNewUser({ ...newUser, name: e.target.value })}
+                onChange={(e) =>
+                  setNewUser({
+                    ...newUser,
+                    name: e.target.value,
+                  })
+                }
                 required
               />
             </label>
@@ -235,7 +341,12 @@ export const Users = () => {
                 className="admin-page__form-input"
                 type="password"
                 value={newUser.password}
-                onChange={(e) => setNewUser({ ...newUser, password: e.target.value })}
+                onChange={(e) =>
+                  setNewUser({
+                    ...newUser,
+                    password: e.target.value,
+                  })
+                }
                 required
               />
             </label>
@@ -246,7 +357,12 @@ export const Users = () => {
               <select
                 className="admin-page__form-input"
                 value={newUser.role}
-                onChange={(e) => setNewUser({ ...newUser, role: e.target.value as UserRole })}
+                onChange={(e) =>
+                  setNewUser({
+                    ...newUser,
+                    role: e.target.value as UserRole,
+                  })
+                }
                 required
               >
                 <option value="USER">USER</option>
@@ -262,7 +378,9 @@ export const Users = () => {
               type="submit"
               disabled={createMutation.isPending}
             >
-              {createMutation.isPending ? 'Creating...' : 'Create User'}
+              {createMutation.isPending
+                ? 'Creating...'
+                : 'Create User'}
             </button>
           </div>
         </form>
@@ -272,11 +390,19 @@ export const Users = () => {
         isOpen={editingUserId !== null}
         onClose={() => {
           setEditingUserId(null);
-          setEditUser({ email: '', name: '', password: '', role: 'USER' });
+          setEditUser({
+            email: '',
+            name: '',
+            password: '',
+            role: 'USER',
+          });
         }}
         title="Edit User"
       >
-        <form className="admin-page__form" onSubmit={handleUpdate}>
+        <form
+          className="admin-page__form"
+          onSubmit={handleUpdate}
+        >
           <div className="admin-page__form-group">
             <label className="admin-page__form-label">
               Email:
@@ -284,7 +410,12 @@ export const Users = () => {
                 className="admin-page__form-input"
                 type="email"
                 value={editUser.email}
-                onChange={(e) => setEditUser({ ...editUser, email: e.target.value })}
+                onChange={(e) =>
+                  setEditUser({
+                    ...editUser,
+                    email: e.target.value,
+                  })
+                }
                 required
               />
             </label>
@@ -296,7 +427,12 @@ export const Users = () => {
                 className="admin-page__form-input"
                 type="text"
                 value={editUser.name}
-                onChange={(e) => setEditUser({ ...editUser, name: e.target.value })}
+                onChange={(e) =>
+                  setEditUser({
+                    ...editUser,
+                    name: e.target.value,
+                  })
+                }
                 required
               />
             </label>
@@ -307,7 +443,12 @@ export const Users = () => {
               <select
                 className="admin-page__form-input"
                 value={editUser.role}
-                onChange={(e) => setEditUser({ ...editUser, role: e.target.value as UserRole })}
+                onChange={(e) =>
+                  setEditUser({
+                    ...editUser,
+                    role: e.target.value as UserRole,
+                  })
+                }
                 required
               >
                 <option value="USER">USER</option>
@@ -324,7 +465,12 @@ export const Users = () => {
                 className="admin-page__form-input"
                 type="password"
                 value={editUser.password}
-                onChange={(e) => setEditUser({ ...editUser, password: e.target.value })}
+                onChange={(e) =>
+                  setEditUser({
+                    ...editUser,
+                    password: e.target.value,
+                  })
+                }
               />
             </label>
           </div>
@@ -334,14 +480,21 @@ export const Users = () => {
               type="submit"
               disabled={updateMutation.isPending}
             >
-              {updateMutation.isPending ? 'Saving...' : 'Save Changes'}
+              {updateMutation.isPending
+                ? 'Saving...'
+                : 'Save Changes'}
             </button>
             <button
               className="admin-page__button admin-page__button--secondary"
               type="button"
               onClick={() => {
                 setEditingUserId(null);
-                setEditUser({ email: '', name: '', password: '', role: 'USER' });
+                setEditUser({
+                  email: '',
+                  name: '',
+                  password: '',
+                  role: 'USER',
+                });
               }}
             >
               Cancel

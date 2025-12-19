@@ -135,7 +135,9 @@
       }
     }
 
-    &:not(&--correct):not(&--incorrect):not(&--selected):hover {
+    &:not(&--correct):not(&--incorrect):not(
+        &--selected
+      ):hover {
       border-color: $border-color-dark;
       background-color: $gray-50;
     }

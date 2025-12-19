@@ -18,7 +18,9 @@ export const MyCourses = () => {
       <div className="my-courses-page">
         <Header />
         <div className="my-courses-page__container">
-          <p className="my-courses-page__loading">Loading your courses...</p>
+          <p className="my-courses-page__loading">
+            Loading your courses...
+          </p>
         </div>
       </div>
     );
@@ -30,11 +32,16 @@ export const MyCourses = () => {
     <div className="my-courses-page">
       <Header />
       <div className="my-courses-page__container">
-        <h1 className="my-courses-page__title">My Courses</h1>
+        <h1 className="my-courses-page__title">
+          My Courses
+        </h1>
         {enrolledCourses.length === 0 ? (
           <div className="my-courses-page__empty">
             <p>You haven't enrolled in any courses yet.</p>
-            <button className="my-courses-page__browse-button" onClick={() => navigate('/')}>
+            <button
+              className="my-courses-page__browse-button"
+              onClick={() => navigate('/')}
+            >
               Browse Courses
             </button>
           </div>
@@ -48,7 +55,11 @@ export const MyCourses = () => {
                   key={enrollment.id}
                   course={enrollment.course}
                   progress={enrollment.progress}
-                  onClick={() => navigate(`/courses/${enrollment.courseId}`)}
+                  onClick={() =>
+                    navigate(
+                      `/courses/${enrollment.courseId}`,
+                    )
+                  }
                 />
               );
             })}

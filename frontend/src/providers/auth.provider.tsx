@@ -1,6 +1,9 @@
 import { useState, useEffect, type ReactNode } from 'react';
 import { AuthContext } from '../contexts/auth.context';
-import type { User, UserRole } from 'skill-stream-backend/shared/types';
+import type {
+  User,
+  UserRole,
+} from 'skill-stream-backend/shared/types';
 import { usersService } from '../services/users.service';
 
 const TOKEN_STORAGE_KEY = 'auth_token';
@@ -10,13 +13,19 @@ interface AuthProviderProps {
   children: ReactNode;
 }
 
-export const AuthProvider = ({ children }: AuthProviderProps) => {
-  const [token, setTokenState] = useState<string | null>(() => {
-    return localStorage.getItem(TOKEN_STORAGE_KEY);
-  });
+export const AuthProvider = ({
+  children,
+}: AuthProviderProps) => {
+  const [token, setTokenState] = useState<string | null>(
+    () => {
+      return localStorage.getItem(TOKEN_STORAGE_KEY);
+    },
+  );
 
   const [user, setUserState] = useState<User | null>(() => {
-    const storedUser = localStorage.getItem(USER_STORAGE_KEY);
+    const storedUser = localStorage.getItem(
+      USER_STORAGE_KEY,
+    );
     return storedUser ? JSON.parse(storedUser) : null;
   });
 
@@ -33,14 +42,19 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
 
   const setUser = (newUser: User | null) => {
     if (newUser) {
-      localStorage.setItem(USER_STORAGE_KEY, JSON.stringify(newUser));
+      localStorage.setItem(
+        USER_STORAGE_KEY,
+        JSON.stringify(newUser),
+      );
     } else {
       localStorage.removeItem(USER_STORAGE_KEY);
     }
     setUserState(newUser);
   };
 
-  const hasRole = (role: UserRole | UserRole[]): boolean => {
+  const hasRole = (
+    role: UserRole | UserRole[],
+  ): boolean => {
     if (!user) return false;
     const roles = Array.isArray(role) ? role : [role];
     return roles.includes(user.role);
@@ -50,9 +64,12 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
     const fetchUser = async () => {
       if (token && !user) {
         try {
-          const tokenData = JSON.parse(atob(token.split('.')[1]));
+          const tokenData = JSON.parse(
+            atob(token.split('.')[1]),
+          );
           const userId = parseInt(tokenData.sub);
-          const fetchedUser = await usersService.findOne(userId);
+          const fetchedUser =
+            await usersService.findOne(userId);
           setUser(fetchedUser);
         } catch (error) {
           console.error('Failed to fetch user:', error);
@@ -72,5 +89,9 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
     hasRole,
   };
 
-  return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
+  return (
+    <AuthContext.Provider value={value}>
+      {children}
+    </AuthContext.Provider>
+  );
 };

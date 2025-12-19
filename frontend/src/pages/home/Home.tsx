@@ -7,19 +7,30 @@ import { enrollmentsService } from '../../services/enrollments.service';
 import { CourseCard } from '../../components/CourseCard/CourseCard';
 import { CourseModal } from '../../components/CourseModal/CourseModal';
 import { Header } from '../../components/Header/Header';
-import type { Course, Enrollment } from 'skill-stream-backend/shared/types';
+import type {
+  Course,
+  Enrollment,
+} from 'skill-stream-backend/shared/types';
 import './Home.scss';
 
 export const Home = () => {
   const { isAuthenticated } = useAuth();
   const navigate = useNavigate();
-  const [selectedCourse, setSelectedCourse] = useState<Course | null>(null);
+  const [selectedCourse, setSelectedCourse] =
+    useState<Course | null>(null);
 
-  const { data: courses, isLoading: coursesLoading } = useQuery({
-    queryKey: ['courses', 'home'],
-    queryFn: () => coursesService.findMany({ page: 1, limit: 100, order: 'asc', sortBy: 'id' }),
-    enabled: isAuthenticated,
-  });
+  const { data: courses, isLoading: coursesLoading } =
+    useQuery({
+      queryKey: ['courses', 'home'],
+      queryFn: () =>
+        coursesService.findMany({
+          page: 1,
+          limit: 100,
+          order: 'asc',
+          sortBy: 'id',
+        }),
+      enabled: isAuthenticated,
+    });
 
   const { data: enrollments } = useQuery({
     queryKey: ['enrollments', 'home'],
@@ -27,8 +38,14 @@ export const Home = () => {
     enabled: isAuthenticated,
   });
 
-  const getEnrollmentForCourse = (courseId: number): Enrollment | null => {
-    return enrollments?.data.find((enrollment) => enrollment.courseId === courseId) || null;
+  const getEnrollmentForCourse = (
+    courseId: number,
+  ): Enrollment | null => {
+    return (
+      enrollments?.data.find(
+        (enrollment) => enrollment.courseId === courseId,
+      ) || null
+    );
   };
 
   const handleCourseClick = (course: Course) => {
@@ -53,33 +70,45 @@ export const Home = () => {
         {isAuthenticated ? (
           <div className="home-page__content">
             {coursesLoading ? (
-              <p className="home-page__loading">Loading courses...</p>
+              <p className="home-page__loading">
+                Loading courses...
+              </p>
             ) : (
               <>
-                <h2 className="home-page__subtitle">Available Courses</h2>
+                <h2 className="home-page__subtitle">
+                  Available Courses
+                </h2>
                 <div className="home-page__courses-grid">
                   {courses?.data.map((course) => (
                     <CourseCard
                       key={course.id}
                       course={course}
-                      onClick={() => handleCourseClick(course)}
+                      onClick={() =>
+                        handleCourseClick(course)
+                      }
                     />
                   ))}
                 </div>
                 {courses?.data.length === 0 && (
-                  <p className="home-page__empty">No courses available</p>
+                  <p className="home-page__empty">
+                    No courses available
+                  </p>
                 )}
               </>
             )}
           </div>
         ) : (
-          <p className="home-page__message">Please sign in to continue</p>
+          <p className="home-page__message">
+            Please sign in to continue
+          </p>
         )}
       </div>
       {selectedCourse && (
         <CourseModal
           course={selectedCourse}
-          enrollment={getEnrollmentForCourse(selectedCourse.id)}
+          enrollment={getEnrollmentForCourse(
+            selectedCourse.id,
+          )}
           onClose={handleCloseModal}
           onGoToCourse={handleGoToCourse}
         />

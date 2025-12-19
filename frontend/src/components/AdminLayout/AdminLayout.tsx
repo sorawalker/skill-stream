@@ -1,16 +1,23 @@
 import { useState } from 'react';
-import { Link, Outlet, useLocation, Navigate } from 'react-router-dom';
+import {
+  Link,
+  Outlet,
+  useLocation,
+  Navigate,
+} from 'react-router-dom';
 import { useAuthContext } from '../../contexts/auth.context';
 import { useAuth } from '../../hooks/useAuth';
 import './AdminLayout.scss';
 
 export const AdminLayout = () => {
   const location = useLocation();
-  const { isAuthenticated, user, hasRole } = useAuthContext();
+  const { isAuthenticated, user, hasRole } =
+    useAuthContext();
   const { signOut } = useAuth();
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
 
-  const isActive = (path: string) => location.pathname === path;
+  const isActive = (path: string) =>
+    location.pathname === path;
 
   const closeSidebar = () => setIsSidebarOpen(false);
 
@@ -25,7 +32,9 @@ export const AdminLayout = () => {
   return (
     <div className="admin-layout">
       <div className="admin-layout__mobile-header">
-        <span className="admin-layout__mobile-title">Admin Panel</span>
+        <span className="admin-layout__mobile-title">
+          Admin Panel
+        </span>
         <button
           className="admin-layout__menu-toggle"
           onClick={() => setIsSidebarOpen(!isSidebarOpen)}
@@ -42,11 +51,18 @@ export const AdminLayout = () => {
         className={`admin-layout__sidebar ${isSidebarOpen ? 'admin-layout__sidebar--open' : ''}`}
       >
         <div className="admin-layout__header">
-          <h1 className="admin-layout__title">Admin Panel</h1>
+          <h1 className="admin-layout__title">
+            Admin Panel
+          </h1>
           <div className="admin-layout__user-info">
-            <span className="admin-layout__user-name">Welcome, {user?.name}</span>
+            <span className="admin-layout__user-name">
+              Welcome, {user?.name}
+            </span>
           </div>
-          <button className="admin-layout__sign-out" onClick={signOut}>
+          <button
+            className="admin-layout__sign-out"
+            onClick={signOut}
+          >
             Sign Out
           </button>
         </div>

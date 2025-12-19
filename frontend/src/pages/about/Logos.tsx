@@ -5,7 +5,9 @@ type Props = { size?: number };
 // Updated with official or closest SVG codes where extracted successfully.
 // For others, retained improved approximations as exact raw SVG extraction was partial.
 
-export const ReactLogo: React.FC<Props> = ({ size = 32 }) => (
+export const ReactLogo: React.FC<Props> = ({
+  size = 32,
+}) => (
   <svg
     width={size}
     height={size}
@@ -23,7 +25,9 @@ export const ReactLogo: React.FC<Props> = ({ size = 32 }) => (
   </svg>
 );
 
-export const TypeScriptLogo: React.FC<Props> = ({ size = 32 }) => (
+export const TypeScriptLogo: React.FC<Props> = ({
+  size = 32,
+}) => (
   <svg
     width={size}
     height={size}
@@ -43,7 +47,9 @@ export const TypeScriptLogo: React.FC<Props> = ({ size = 32 }) => (
   </svg>
 );
 
-export const ViteLogo: React.FC<Props> = ({ size = 32 }) => (
+export const ViteLogo: React.FC<Props> = ({
+  size = 32,
+}) => (
   <svg
     width={size}
     height={size}
@@ -88,7 +94,9 @@ export const ViteLogo: React.FC<Props> = ({ size = 32 }) => (
   </svg>
 );
 
-export const ReactRouterLogo: React.FC<Props> = ({ size = 32 }) => (
+export const ReactRouterLogo: React.FC<Props> = ({
+  size = 32,
+}) => (
   <svg
     width={size}
     height={size}
@@ -105,7 +113,9 @@ export const ReactRouterLogo: React.FC<Props> = ({ size = 32 }) => (
   </svg>
 );
 
-export const TanStackQueryLogo: React.FC<Props> = ({ size = 32 }) => (
+export const TanStackQueryLogo: React.FC<Props> = ({
+  size = 32,
+}) => (
   <svg
     width={size}
     height={size}
@@ -115,12 +125,20 @@ export const TanStackQueryLogo: React.FC<Props> = ({ size = 32 }) => (
   >
     <g>
       <circle cx="180" cy="256" r="120" fill="#FF4154" />
-      <circle cx="332" cy="256" r="120" fill="#FF4154" opacity="0.74" />
+      <circle
+        cx="332"
+        cy="256"
+        r="120"
+        fill="#FF4154"
+        opacity="0.74"
+      />
     </g>
   </svg>
 );
 
-export const SassLogo: React.FC<Props> = ({ size = 32 }) => (
+export const SassLogo: React.FC<Props> = ({
+  size = 32,
+}) => (
   <svg
     width={size}
     height={size}
@@ -135,7 +153,9 @@ export const SassLogo: React.FC<Props> = ({ size = 32 }) => (
   </svg>
 );
 
-export const NestJSLogo: React.FC<Props> = ({ size = 32 }) => (
+export const NestJSLogo: React.FC<Props> = ({
+  size = 32,
+}) => (
   <svg
     width={size}
     height={size}
@@ -150,7 +170,9 @@ export const NestJSLogo: React.FC<Props> = ({ size = 32 }) => (
   </svg>
 );
 
-export const NodeJSLogo: React.FC<Props> = ({ size = 32 }) => (
+export const NodeJSLogo: React.FC<Props> = ({
+  size = 32,
+}) => (
   <svg
     width={size}
     height={size}
@@ -158,7 +180,10 @@ export const NodeJSLogo: React.FC<Props> = ({ size = 32 }) => (
     xmlns="http://www.w3.org/2000/svg"
     aria-hidden
   >
-    <path d="M256 32l208 120v240L256 480 48 392V152z" fill="#3C873A" />
+    <path
+      d="M256 32l208 120v240L256 480 48 392V152z"
+      fill="#3C873A"
+    />
     <text
       x="50%"
       y="60%"
@@ -173,7 +198,9 @@ export const NodeJSLogo: React.FC<Props> = ({ size = 32 }) => (
   </svg>
 );
 
-export const PassportLogo: React.FC<Props> = ({ size = 32 }) => (
+export const PassportLogo: React.FC<Props> = ({
+  size = 32,
+}) => (
   <svg
     width={size}
     height={size}
@@ -181,13 +208,29 @@ export const PassportLogo: React.FC<Props> = ({ size = 32 }) => (
     xmlns="http://www.w3.org/2000/svg"
     aria-hidden
   >
-    <rect x="88" y="56" width="336" height="400" rx="28" fill="#34E27A" />
+    <rect
+      x="88"
+      y="56"
+      width="336"
+      height="400"
+      rx="28"
+      fill="#34E27A"
+    />
     <circle cx="256" cy="200" r="44" fill="#fff" />
-    <rect x="192" y="280" width="128" height="16" rx="8" fill="#fff" />
+    <rect
+      x="192"
+      y="280"
+      width="128"
+      height="16"
+      rx="8"
+      fill="#fff"
+    />
   </svg>
 );
 
-export const PostgreSQLLogo: React.FC<Props> = ({ size = 32 }) => (
+export const PostgreSQLLogo: React.FC<Props> = ({
+  size = 32,
+}) => (
   <svg
     width={size}
     height={size}
@@ -218,7 +261,9 @@ export const PostgreSQLLogo: React.FC<Props> = ({ size = 32 }) => (
   </svg>
 );
 
-export const PrismaLogo: React.FC<Props> = ({ size = 32 }) => (
+export const PrismaLogo: React.FC<Props> = ({
+  size = 32,
+}) => (
   <svg
     width={size}
     height={size}
@@ -227,16 +272,27 @@ export const PrismaLogo: React.FC<Props> = ({ size = 32 }) => (
     aria-hidden
   >
     <defs>
-      <linearGradient id="prismaGrad" x1="0" y1="0" x2="1" y2="1">
+      <linearGradient
+        id="prismaGrad"
+        x1="0"
+        y1="0"
+        x2="1"
+        y2="1"
+      >
         <stop offset="0%" stopColor="#2A9DF4" />
         <stop offset="100%" stopColor="#0C344B" />
       </linearGradient>
     </defs>
-    <polygon points="96,448 256,64 416,448" fill="url(#prismaGrad)" />
+    <polygon
+      points="96,448 256,64 416,448"
+      fill="url(#prismaGrad)"
+    />
   </svg>
 );
 
-export const PnpmLogo: React.FC<Props> = ({ size = 32 }) => (
+export const PnpmLogo: React.FC<Props> = ({
+  size = 32,
+}) => (
   <svg
     width={size}
     height={size}
@@ -246,13 +302,27 @@ export const PnpmLogo: React.FC<Props> = ({ size = 32 }) => (
   >
     <g fill="#F69220">
       <rect x="64" y="64" width="160" height="160" rx="8" />
-      <rect x="288" y="64" width="160" height="160" rx="8" />
-      <rect x="176" y="208" width="160" height="160" rx="8" />
+      <rect
+        x="288"
+        y="64"
+        width="160"
+        height="160"
+        rx="8"
+      />
+      <rect
+        x="176"
+        y="208"
+        width="160"
+        height="160"
+        rx="8"
+      />
     </g>
   </svg>
 );
 
-export const ESLintLogo: React.FC<Props> = ({ size = 32 }) => (
+export const ESLintLogo: React.FC<Props> = ({
+  size = 32,
+}) => (
   <svg
     width={size}
     height={size}
@@ -260,11 +330,16 @@ export const ESLintLogo: React.FC<Props> = ({ size = 32 }) => (
     xmlns="http://www.w3.org/2000/svg"
     aria-hidden
   >
-    <path d="M256 24l192 104v208L256 488 64 336V128z" fill="#4B32C3" />
+    <path
+      d="M256 24l192 104v208L256 488 64 336V128z"
+      fill="#4B32C3"
+    />
   </svg>
 );
 
-export const PrettierLogo: React.FC<Props> = ({ size = 32 }) => (
+export const PrettierLogo: React.FC<Props> = ({
+  size = 32,
+}) => (
   <svg
     width={size}
     height={size}
@@ -277,10 +352,19 @@ export const PrettierLogo: React.FC<Props> = ({ size = 32 }) => (
     <title>prettier-icon-light</title>
     <desc>Created with sketchtool.</desc>
     <defs></defs>
-    <g id="key" stroke="none" strokeWidth="1" fill="none" fillRule="evenodd">
+    <g
+      id="key"
+      stroke="none"
+      strokeWidth="1"
+      fill="none"
+      fillRule="evenodd"
+    >
       <g id="prettier-icon-light">
         <g id="Icon-(Light)">
-          <g id="line-11" transform="translate(0.000000, 200.000000)">
+          <g
+            id="line-11"
+            transform="translate(0.000000, 200.000000)"
+          >
             <rect
               id="line-11-dash-3"
               fill="#CFD4D7"
@@ -311,7 +395,10 @@ export const PrettierLogo: React.FC<Props> = ({ size = 32 }) => (
               rx="5"
             ></rect>
           </g>
-          <g id="line-10" transform="translate(0.000000, 180.000000)">
+          <g
+            id="line-10"
+            transform="translate(0.000000, 180.000000)"
+          >
             <rect
               id="line-10-dash-5"
               fill="#CFD4D7"
@@ -361,7 +448,10 @@ export const PrettierLogo: React.FC<Props> = ({ size = 32 }) => (
               rx="5"
             ></rect>
           </g>
-          <g id="line-9" transform="translate(0.000000, 160.000000)">
+          <g
+            id="line-9"
+            transform="translate(0.000000, 160.000000)"
+          >
             <rect
               id="line-9-dash-3"
               fill="#CFD4D7"
@@ -392,7 +482,10 @@ export const PrettierLogo: React.FC<Props> = ({ size = 32 }) => (
               rx="5"
             ></rect>
           </g>
-          <g id="line-8" transform="translate(0.000000, 140.000000)">
+          <g
+            id="line-8"
+            transform="translate(0.000000, 140.000000)"
+          >
             <rect
               id="line-8-dash-4"
               fill="#CFD4D7"
@@ -432,7 +525,10 @@ export const PrettierLogo: React.FC<Props> = ({ size = 32 }) => (
               rx="5"
             ></rect>
           </g>
-          <g id="line-7" transform="translate(0.000000, 120.000000)">
+          <g
+            id="line-7"
+            transform="translate(0.000000, 120.000000)"
+          >
             <rect
               id="line-7-dash-4"
               fill="#CFD4D7"
@@ -471,7 +567,10 @@ export const PrettierLogo: React.FC<Props> = ({ size = 32 }) => (
               rx="5"
             ></rect>
           </g>
-          <g id="line-6" transform="translate(0.000000, 100.000000)">
+          <g
+            id="line-6"
+            transform="translate(0.000000, 100.000000)"
+          >
             <rect
               id="line-6-dash-4"
               fill="#CFD4D7"
@@ -510,7 +609,10 @@ export const PrettierLogo: React.FC<Props> = ({ size = 32 }) => (
               rx="5"
             ></rect>
           </g>
-          <g id="line-5" transform="translate(0.000000, 80.000000)">
+          <g
+            id="line-5"
+            transform="translate(0.000000, 80.000000)"
+          >
             <rect
               id="line-5-dash-4"
               fill="#CFD4D7"
@@ -550,7 +652,10 @@ export const PrettierLogo: React.FC<Props> = ({ size = 32 }) => (
               rx="5"
             ></rect>
           </g>
-          <g id="line-4" transform="translate(0.000000, 60.000000)">
+          <g
+            id="line-4"
+            transform="translate(0.000000, 60.000000)"
+          >
             <rect
               id="line-4-dash-5"
               fill="#CFD4D7"
@@ -599,7 +704,10 @@ export const PrettierLogo: React.FC<Props> = ({ size = 32 }) => (
               rx="5"
             ></rect>
           </g>
-          <g id="line-3" transform="translate(0.000000, 40.000000)">
+          <g
+            id="line-3"
+            transform="translate(0.000000, 40.000000)"
+          >
             <rect
               id="line-3-dash-4"
               fill="#CFD4D7"
@@ -638,7 +746,10 @@ export const PrettierLogo: React.FC<Props> = ({ size = 32 }) => (
               rx="5"
             ></rect>
           </g>
-          <g id="line-2" transform="translate(0.000000, 20.000000)">
+          <g
+            id="line-2"
+            transform="translate(0.000000, 20.000000)"
+          >
             <rect
               id="line-2-dash-3"
               fill="#CFD4D7"
@@ -695,7 +806,9 @@ export const PrettierLogo: React.FC<Props> = ({ size = 32 }) => (
   </svg>
 );
 
-export const JestLogo: React.FC<Props> = ({ size = 32 }) => (
+export const JestLogo: React.FC<Props> = ({
+  size = 32,
+}) => (
   <svg
     width={size}
     height={size}
@@ -725,12 +838,50 @@ export const JestLogo: React.FC<Props> = ({ size = 32 }) => (
       strokeWidth="20"
       points="395.364 254.17 449.685 364.982 514.777 173 275.789 173 340.732 364.641"
     />
-    <circle cx="329.46" cy="379.583" r="40.945" fill="#C21325" />
-    <circle cx="329.46" cy="379.583" r="40.945" fill="none" stroke="#FFF" strokeWidth="20" />
-    <circle cx="462.844" cy="379.583" r="40.945" fill="#C21325" stroke="#FFF" strokeWidth="20" />
-    <circle cx="462.844" cy="379.583" r="40.945" fill="none" stroke="#FFF" strokeWidth="20" />
-    <circle cx="195.571" cy="379.877" r="40.945" fill="#C21325" />
-    <circle cx="195.571" cy="379.877" r="40.945" fill="none" stroke="#FFF" strokeWidth="20" />
+    <circle
+      cx="329.46"
+      cy="379.583"
+      r="40.945"
+      fill="#C21325"
+    />
+    <circle
+      cx="329.46"
+      cy="379.583"
+      r="40.945"
+      fill="none"
+      stroke="#FFF"
+      strokeWidth="20"
+    />
+    <circle
+      cx="462.844"
+      cy="379.583"
+      r="40.945"
+      fill="#C21325"
+      stroke="#FFF"
+      strokeWidth="20"
+    />
+    <circle
+      cx="462.844"
+      cy="379.583"
+      r="40.945"
+      fill="none"
+      stroke="#FFF"
+      strokeWidth="20"
+    />
+    <circle
+      cx="195.571"
+      cy="379.877"
+      r="40.945"
+      fill="#C21325"
+    />
+    <circle
+      cx="195.571"
+      cy="379.877"
+      r="40.945"
+      fill="none"
+      stroke="#FFF"
+      strokeWidth="20"
+    />
   </svg>
 );
 
