@@ -248,7 +248,11 @@ export const Lesson = () => {
               Quizzes
             </h2>
             {quizzes.data.map((quiz) => (
-              <Quiz key={quiz.id} quizId={quiz.id} />
+              <Quiz
+                key={quiz.id}
+                quizId={quiz.id}
+                quizTitle={quiz.title}
+              />
             ))}
           </div>
         )}

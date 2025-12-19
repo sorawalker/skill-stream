@@ -12,9 +12,10 @@ import './Quiz.scss';
 
 interface QuizProps {
   quizId: number;
+  quizTitle?: string;
 }
 
-export const Quiz = ({ quizId }: QuizProps) => {
+export const Quiz = ({ quizId, quizTitle }: QuizProps) => {
   const queryClient = useQueryClient();
   const [isExpanded, setIsExpanded] = useState(false);
   const [newSelectedAnswers, setNewSelectedAnswers] =
@@ -39,12 +40,10 @@ export const Quiz = ({ quizId }: QuizProps) => {
     retry: false,
   });
 
-  // Derive attemptResult from previousAttempt or mutationResult
   const attemptResult = useMemo(() => {
     return mutationResult || previousAttempt || null;
   }, [mutationResult, previousAttempt]);
 
-  // Derive selectedAnswers from previousAttempt or use newSelectedAnswers
   const selectedAnswers = useMemo(() => {
     if (previousAttempt) {
       const answers: Record<string, string> = {};
@@ -173,7 +172,7 @@ export const Quiz = ({ quizId }: QuizProps) => {
     <div className="quiz">
       <div className="quiz__header" onClick={handleToggle}>
         <h3 className="quiz__title">
-          {quiz?.title || 'Quiz'}
+          {quiz?.title || quizTitle || 'Quiz'}
         </h3>
         <span className="quiz__toggle">
           {isExpanded ? '−' : '+'}

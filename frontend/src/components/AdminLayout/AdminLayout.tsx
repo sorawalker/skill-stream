@@ -68,15 +68,17 @@ export const AdminLayout = () => {
         </div>
         <nav className="admin-layout__nav">
           <ul className="admin-layout__nav-list">
-            <li className="admin-layout__nav-item">
-              <Link
-                to="/admin"
-                className={`admin-layout__nav-link ${isActive('/admin') && location.pathname === '/admin' ? 'active' : ''}`}
-                onClick={closeSidebar}
-              >
-                Dashboard
-              </Link>
-            </li>
+            {(hasRole('ADMIN') || hasRole('MANAGER')) && (
+              <li className="admin-layout__nav-item">
+                <Link
+                  to="/admin"
+                  className={`admin-layout__nav-link ${isActive('/admin') && location.pathname === '/admin' ? 'active' : ''}`}
+                  onClick={closeSidebar}
+                >
+                  Dashboard
+                </Link>
+              </li>
+            )}
             {hasRole('ADMIN') && (
               <li className="admin-layout__nav-item">
                 <Link
@@ -117,6 +119,10 @@ export const AdminLayout = () => {
                     Quizzes
                   </Link>
                 </li>
+              </>
+            )}
+            {hasRole('ADMIN') && (
+              <>
                 <li className="admin-layout__nav-item">
                   <Link
                     to="/admin/enrollments"

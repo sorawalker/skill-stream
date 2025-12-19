@@ -145,9 +145,7 @@ function App() {
           <Route
             path="enrollments"
             element={
-              <RoleProtectedRoute
-                allowedRoles={['ADMIN', 'MANAGER']}
-              >
+              <RoleProtectedRoute allowedRoles="ADMIN">
                 <Enrollments />
               </RoleProtectedRoute>
             }
@@ -155,9 +153,7 @@ function App() {
           <Route
             path="progress"
             element={
-              <RoleProtectedRoute
-                allowedRoles={['ADMIN', 'MANAGER']}
-              >
+              <RoleProtectedRoute allowedRoles="ADMIN">
                 <Progress />
               </RoleProtectedRoute>
             }
@@ -165,9 +161,7 @@ function App() {
           <Route
             path="quiz-attempts"
             element={
-              <RoleProtectedRoute
-                allowedRoles={['ADMIN', 'MANAGER']}
-              >
+              <RoleProtectedRoute allowedRoles="ADMIN">
                 <QuizAttempts />
               </RoleProtectedRoute>
             }

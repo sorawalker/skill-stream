@@ -366,7 +366,6 @@ export const Users = () => {
                 required
               >
                 <option value="USER">USER</option>
-                <option value="SUPPORT">SUPPORT</option>
                 <option value="MANAGER">MANAGER</option>
                 <option value="ADMIN">ADMIN</option>
               </select>
@@ -452,7 +451,6 @@ export const Users = () => {
                 required
               >
                 <option value="USER">USER</option>
-                <option value="SUPPORT">SUPPORT</option>
                 <option value="MANAGER">MANAGER</option>
                 <option value="ADMIN">ADMIN</option>
               </select>

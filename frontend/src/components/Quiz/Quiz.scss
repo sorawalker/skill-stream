@@ -52,7 +52,6 @@
     border-bottom: 1px solid $border-color;
 
     &:last-child {
-      border-bottom: none;
       margin-bottom: 0;
     }
   }
@@ -185,7 +184,6 @@
   &__submit {
     margin-top: $spacing-xl;
     padding-top: $spacing-xl;
-    border-top: 1px solid $border-color;
     display: flex;
     justify-content: center;
   }

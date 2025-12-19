@@ -177,6 +177,17 @@
         transform: translateX(8px);
       }
     }
+
+    &--github {
+      background: rgba(33, 38, 45, 0.1);
+      color: #21262d;
+
+      &:hover {
+        background: #21262d;
+        color: white;
+        transform: translateX(8px);
+      }
+    }
   }
 
   &__contact-info {
