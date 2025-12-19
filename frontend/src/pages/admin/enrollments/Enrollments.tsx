@@ -1,6 +1,7 @@
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { useState } from 'react';
 import { enrollmentsService } from '../../../services/enrollments.service';
+import { Spinner } from '../../../components/Spinner/Spinner';
 import '../admin-common.scss';
 
 export const Enrollments = () => {
@@ -31,9 +32,6 @@ export const Enrollments = () => {
     }
   };
 
-  if (isLoading) return <div className="admin-page__loading">Loading...</div>;
-  if (error) return <div className="admin-page__error">Error loading enrollments</div>;
-
   return (
     <div className="admin-page">
       <div className="admin-page__header">
@@ -52,7 +50,21 @@ export const Enrollments = () => {
           </tr>
         </thead>
         <tbody>
-          {data?.data.map((enrollment) => (
+          {isLoading && !data && (
+            <tr>
+              <td colSpan={7} style={{ textAlign: 'center', padding: '2rem' }}>
+                <Spinner />
+              </td>
+            </tr>
+          )}
+          {error && !data && (
+            <tr>
+              <td colSpan={7} style={{ textAlign: 'center', padding: '2rem', color: 'var(--danger)' }}>
+                Error loading enrollments
+              </td>
+            </tr>
+          )}
+          {!isLoading && !error && data?.data.map((enrollment) => (
             <tr key={enrollment.id}>
               <td>{enrollment.id}</td>
               <td>{enrollment.user?.name || 'N/A'}</td>

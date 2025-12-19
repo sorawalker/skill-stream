@@ -2,6 +2,7 @@ import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { useState, useDeferredValue, useMemo, useCallback } from 'react';
 import { usersService } from '../../../services/users.service';
 import { AdminModal } from '../../../components/AdminModal/AdminModal';
+import { Spinner } from '../../../components/Spinner/Spinner';
 import type { UserRole } from 'skill-stream-backend/shared/types';
 import '../admin-common.scss';
 
@@ -105,9 +106,6 @@ export const Users = () => {
   }, []);
 
   const tableContent = useMemo(() => {
-    if (isLoading) return <div className="admin-page__loading">Loading...</div>;
-    if (error) return <div className="admin-page__error">Error loading users</div>;
-
     return (
       <>
         <table>
@@ -121,7 +119,21 @@ export const Users = () => {
             </tr>
           </thead>
           <tbody>
-            {data?.data.map((user) => (
+            {isLoading && !data && (
+              <tr>
+                <td colSpan={5} style={{ textAlign: 'center', padding: '2rem' }}>
+                  <Spinner />
+                </td>
+              </tr>
+            )}
+            {error && !data && (
+              <tr>
+                <td colSpan={5} style={{ textAlign: 'center', padding: '2rem', color: 'var(--danger)' }}>
+                  Error loading users
+                </td>
+              </tr>
+            )}
+            {!isLoading && !error && data?.data.map((user) => (
               <tr key={user.id}>
                 <td>{user.id}</td>
                 <td>{user.name}</td>
@@ -169,9 +181,6 @@ export const Users = () => {
       </>
     );
   }, [isLoading, error, data, page, handleDelete]);
-
-  if (isLoading && !data) return <div className="admin-page__loading">Loading...</div>;
-  if (error && !data) return <div className="admin-page__error">Error loading users</div>;
 
   return (
     <div className="admin-page">

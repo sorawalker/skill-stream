@@ -1,6 +1,7 @@
 import { useQuery } from '@tanstack/react-query';
 import { useState } from 'react';
 import { quizAttemptsService } from '../../../services/quiz-attempts.service';
+import { Spinner } from '../../../components/Spinner/Spinner';
 import '../admin-common.scss';
 
 export const QuizAttempts = () => {
@@ -12,9 +13,6 @@ export const QuizAttempts = () => {
     queryFn: () =>
       quizAttemptsService.findMany({ page, limit, order: 'desc', sortBy: 'attemptedAt' }),
   });
-
-  if (isLoading) return <div className="admin-page__loading">Loading...</div>;
-  if (error) return <div className="admin-page__error">Error loading quiz attempts</div>;
 
   return (
     <div className="admin-page">
@@ -32,7 +30,21 @@ export const QuizAttempts = () => {
           </tr>
         </thead>
         <tbody>
-          {data?.data.map((attempt) => (
+          {isLoading && !data && (
+            <tr>
+              <td colSpan={5} style={{ textAlign: 'center', padding: '2rem' }}>
+                <Spinner />
+              </td>
+            </tr>
+          )}
+          {error && !data && (
+            <tr>
+              <td colSpan={5} style={{ textAlign: 'center', padding: '2rem', color: 'var(--danger)' }}>
+                Error loading quiz attempts
+              </td>
+            </tr>
+          )}
+          {!isLoading && !error && data?.data.map((attempt) => (
             <tr key={attempt.id}>
               <td>{attempt.id}</td>
               <td>{attempt.user?.name || 'N/A'}</td>

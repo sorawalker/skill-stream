@@ -4,6 +4,7 @@ import { lessonsService } from '../../../services/lessons.service';
 import { coursesService } from '../../../services/courses.service';
 import { AdminModal } from '../../../components/AdminModal/AdminModal';
 import { LessonViewModal } from '../../../components/LessonViewModal/LessonViewModal';
+import { Spinner } from '../../../components/Spinner/Spinner';
 import '../admin-common.scss';
 
 export const Lessons = () => {
@@ -94,9 +95,6 @@ export const Lessons = () => {
       deleteMutation.mutate(id);
     }
   };
-
-  if (isLoading) return <div className="admin-page__loading">Loading...</div>;
-  if (error) return <div className="admin-page__error">Error loading lessons</div>;
 
   return (
     <div className="admin-page">
@@ -279,7 +277,21 @@ export const Lessons = () => {
               </tr>
             </thead>
             <tbody>
-              {data?.data.map((lesson) => (
+              {isLoading && !data && (
+                <tr>
+                  <td colSpan={5} style={{ textAlign: 'center', padding: '2rem' }}>
+                    <Spinner />
+                  </td>
+                </tr>
+              )}
+              {error && !data && (
+                <tr>
+                  <td colSpan={5} style={{ textAlign: 'center', padding: '2rem', color: 'var(--danger)' }}>
+                    Error loading lessons
+                  </td>
+                </tr>
+              )}
+              {!isLoading && !error && data?.data.map((lesson) => (
                 <tr key={lesson.id}>
                   <td>{lesson.id}</td>
                   <td>{lesson.title}</td>

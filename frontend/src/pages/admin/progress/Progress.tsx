@@ -1,6 +1,7 @@
 import { useQuery } from '@tanstack/react-query';
 import { useState } from 'react';
 import { progressService } from '../../../services/progress.service';
+import { Spinner } from '../../../components/Spinner/Spinner';
 import '../admin-common.scss';
 
 export const Progress = () => {
@@ -11,9 +12,6 @@ export const Progress = () => {
     queryKey: ['progress', page, limit],
     queryFn: () => progressService.findMany({ page, limit, order: 'desc', sortBy: 'updatedAt' }),
   });
-
-  if (isLoading) return <div className="admin-page__loading">Loading...</div>;
-  if (error) return <div className="admin-page__error">Error loading progress</div>;
 
   return (
     <div className="admin-page">
@@ -32,7 +30,21 @@ export const Progress = () => {
           </tr>
         </thead>
         <tbody>
-          {data?.data.map((progress) => (
+          {isLoading && !data && (
+            <tr>
+              <td colSpan={6} style={{ textAlign: 'center', padding: '2rem' }}>
+                <Spinner />
+              </td>
+            </tr>
+          )}
+          {error && !data && (
+            <tr>
+              <td colSpan={6} style={{ textAlign: 'center', padding: '2rem', color: 'var(--danger)' }}>
+                Error loading progress
+              </td>
+            </tr>
+          )}
+          {!isLoading && !error && data?.data.map((progress) => (
             <tr key={progress.id}>
               <td>{progress.id}</td>
               <td>{progress.user?.name || 'N/A'}</td>
