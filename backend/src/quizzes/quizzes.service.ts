@@ -143,6 +143,12 @@ export class QuizzesService {
 
   async remove(id: number): Promise<Quiz> {
     try {
+      await this.prisma.quizAttempt.deleteMany({
+        where: {
+          quizId: id,
+        },
+      });
+
       const quiz = await this.prisma.quiz.delete({
         where: {
           id,

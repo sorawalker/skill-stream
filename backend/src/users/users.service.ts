@@ -140,6 +140,25 @@ export class UsersService {
 
   async remove(id: number): Promise<User> {
     try {
+      await this.prisma.quizAttempt.deleteMany({
+        where: {
+          userId: id,
+        },
+      });
+
+      await this.prisma.userProgress.deleteMany({
+        where: {
+          userId: id,
+        },
+      });
+
+      await this.prisma.enrollment.deleteMany({
+        where: {
+          userId: id,
+        },
+      });
+
+      // Now delete the user
       return await this.prisma.user.delete({
         where: {
           id,

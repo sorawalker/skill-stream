@@ -136,6 +136,18 @@ export class LessonsService {
 
   async remove(id: number): Promise<Lesson> {
     try {
+      await this.prisma.quiz.deleteMany({
+        where: {
+          lessonId: id,
+        },
+      });
+
+      await this.prisma.userProgress.deleteMany({
+        where: {
+          lessonId: id,
+        },
+      });
+
       return await this.prisma.lesson.delete({
         where: {
           id,
