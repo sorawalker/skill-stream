@@ -24,7 +24,12 @@ export const Course = () => {
     queryKey: ['lessons', courseId],
     queryFn: () => {
       if (!courseId) throw new Error('Course ID is required');
-      return lessonsService.findManyByCourse(courseId, { page: 1, limit: 100, order: 'asc', sortBy: 'order' });
+      return lessonsService.findManyByCourse(courseId, {
+        page: 1,
+        limit: 100,
+        order: 'asc',
+        sortBy: 'order',
+      });
     },
     enabled: !!courseId,
   });
@@ -92,4 +97,3 @@ export const Course = () => {
     </div>
   );
 };
-

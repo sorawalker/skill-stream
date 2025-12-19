@@ -13,7 +13,8 @@ export const Courses = () => {
 
   const { data, isLoading, error } = useQuery({
     queryKey: ['courses', page, limit, deferredSearch],
-    queryFn: () => coursesService.findMany({ page, limit, search: deferredSearch, order: 'asc', sortBy: 'id' }),
+    queryFn: () =>
+      coursesService.findMany({ page, limit, search: deferredSearch, order: 'asc', sortBy: 'id' }),
   });
 
   const deleteMutation = useMutation({
@@ -39,8 +40,13 @@ export const Courses = () => {
   });
 
   const updateMutation = useMutation({
-    mutationFn: ({ id, courseData }: { id: number; courseData: Partial<{ title: string; description: string; image: string }> }) =>
-      coursesService.update(id, courseData),
+    mutationFn: ({
+      id,
+      courseData,
+    }: {
+      id: number;
+      courseData: Partial<{ title: string; description: string; image: string }>;
+    }) => coursesService.update(id, courseData),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['courses'] });
       setEditingCourseId(null);
@@ -53,7 +59,12 @@ export const Courses = () => {
     createMutation.mutate(newCourse);
   };
 
-  const handleEdit = (course: { id: number; title: string; description: string; image: string }) => {
+  const handleEdit = (course: {
+    id: number;
+    title: string;
+    description: string;
+    image: string;
+  }) => {
     setEditingCourseId(course.id);
     setEditCourse({ title: course.title, description: course.description, image: course.image });
   };
@@ -65,11 +76,14 @@ export const Courses = () => {
     }
   };
 
-  const handleDelete = useCallback((id: number) => {
-    if (confirm('Are you sure you want to delete this course?')) {
-      deleteMutation.mutate(id);
-    }
-  }, [deleteMutation]);
+  const handleDelete = useCallback(
+    (id: number) => {
+      if (confirm('Are you sure you want to delete this course?')) {
+        deleteMutation.mutate(id);
+      }
+    },
+    [deleteMutation],
+  );
 
   const handleSearchChange = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
     setSearch(e.target.value);
@@ -79,7 +93,7 @@ export const Courses = () => {
   const tableContent = useMemo(() => {
     if (isLoading) return <div className="admin-page__loading">Loading...</div>;
     if (error) return <div className="admin-page__error">Error loading courses</div>;
-    
+
     return (
       <>
         <table>
@@ -294,4 +308,3 @@ export const Courses = () => {
     </div>
   );
 };
-

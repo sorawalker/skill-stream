@@ -14,7 +14,8 @@ export const Users = () => {
 
   const { data, isLoading, error } = useQuery({
     queryKey: ['users', page, limit, deferredSearch],
-    queryFn: () => usersService.findMany({ page, limit, search: deferredSearch, order: 'asc', sortBy: 'id' }),
+    queryFn: () =>
+      usersService.findMany({ page, limit, search: deferredSearch, order: 'asc', sortBy: 'id' }),
   });
 
   const deleteMutation = useMutation({
@@ -25,9 +26,19 @@ export const Users = () => {
   });
 
   const [showCreateForm, setShowCreateForm] = useState(false);
-  const [newUser, setNewUser] = useState<{ email: string; name: string; password: string; role: UserRole }>({ email: '', name: '', password: '', role: 'USER' });
+  const [newUser, setNewUser] = useState<{
+    email: string;
+    name: string;
+    password: string;
+    role: UserRole;
+  }>({ email: '', name: '', password: '', role: 'USER' });
   const [editingUserId, setEditingUserId] = useState<number | null>(null);
-  const [editUser, setEditUser] = useState<{ email: string; name: string; password: string; role: UserRole }>({ email: '', name: '', password: '', role: 'USER' });
+  const [editUser, setEditUser] = useState<{
+    email: string;
+    name: string;
+    password: string;
+    role: UserRole;
+  }>({ email: '', name: '', password: '', role: 'USER' });
 
   const createMutation = useMutation({
     mutationFn: (userData: { email: string; name: string; password: string; role?: string }) =>
@@ -40,8 +51,13 @@ export const Users = () => {
   });
 
   const updateMutation = useMutation({
-    mutationFn: ({ id, userData }: { id: number; userData: Partial<{ email: string; name: string; password: string; role: string }> }) =>
-      usersService.update(id, userData),
+    mutationFn: ({
+      id,
+      userData,
+    }: {
+      id: number;
+      userData: Partial<{ email: string; name: string; password: string; role: string }>;
+    }) => usersService.update(id, userData),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['users'] });
       setEditingUserId(null);
@@ -74,11 +90,14 @@ export const Users = () => {
     }
   };
 
-  const handleDelete = useCallback((id: number) => {
-    if (confirm('Are you sure you want to delete this user?')) {
-      deleteMutation.mutate(id);
-    }
-  }, [deleteMutation]);
+  const handleDelete = useCallback(
+    (id: number) => {
+      if (confirm('Are you sure you want to delete this user?')) {
+        deleteMutation.mutate(id);
+      }
+    },
+    [deleteMutation],
+  );
 
   const handleSearchChange = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
     setSearch(e.target.value);
@@ -88,7 +107,7 @@ export const Users = () => {
   const tableContent = useMemo(() => {
     if (isLoading) return <div className="admin-page__loading">Loading...</div>;
     if (error) return <div className="admin-page__error">Error loading users</div>;
-    
+
     return (
       <>
         <table>
@@ -334,4 +353,3 @@ export const Users = () => {
     </div>
   );
 };
-

@@ -87,4 +87,3 @@ export const Home = () => {
     </div>
   );
 };
-

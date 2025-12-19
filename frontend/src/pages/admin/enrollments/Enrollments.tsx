@@ -10,7 +10,8 @@ export const Enrollments = () => {
 
   const { data, isLoading, error } = useQuery({
     queryKey: ['enrollments', page, limit],
-    queryFn: () => enrollmentsService.findMany({ page, limit, order: 'desc', sortBy: 'enrolledAt' }),
+    queryFn: () =>
+      enrollmentsService.findMany({ page, limit, order: 'desc', sortBy: 'enrolledAt' }),
   });
 
   const deleteMutation = useMutation({
@@ -95,4 +96,3 @@ export const Enrollments = () => {
     </div>
   );
 };
-

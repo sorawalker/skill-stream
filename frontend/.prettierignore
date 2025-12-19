@@ -1,0 +1,26 @@
+# Dependencies
+node_modules
+dist
+build
+.vite
+
+# Generated files
+*.d.ts
+*.js.map
+
+# Logs
+*.log
+
+# Environment files
+.env
+.env.local
+.env.*.local
+
+# IDE
+.vscode
+.idea
+
+# OS
+.DS_Store
+Thumbs.db
+

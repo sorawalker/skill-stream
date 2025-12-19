@@ -22,4 +22,3 @@ export class FindManyProgressDto {
   @IsIn(['id', 'updatedAt', 'progress', 'completed'])
   sortBy: 'id' | 'updatedAt' | 'progress' | 'completed' = 'updatedAt';
 }
-

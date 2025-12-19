@@ -11,11 +11,7 @@ interface LessonViewModalProps {
   lessonId: number | null;
 }
 
-export const LessonViewModal = ({
-  isOpen,
-  onClose,
-  lessonId,
-}: LessonViewModalProps) => {
+export const LessonViewModal = ({ isOpen, onClose, lessonId }: LessonViewModalProps) => {
   const { data: lesson, isLoading } = useQuery({
     queryKey: ['lesson', lessonId, 'view'],
     queryFn: () => {
@@ -73,4 +69,3 @@ export const LessonViewModal = ({
     </AdminModal>
   );
 };
-

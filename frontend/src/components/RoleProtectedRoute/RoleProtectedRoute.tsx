@@ -7,10 +7,7 @@ interface RoleProtectedRouteProps {
   allowedRoles: UserRole | UserRole[];
 }
 
-export const RoleProtectedRoute = ({
-  children,
-  allowedRoles,
-}: RoleProtectedRouteProps) => {
+export const RoleProtectedRoute = ({ children, allowedRoles }: RoleProtectedRouteProps) => {
   const { isAuthenticated, user, hasRole } = useAuthContext();
 
   if (!isAuthenticated) {
@@ -27,4 +24,3 @@ export const RoleProtectedRoute = ({
 
   return <>{children}</>;
 };
-

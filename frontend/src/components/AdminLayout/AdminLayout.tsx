@@ -38,7 +38,9 @@ export const AdminLayout = () => {
         className={`admin-layout__overlay ${isSidebarOpen ? 'admin-layout__overlay--visible' : ''}`}
         onClick={closeSidebar}
       />
-      <aside className={`admin-layout__sidebar ${isSidebarOpen ? 'admin-layout__sidebar--open' : ''}`}>
+      <aside
+        className={`admin-layout__sidebar ${isSidebarOpen ? 'admin-layout__sidebar--open' : ''}`}
+      >
         <div className="admin-layout__header">
           <h1 className="admin-layout__title">Admin Panel</h1>
           <div className="admin-layout__user-info">
@@ -137,4 +139,3 @@ export const AdminLayout = () => {
     </div>
   );
 };
-

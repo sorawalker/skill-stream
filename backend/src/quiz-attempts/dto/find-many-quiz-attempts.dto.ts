@@ -22,4 +22,3 @@ export class FindManyQuizAttemptsDto {
   @IsIn(['id', 'attemptedAt', 'score'])
   sortBy: 'id' | 'attemptedAt' | 'score' = 'attemptedAt';
 }
-

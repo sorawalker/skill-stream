@@ -98,7 +98,9 @@
     padding: $spacing-xl;
     cursor: pointer;
     box-shadow: $shadow-md;
-    transition: transform $transition-base, box-shadow $transition-base;
+    transition:
+      transform $transition-base,
+      box-shadow $transition-base;
 
     &:hover {
       transform: translateY(-4px);
@@ -229,4 +231,3 @@
     }
   }
 }
-

@@ -9,10 +9,7 @@ import type {
 
 export const enrollmentsService = {
   create: async (courseId: number): Promise<CreateEnrollmentResponse> => {
-    return api.post<CreateEnrollmentResponse>(
-      `/courses/${courseId}/enroll`,
-      {},
-    );
+    return api.post<CreateEnrollmentResponse>(`/courses/${courseId}/enroll`, {});
   },
 
   findMany: async (params?: {
@@ -30,9 +27,7 @@ export const enrollmentsService = {
     if (params?.order) queryParams.append('order', params.order);
 
     const query = queryParams.toString();
-    return api.get<FindManyEnrollmentsResponse>(
-      `/enrollments${query ? `?${query}` : ''}`,
-    );
+    return api.get<FindManyEnrollmentsResponse>(`/enrollments${query ? `?${query}` : ''}`);
   },
 
   findOne: async (id: number): Promise<FindOneEnrollmentResponse> => {
@@ -46,14 +41,10 @@ export const enrollmentsService = {
       progress: number;
     }>,
   ): Promise<UpdateEnrollmentResponse> => {
-    return api.patch<UpdateEnrollmentResponse>(
-      `/enrollments/${id}`,
-      enrollmentData,
-    );
+    return api.patch<UpdateEnrollmentResponse>(`/enrollments/${id}`, enrollmentData);
   },
 
   delete: async (id: number): Promise<DeleteEnrollmentResponse> => {
     return api.delete<DeleteEnrollmentResponse>(`/enrollments/${id}`);
   },
 };
-

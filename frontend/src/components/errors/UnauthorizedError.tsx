@@ -40,6 +40,3 @@ export const UnauthorizedError = ({
     </div>
   );
 };
-
-
-

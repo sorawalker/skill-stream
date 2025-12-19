@@ -26,11 +26,7 @@ export const AdminModal = ({
       >
         <div className="admin-modal__header">
           <h2 className="admin-modal__title">{title}</h2>
-          <button
-            className="admin-modal__close"
-            onClick={onClose}
-            aria-label="Close"
-          >
+          <button className="admin-modal__close" onClick={onClose} aria-label="Close">
             ×
           </button>
         </div>
@@ -39,4 +35,3 @@ export const AdminModal = ({
     </div>
   );
 };
-

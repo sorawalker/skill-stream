@@ -6,12 +6,7 @@ import type {
   CreateUserResponse,
 } from 'skill-stream-backend/shared/types';
 
-export type {
-  SignInRequest,
-  SignInResponse,
-  RegisterRequest,
-  CreateUserResponse,
-};
+export type { SignInRequest, SignInResponse, RegisterRequest, CreateUserResponse };
 
 export const authService = {
   signIn: async (credentials: SignInRequest): Promise<SignInResponse> => {
@@ -22,4 +17,3 @@ export const authService = {
     return api.post<CreateUserResponse>('/auth/sign-up', userData);
   },
 };
-

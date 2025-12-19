@@ -9,7 +9,8 @@ export const QuizAttempts = () => {
 
   const { data, isLoading, error } = useQuery({
     queryKey: ['quiz-attempts', page, limit],
-    queryFn: () => quizAttemptsService.findMany({ page, limit, order: 'desc', sortBy: 'attemptedAt' }),
+    queryFn: () =>
+      quizAttemptsService.findMany({ page, limit, order: 'desc', sortBy: 'attemptedAt' }),
   });
 
   if (isLoading) return <div className="admin-page__loading">Loading...</div>;
@@ -66,4 +67,3 @@ export const QuizAttempts = () => {
     </div>
   );
 };
-

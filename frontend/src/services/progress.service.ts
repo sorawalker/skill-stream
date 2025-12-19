@@ -14,10 +14,7 @@ export const progressService = {
       progress: number;
     },
   ): Promise<CreateProgressResponse> => {
-    return api.post<CreateProgressResponse>(
-      `/lessons/${lessonId}/progress`,
-      progressData,
-    );
+    return api.post<CreateProgressResponse>(`/lessons/${lessonId}/progress`, progressData);
   },
 
   findMany: async (params?: {
@@ -33,20 +30,14 @@ export const progressService = {
     if (params?.order) queryParams.append('order', params.order);
 
     const query = queryParams.toString();
-    return api.get<FindManyProgressResponse>(
-      `/progress${query ? `?${query}` : ''}`,
-    );
+    return api.get<FindManyProgressResponse>(`/progress${query ? `?${query}` : ''}`);
   },
 
-  findByLesson: async (
-    lessonId: number,
-  ): Promise<FindOneProgressResponse> => {
+  findByLesson: async (lessonId: number): Promise<FindOneProgressResponse> => {
     return api.get<FindOneProgressResponse>(`/progress/lesson/${lessonId}`);
   },
 
-  findByCourse: async (
-    courseId: number,
-  ): Promise<FindManyProgressResponse> => {
+  findByCourse: async (courseId: number): Promise<FindManyProgressResponse> => {
     return api.get<FindManyProgressResponse>(`/progress/course/${courseId}`);
   },
 
@@ -60,4 +51,3 @@ export const progressService = {
     return api.patch<UpdateProgressResponse>(`/progress/${id}`, progressData);
   },
 };
-

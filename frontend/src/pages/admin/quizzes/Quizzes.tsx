@@ -4,6 +4,7 @@ import { quizzesService } from '../../../services/quizzes.service';
 import { lessonsService } from '../../../services/lessons.service';
 import { coursesService } from '../../../services/courses.service';
 import { AdminModal } from '../../../components/AdminModal/AdminModal';
+import type { QuizQuestion } from 'skill-stream-backend/shared/types';
 import '../admin-common.scss';
 
 export const Quizzes = () => {
@@ -19,8 +20,17 @@ export const Quizzes = () => {
   const { data: lessons } = useQuery({
     queryKey: ['lessons', selectedCourseId],
     queryFn: () => {
-      if (!selectedCourseId) return Promise.resolve({ data: [], meta: { total: 0, page: 1, limit: 100, totalPages: 0 } });
-      return lessonsService.findManyByCourse(selectedCourseId, { page: 1, limit: 100, order: 'asc', sortBy: 'order' });
+      if (!selectedCourseId)
+        return Promise.resolve({
+          data: [],
+          meta: { total: 0, page: 1, limit: 100, totalPages: 0 },
+        });
+      return lessonsService.findManyByCourse(selectedCourseId, {
+        page: 1,
+        limit: 100,
+        order: 'asc',
+        sortBy: 'order',
+      });
     },
     enabled: !!selectedCourseId,
   });
@@ -68,8 +78,16 @@ export const Quizzes = () => {
   });
 
   const updateMutation = useMutation({
-    mutationFn: ({ id, quizData }: { id: number; quizData: Partial<{ title: string; questions: Array<{ question: string; rightAnswer: string; variants: string[] }> }> }) =>
-      quizzesService.update(id, quizData),
+    mutationFn: ({
+      id,
+      quizData,
+    }: {
+      id: number;
+      quizData: Partial<{
+        title: string;
+        questions: Array<{ question: string; rightAnswer: string; variants: string[] }>;
+      }>;
+    }) => quizzesService.update(id, quizData),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['quizzes'] });
       setEditingQuizId(null);
@@ -86,21 +104,28 @@ export const Quizzes = () => {
     setEditingQuizId(quiz.id);
     try {
       const quizData = await quizzesService.findOne(quiz.id, true);
-      if (quizData && 'questions' in quizData) {
+      if (quizData && 'questions' in quizData && Array.isArray(quizData.questions)) {
+        const questionsWithAnswers = quizData.questions as QuizQuestion[];
         setEditQuiz({
           title: quizData.title,
-          questions: quizData.questions.map((q: any) => ({
+          questions: questionsWithAnswers.map((q: QuizQuestion) => ({
             question: q.question,
             rightAnswer: q.rightAnswer,
             variants: q.variants,
           })),
         });
       } else {
-        setEditQuiz({ title: quiz.title, questions: [{ question: '', rightAnswer: '', variants: [''] }] });
+        setEditQuiz({
+          title: quiz.title,
+          questions: [{ question: '', rightAnswer: '', variants: [''] }],
+        });
       }
     } catch (error) {
       console.error('Failed to load quiz data:', error);
-      setEditQuiz({ title: quiz.title, questions: [{ question: '', rightAnswer: '', variants: [''] }] });
+      setEditQuiz({
+        title: quiz.title,
+        questions: [{ question: '', rightAnswer: '', variants: [''] }],
+      });
     }
   };
 
@@ -168,7 +193,9 @@ export const Quizzes = () => {
 
   const removeEditVariant = (questionIndex: number, variantIndex: number) => {
     const updated = [...editQuiz.questions];
-    updated[questionIndex].variants = updated[questionIndex].variants.filter((_, i) => i !== variantIndex);
+    updated[questionIndex].variants = updated[questionIndex].variants.filter(
+      (_, i) => i !== variantIndex,
+    );
     setEditQuiz({ ...editQuiz, questions: updated });
   };
 
@@ -239,7 +266,10 @@ export const Quizzes = () => {
             isOpen={showCreateForm}
             onClose={() => {
               setShowCreateForm(false);
-              setNewQuiz({ title: '', questions: [{ question: '', rightAnswer: '', variants: [''] }] });
+              setNewQuiz({
+                title: '',
+                questions: [{ question: '', rightAnswer: '', variants: [''] }],
+              });
             }}
             title="Create New Quiz"
             size="large"
@@ -258,7 +288,16 @@ export const Quizzes = () => {
                 </label>
               </div>
               {newQuiz.questions.map((q, qIndex) => (
-                <div key={qIndex} className="admin-page__form-group" style={{ border: '1px solid var(--border-color)', padding: '16px', borderRadius: '8px', marginBottom: '16px' }}>
+                <div
+                  key={qIndex}
+                  className="admin-page__form-group"
+                  style={{
+                    border: '1px solid var(--border-color)',
+                    padding: '16px',
+                    borderRadius: '8px',
+                    marginBottom: '16px',
+                  }}
+                >
                   <h3 style={{ marginBottom: '12px' }}>Question {qIndex + 1}</h3>
                   <div className="admin-page__form-group">
                     <label className="admin-page__form-label">
@@ -330,7 +369,10 @@ export const Quizzes = () => {
             isOpen={editingQuizId !== null}
             onClose={() => {
               setEditingQuizId(null);
-              setEditQuiz({ title: '', questions: [{ question: '', rightAnswer: '', variants: [''] }] });
+              setEditQuiz({
+                title: '',
+                questions: [{ question: '', rightAnswer: '', variants: [''] }],
+              });
             }}
             title="Edit Quiz"
             size="large"
@@ -349,8 +391,24 @@ export const Quizzes = () => {
                 </label>
               </div>
               {editQuiz.questions.map((q, qIndex) => (
-                <div key={qIndex} className="admin-page__form-group" style={{ border: '1px solid var(--border-color)', padding: '16px', borderRadius: '8px', marginBottom: '16px' }}>
-                  <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '12px' }}>
+                <div
+                  key={qIndex}
+                  className="admin-page__form-group"
+                  style={{
+                    border: '1px solid var(--border-color)',
+                    padding: '16px',
+                    borderRadius: '8px',
+                    marginBottom: '16px',
+                  }}
+                >
+                  <div
+                    style={{
+                      display: 'flex',
+                      justifyContent: 'space-between',
+                      alignItems: 'center',
+                      marginBottom: '12px',
+                    }}
+                  >
                     <h3 style={{ margin: 0 }}>Question {qIndex + 1}</h3>
                     {editQuiz.questions.length > 1 && (
                       <button
@@ -390,7 +448,10 @@ export const Quizzes = () => {
                   <div className="admin-page__form-group">
                     <label className="admin-page__form-label">Variants:</label>
                     {q.variants.map((variant, vIndex) => (
-                      <div key={vIndex} style={{ display: 'flex', gap: '8px', marginBottom: '8px' }}>
+                      <div
+                        key={vIndex}
+                        style={{ display: 'flex', gap: '8px', marginBottom: '8px' }}
+                      >
                         <input
                           className="admin-page__form-input"
                           type="text"
@@ -440,7 +501,10 @@ export const Quizzes = () => {
                   type="button"
                   onClick={() => {
                     setEditingQuizId(null);
-                    setEditQuiz({ title: '', questions: [{ question: '', rightAnswer: '', variants: [''] }] });
+                    setEditQuiz({
+                      title: '',
+                      questions: [{ question: '', rightAnswer: '', variants: [''] }],
+                    });
                   }}
                 >
                   Cancel
@@ -449,41 +513,40 @@ export const Quizzes = () => {
             </form>
           </AdminModal>
           <table>
-          <thead>
-            <tr>
-              <th>ID</th>
-              <th>Title</th>
-              <th>Questions</th>
-              <th>Actions</th>
-            </tr>
-          </thead>
-          <tbody>
-            {data?.data.map((quiz) => (
-              <tr key={quiz.id}>
-                <td>{quiz.id}</td>
-                <td>{quiz.title}</td>
-                <td>{quiz.questions.length}</td>
-                <td>
-                  <button
-                    className="admin-page__button admin-page__button--primary"
-                    onClick={() => handleEdit(quiz)}
-                  >
-                    Edit
-                  </button>
-                  <button
-                    className="admin-page__button admin-page__button--danger"
-                    onClick={() => handleDelete(quiz.id)}
-                  >
-                    Delete
-                  </button>
-                </td>
+            <thead>
+              <tr>
+                <th>ID</th>
+                <th>Title</th>
+                <th>Questions</th>
+                <th>Actions</th>
               </tr>
-            ))}
-          </tbody>
-        </table>
+            </thead>
+            <tbody>
+              {data?.data.map((quiz) => (
+                <tr key={quiz.id}>
+                  <td>{quiz.id}</td>
+                  <td>{quiz.title}</td>
+                  <td>{quiz.questions.length}</td>
+                  <td>
+                    <button
+                      className="admin-page__button admin-page__button--primary"
+                      onClick={() => handleEdit(quiz)}
+                    >
+                      Edit
+                    </button>
+                    <button
+                      className="admin-page__button admin-page__button--danger"
+                      onClick={() => handleDelete(quiz.id)}
+                    >
+                      Delete
+                    </button>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
         </>
       )}
     </div>
   );
 };
-

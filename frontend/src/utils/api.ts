@@ -5,11 +5,7 @@ export interface ApiError extends Error {
   data?: unknown;
 }
 
-export function createApiError(
-  status: number,
-  message: string,
-  data?: unknown,
-): ApiError {
+export function createApiError(status: number, message: string, data?: unknown): ApiError {
   const error = new Error(message) as ApiError;
   error.name = 'ApiError';
   error.status = status;
@@ -21,13 +17,10 @@ const getAuthToken = (): string | null => {
   return localStorage.getItem('auth_token');
 };
 
-async function fetchApi<T>(
-  endpoint: string,
-  options?: RequestInit,
-): Promise<T> {
+async function fetchApi<T>(endpoint: string, options?: RequestInit): Promise<T> {
   const url = `${API_BASE_URL}${endpoint}`;
   const token = getAuthToken();
-  
+
   const headers: Record<string, string> = {
     'Content-Type': 'application/json',
     ...(options?.headers as Record<string, string>),
@@ -81,4 +74,3 @@ export const api = {
   delete: <T>(endpoint: string, options?: RequestInit) =>
     fetchApi<T>(endpoint, { ...options, method: 'DELETE' }),
 };
-

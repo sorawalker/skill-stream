@@ -34,10 +34,7 @@ export const MyCourses = () => {
         {enrolledCourses.length === 0 ? (
           <div className="my-courses-page__empty">
             <p>You haven't enrolled in any courses yet.</p>
-            <button
-              className="my-courses-page__browse-button"
-              onClick={() => navigate('/')}
-            >
+            <button className="my-courses-page__browse-button" onClick={() => navigate('/')}>
               Browse Courses
             </button>
           </div>
@@ -45,7 +42,7 @@ export const MyCourses = () => {
           <div className="my-courses-page__courses-grid">
             {enrolledCourses.map((enrollment) => {
               if (!enrollment.course) return null;
-              
+
               return (
                 <CourseCard
                   key={enrollment.id}
@@ -61,4 +58,3 @@ export const MyCourses = () => {
     </div>
   );
 };
-

@@ -4,4 +4,3 @@ export { NotFoundError } from './NotFoundError';
 export { ServerError } from './ServerError';
 export { GenericError } from './GenericError';
 export { ApiErrorHandler } from './ApiErrorHandler';
-

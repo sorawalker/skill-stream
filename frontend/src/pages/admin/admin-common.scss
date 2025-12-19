@@ -99,7 +99,9 @@
     border: 2px solid $border-color;
     border-radius: $radius-lg;
     font-size: $font-size-base;
-    transition: border-color $transition-base, box-shadow $transition-base;
+    transition:
+      border-color $transition-base,
+      box-shadow $transition-base;
     background: $bg-primary;
     color: $text-primary;
 
@@ -109,10 +111,8 @@
       box-shadow: 0 0 0 3px rgba($primary, 0.1);
     }
   }
-
 }
 
-// Table styles - works with plain HTML tables (applied globally in admin pages)
 table {
   width: 100%;
   border-collapse: collapse;
@@ -174,7 +174,6 @@ td {
     padding-right: $spacing-xl;
   }
 
-  // Style inputs inside table cells
   input[type='text'],
   input[type='email'],
   input[type='number'],
@@ -186,7 +185,9 @@ td {
     border: 2px solid $border-color;
     border-radius: $radius-md;
     font-size: $font-size-sm;
-    transition: border-color $transition-base, box-shadow $transition-base;
+    transition:
+      border-color $transition-base,
+      box-shadow $transition-base;
     background: $bg-primary;
     color: $text-primary;
 
@@ -203,7 +204,6 @@ td {
     font-family: inherit;
   }
 
-  // Style buttons inside table cells
   button {
     padding: $spacing-xs $spacing-md;
     border: none;
@@ -237,13 +237,11 @@ td {
     }
   }
 
-  // Action buttons container - keep buttons on one line
   &:has(button) {
     white-space: nowrap;
   }
 }
 
-// Style specific button types if they have classes
 td button[class*='danger'],
 td button[class*='delete'] {
   background: $danger !important;
@@ -272,9 +270,7 @@ td button[class*='save'] {
   }
 }
 
-// Re-open admin-page for other styles
 .admin-page {
-  // Alternative class-based table styles (for future use)
   &__table {
     width: 100%;
     border-collapse: collapse;
@@ -361,7 +357,9 @@ td button[class*='save'] {
     border: 2px solid $border-color;
     border-radius: $radius-lg;
     font-size: $font-size-base;
-    transition: border-color $transition-base, box-shadow $transition-base;
+    transition:
+      border-color $transition-base,
+      box-shadow $transition-base;
     background: $bg-primary;
     color: $text-primary;
 
@@ -552,7 +550,8 @@ table {
   }
 }
 
-th, td {
+th,
+td {
   @include md-down {
     padding: $spacing-sm $spacing-md;
     font-size: $font-size-sm;
@@ -571,4 +570,3 @@ th, td {
     font-size: $font-size-xs;
   }
 }
-

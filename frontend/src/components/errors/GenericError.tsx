@@ -42,6 +42,3 @@ export const GenericError = ({
     </div>
   );
 };
-
-
-

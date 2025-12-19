@@ -7,10 +7,7 @@ interface ChangePasswordModalProps {
   onClose: () => void;
 }
 
-export const ChangePasswordModal = ({
-  userId,
-  onClose,
-}: ChangePasswordModalProps) => {
+export const ChangePasswordModal = ({ userId, onClose }: ChangePasswordModalProps) => {
   const [newPassword, setNewPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
   const [error, setError] = useState('');
@@ -29,12 +26,8 @@ export const ChangePasswordModal = ({
       return false;
     }
 
-    if (
-      !/(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])/.test(newPassword)
-    ) {
-      setError(
-        'Password must contain uppercase, lowercase, number and special character',
-      );
+    if (!/(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])/.test(newPassword)) {
+      setError('Password must contain uppercase, lowercase, number and special character');
       return false;
     }
 
@@ -62,8 +55,9 @@ export const ChangePasswordModal = ({
       onClose();
       setNewPassword('');
       setConfirmPassword('');
-    } catch (err: any) {
-      setError(err.message || 'Failed to change password');
+    } catch (err: unknown) {
+      const errorMessage = err instanceof Error ? err.message : 'Failed to change password';
+      setError(errorMessage);
     } finally {
       setIsLoading(false);
     }
@@ -71,27 +65,17 @@ export const ChangePasswordModal = ({
 
   return (
     <div className="change-password-modal__overlay" onClick={onClose}>
-      <div
-        className="change-password-modal__content"
-        onClick={(e) => e.stopPropagation()}
-      >
+      <div className="change-password-modal__content" onClick={(e) => e.stopPropagation()}>
         <div className="change-password-modal__header">
           <h2 className="change-password-modal__title">Change Password</h2>
-          <button
-            className="change-password-modal__close"
-            onClick={onClose}
-            aria-label="Close"
-          >
+          <button className="change-password-modal__close" onClick={onClose} aria-label="Close">
             ×
           </button>
         </div>
 
         <form onSubmit={handleSubmit} className="change-password-modal__form">
           <div className="change-password-modal__field">
-            <label
-              htmlFor="newPassword"
-              className="change-password-modal__label"
-            >
+            <label htmlFor="newPassword" className="change-password-modal__label">
               New Password
             </label>
             <input
@@ -106,10 +90,7 @@ export const ChangePasswordModal = ({
           </div>
 
           <div className="change-password-modal__field">
-            <label
-              htmlFor="confirmPassword"
-              className="change-password-modal__label"
-            >
+            <label htmlFor="confirmPassword" className="change-password-modal__label">
               Confirm Password
             </label>
             <input
@@ -123,9 +104,7 @@ export const ChangePasswordModal = ({
             />
           </div>
 
-          {error && (
-            <div className="change-password-modal__error">{error}</div>
-          )}
+          {error && <div className="change-password-modal__error">{error}</div>}
 
           <div className="change-password-modal__actions">
             <button
@@ -149,4 +128,3 @@ export const ChangePasswordModal = ({
     </div>
   );
 };
-

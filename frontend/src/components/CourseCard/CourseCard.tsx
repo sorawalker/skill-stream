@@ -2,17 +2,19 @@ import type { Course } from 'skill-stream-backend/shared/types';
 import './CourseCard.scss';
 
 interface CourseCardProps {
-  course: Course | {
-    id: number;
-    title: string;
-    description: string;
-    image: string;
-    createdAt?: string | Date;
-    updatedAt?: string | Date;
-    _count?: {
-      lessons?: number;
-    };
-  };
+  course:
+    | Course
+    | {
+        id: number;
+        title: string;
+        description: string;
+        image: string;
+        createdAt?: string | Date;
+        updatedAt?: string | Date;
+        _count?: {
+          lessons?: number;
+        };
+      };
   progress?: number;
   onClick: () => void;
 }
@@ -22,9 +24,7 @@ export const CourseCard = ({ course, progress, onClick }: CourseCardProps) => {
 
   return (
     <div className="course-card" onClick={onClick}>
-      {course.image && (
-        <img src={course.image} alt={course.title} className="course-card__image" />
-      )}
+      {course.image && <img src={course.image} alt={course.title} className="course-card__image" />}
       <div className="course-card__content">
         <h3 className="course-card__title">{course.title}</h3>
         <p className="course-card__description">{course.description}</p>
@@ -51,4 +51,3 @@ export const CourseCard = ({ course, progress, onClick }: CourseCardProps) => {
     </div>
   );
 };
-

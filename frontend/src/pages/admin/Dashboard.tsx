@@ -72,10 +72,7 @@ export const Dashboard = () => {
       <div className="admin-page__header">
         <h1 className="admin-page__title">Admin Dashboard</h1>
         <div className="admin-page__actions">
-          <Link
-            to="/"
-            className="admin-page__button admin-page__button--primary"
-          >
+          <Link to="/" className="admin-page__button admin-page__button--primary">
             Go to Main Site
           </Link>
         </div>
@@ -84,7 +81,10 @@ export const Dashboard = () => {
       <div className="dashboard">
         <div className="dashboard__welcome">
           <h2>Welcome to the Admin Panel</h2>
-          <p>Manage your learning platform from here. Use the navigation menu to access different sections.</p>
+          <p>
+            Manage your learning platform from here. Use the navigation menu to access different
+            sections.
+          </p>
         </div>
 
         <div className="dashboard__stats">
@@ -121,4 +121,3 @@ export const Dashboard = () => {
     </div>
   );
 };
-

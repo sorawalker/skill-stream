@@ -15,10 +15,7 @@ export const Header = () => {
 
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
-      if (
-        profileRef.current &&
-        !profileRef.current.contains(event.target as Node)
-      ) {
+      if (profileRef.current && !profileRef.current.contains(event.target as Node)) {
         setIsProfileOpen(false);
       }
     };
@@ -78,9 +75,7 @@ export const Header = () => {
                   {user?.name.charAt(0).toUpperCase() || 'U'}
                 </div>
                 <span className="header__profile-name">{user?.name}</span>
-                <span className="header__profile-arrow">
-                  {isProfileOpen ? '▲' : '▼'}
-                </span>
+                <span className="header__profile-arrow">{isProfileOpen ? '▲' : '▼'}</span>
               </button>
 
               {isProfileOpen && (
@@ -113,12 +108,8 @@ export const Header = () => {
       </header>
 
       {isPasswordModalOpen && (
-        <ChangePasswordModal
-          userId={user?.id}
-          onClose={() => setIsPasswordModalOpen(false)}
-        />
+        <ChangePasswordModal userId={user?.id} onClose={() => setIsPasswordModalOpen(false)} />
       )}
     </>
   );
 };
-

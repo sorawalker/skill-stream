@@ -8,7 +8,9 @@
   margin: 0;
   border-radius: $radius-xl;
   box-shadow: $shadow-md;
-  transition: transform $transition-slow, box-shadow $transition-slow;
+  transition:
+    transform $transition-slow,
+    box-shadow $transition-slow;
   overflow: hidden;
   position: relative;
   height: 100%;
@@ -139,4 +141,3 @@
     }
   }
 }
-

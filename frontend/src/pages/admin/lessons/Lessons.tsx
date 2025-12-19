@@ -20,8 +20,14 @@ export const Lessons = () => {
   const { data, isLoading, error } = useQuery({
     queryKey: ['lessons', selectedCourseId, page, limit],
     queryFn: () => {
-      if (!selectedCourseId) return Promise.resolve({ data: [], meta: { total: 0, page: 1, limit: 10, totalPages: 0 } });
-      return lessonsService.findManyByCourse(selectedCourseId, { page, limit, order: 'asc', sortBy: 'order' });
+      if (!selectedCourseId)
+        return Promise.resolve({ data: [], meta: { total: 0, page: 1, limit: 10, totalPages: 0 } });
+      return lessonsService.findManyByCourse(selectedCourseId, {
+        page,
+        limit,
+        order: 'asc',
+        sortBy: 'order',
+      });
     },
     enabled: !!selectedCourseId,
   });
@@ -52,8 +58,13 @@ export const Lessons = () => {
   });
 
   const updateMutation = useMutation({
-    mutationFn: ({ id, lessonData }: { id: number; lessonData: Partial<{ title: string; content: string; order: number }> }) =>
-      lessonsService.update(id, lessonData),
+    mutationFn: ({
+      id,
+      lessonData,
+    }: {
+      id: number;
+      lessonData: Partial<{ title: string; content: string; order: number }>;
+    }) => lessonsService.update(id, lessonData),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['lessons'] });
       setEditingLessonId(null);
@@ -163,7 +174,9 @@ export const Lessons = () => {
                     className="admin-page__form-input"
                     type="number"
                     value={newLesson.order}
-                    onChange={(e) => setNewLesson({ ...newLesson, order: parseInt(e.target.value) || 1 })}
+                    onChange={(e) =>
+                      setNewLesson({ ...newLesson, order: parseInt(e.target.value) || 1 })
+                    }
                     required
                   />
                 </label>
@@ -221,7 +234,9 @@ export const Lessons = () => {
                     className="admin-page__form-input"
                     type="number"
                     value={editLesson.order}
-                    onChange={(e) => setEditLesson({ ...editLesson, order: parseInt(e.target.value) || 1 })}
+                    onChange={(e) =>
+                      setEditLesson({ ...editLesson, order: parseInt(e.target.value) || 1 })
+                    }
                     required
                   />
                 </label>
@@ -320,4 +335,3 @@ export const Lessons = () => {
     </div>
   );
 };
-

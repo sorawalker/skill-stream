@@ -19,24 +19,14 @@ export const quizzesService = {
       }>;
     },
   ): Promise<CreateQuizResponse> => {
-    return api.post<CreateQuizResponse>(
-      `/lessons/${lessonId}/quizzes`,
-      quizData,
-    );
+    return api.post<CreateQuizResponse>(`/lessons/${lessonId}/quizzes`, quizData);
   },
 
-  findManyByLesson: async (
-    lessonId: number,
-  ): Promise<FindManyQuizzesResponse> => {
-    return api.get<FindManyQuizzesResponse>(
-      `/lessons/${lessonId}/quizzes`,
-    );
+  findManyByLesson: async (lessonId: number): Promise<FindManyQuizzesResponse> => {
+    return api.get<FindManyQuizzesResponse>(`/lessons/${lessonId}/quizzes`);
   },
 
-  findOne: async (
-    id: number,
-    includeAnswers?: boolean,
-  ): Promise<FindOneQuizResponse> => {
+  findOne: async (id: number, includeAnswers?: boolean): Promise<FindOneQuizResponse> => {
     const query = includeAnswers ? '?includeAnswers=true' : '';
     return api.get<FindOneQuizResponse>(`/quizzes/${id}${query}`);
   },
@@ -59,4 +49,3 @@ export const quizzesService = {
     return api.delete<DeleteQuizResponse>(`/quizzes/${id}`);
   },
 };
-

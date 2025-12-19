@@ -72,9 +72,7 @@ export class ProgressService {
     const skip = (page - 1) * limit;
 
     try {
-      const where: Prisma.UserProgressWhereInput = userId
-        ? { userId }
-        : {};
+      const where: Prisma.UserProgressWhereInput = userId ? { userId } : {};
 
       const [progressList, total] = await Promise.all([
         this.prisma.userProgress.findMany({

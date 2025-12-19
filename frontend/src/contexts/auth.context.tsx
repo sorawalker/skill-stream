@@ -10,9 +10,7 @@ export interface AuthContextType {
   hasRole: (role: UserRole | UserRole[]) => boolean;
 }
 
-export const AuthContext = createContext<AuthContextType | undefined>(
-  undefined,
-);
+export const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
 export const useAuthContext = () => {
   const context = useContext(AuthContext);
@@ -21,4 +19,3 @@ export const useAuthContext = () => {
   }
   return context;
 };
-

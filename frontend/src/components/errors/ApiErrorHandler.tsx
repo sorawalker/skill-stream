@@ -33,48 +33,28 @@ export const ApiErrorHandler = ({
 
   if (status === 401) {
     return (
-      <UnauthorizedError
-        message={customMessages[401] || message}
-        showBackButton={showBackButton}
-      />
+      <UnauthorizedError message={customMessages[401] || message} showBackButton={showBackButton} />
     );
   }
 
   if (status === 403) {
     return (
-      <ForbiddenError
-        message={customMessages[403] || message}
-        showBackButton={showBackButton}
-      />
+      <ForbiddenError message={customMessages[403] || message} showBackButton={showBackButton} />
     );
   }
 
   if (status === 404) {
     return (
-      <NotFoundError
-        message={customMessages[404] || message}
-        showBackButton={showBackButton}
-      />
+      <NotFoundError message={customMessages[404] || message} showBackButton={showBackButton} />
     );
   }
 
   if (status >= 500) {
-    return (
-      <ServerError
-        message={customMessages[500] || message}
-        showBackButton={showBackButton}
-      />
-    );
+    return <ServerError message={customMessages[500] || message} showBackButton={showBackButton} />;
   }
 
   if (status) {
-    return (
-      <GenericError
-        status={status}
-        message={message}
-        showBackButton={showBackButton}
-      />
-    );
+    return <GenericError status={status} message={message} showBackButton={showBackButton} />;
   }
 
   return children ? (
@@ -83,5 +63,3 @@ export const ApiErrorHandler = ({
     <GenericError message={message} showBackButton={showBackButton} />
   );
 };
-
-

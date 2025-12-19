@@ -37,9 +37,8 @@ export const CourseModal = ({ course, onClose, onGoToCourse }: CourseModalProps)
     }
   }, [course, refetchEnrollments, refetchCourse]);
 
-  const currentEnrollment: Enrollment | null = enrollmentsData?.data.find(
-    (e) => e.courseId === course?.id,
-  ) || null;
+  const currentEnrollment: Enrollment | null =
+    enrollmentsData?.data.find((e) => e.courseId === course?.id) || null;
 
   const displayCourse = courseData || course;
 
@@ -129,4 +128,3 @@ export const CourseModal = ({ course, onClose, onGoToCourse }: CourseModalProps)
     </div>
   );
 };
-

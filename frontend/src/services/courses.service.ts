@@ -17,9 +17,7 @@ export const coursesService = {
     return api.post<CreateCourseResponse>('/courses', courseData);
   },
 
-  findMany: async (
-    params?: FindManyCoursesRequest,
-  ): Promise<FindManyCoursesResponse> => {
+  findMany: async (params?: FindManyCoursesRequest): Promise<FindManyCoursesResponse> => {
     const queryParams = new URLSearchParams();
     if (params?.page) queryParams.append('page', params.page.toString());
     if (params?.limit) queryParams.append('limit', params.limit.toString());
@@ -28,9 +26,7 @@ export const coursesService = {
     if (params?.order) queryParams.append('order', params.order);
 
     const query = queryParams.toString();
-    return api.get<FindManyCoursesResponse>(
-      `/courses${query ? `?${query}` : ''}`,
-    );
+    return api.get<FindManyCoursesResponse>(`/courses${query ? `?${query}` : ''}`);
   },
 
   findOne: async (id: number): Promise<FindOneCourseResponse> => {
@@ -52,4 +48,3 @@ export const coursesService = {
     return api.delete<DeleteCourseResponse>(`/courses/${id}`);
   },
 };
-

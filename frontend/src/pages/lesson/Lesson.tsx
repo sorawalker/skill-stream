@@ -17,7 +17,11 @@ export const Lesson = () => {
   const navigate = useNavigate();
   const lessonId = id ? parseInt(id, 10) : null;
 
-  const { data: lesson, isLoading, error } = useQuery({
+  const {
+    data: lesson,
+    isLoading,
+    error,
+  } = useQuery({
     queryKey: ['lesson', lessonId],
     queryFn: () => {
       if (!lessonId) throw new Error('Lesson ID is required');
@@ -50,12 +54,14 @@ export const Lesson = () => {
   });
 
   const currentLessonIndex = courseLessons?.data.findIndex((l) => l.id === lessonId) ?? -1;
-  const previousLesson = currentLessonIndex > 0 ? courseLessons?.data[currentLessonIndex - 1] : null;
+  const previousLesson =
+    currentLessonIndex > 0 ? courseLessons?.data[currentLessonIndex - 1] : null;
   const nextLesson =
     currentLessonIndex >= 0 && currentLessonIndex < (courseLessons?.data.length ?? 0) - 1
       ? courseLessons?.data[currentLessonIndex + 1]
       : null;
-  const isLastLesson = currentLessonIndex >= 0 && currentLessonIndex === (courseLessons?.data.length ?? 0) - 1;
+  const isLastLesson =
+    currentLessonIndex >= 0 && currentLessonIndex === (courseLessons?.data.length ?? 0) - 1;
 
   const { data: lessonProgress } = useQuery({
     queryKey: ['progress', 'lesson', lessonId],
@@ -67,7 +73,7 @@ export const Lesson = () => {
   });
 
   const hasQuizzes = (quizzes?.data.length ?? 0) > 0;
-  
+
   const quizAttemptsQueries = useQueries({
     queries: hasQuizzes
       ? (quizzes?.data || []).map((quiz) => ({
@@ -81,7 +87,7 @@ export const Lesson = () => {
 
   const allQuizzesAnswered = hasQuizzes
     ? quizAttemptsQueries.every(
-        (query) => query.isSuccess && (query.data !== null && query.data !== undefined),
+        (query) => query.isSuccess && query.data !== null && query.data !== undefined,
       )
     : true;
 
@@ -175,19 +181,13 @@ export const Lesson = () => {
       <Header />
       <div className="lesson-page__container">
         <div className="lesson-page__header">
-          <button
-            onClick={() => navigate(-1)}
-            className="lesson-page__back"
-          >
+          <button onClick={() => navigate(-1)} className="lesson-page__back">
             Back
           </button>
           <h1 className="lesson-page__title">{lesson.title}</h1>
         </div>
         <div className="lesson-page__content">
-          <div
-            className="lesson-page__text"
-            dangerouslySetInnerHTML={{ __html: lesson.content }}
-          />
+          <div className="lesson-page__text" dangerouslySetInnerHTML={{ __html: lesson.content }} />
         </div>
 
         {quizzes && quizzes.data.length > 0 && (
@@ -239,4 +239,3 @@ export const Lesson = () => {
     </div>
   );
 };
-

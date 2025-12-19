@@ -17,10 +17,7 @@ export const lessonsService = {
       order: number;
     },
   ): Promise<CreateLessonResponse> => {
-    return api.post<CreateLessonResponse>(
-      `/courses/${courseId}/lessons`,
-      lessonData,
-    );
+    return api.post<CreateLessonResponse>(`/courses/${courseId}/lessons`, lessonData);
   },
 
   findManyByCourse: async (
@@ -59,4 +56,3 @@ export const lessonsService = {
     return api.delete<DeleteLessonResponse>(`/lessons/${id}`);
   },
 };
-

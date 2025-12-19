@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useMemo } from 'react';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { quizzesService } from '../../services/quizzes.service';
 import { quizAttemptsService } from '../../services/quiz-attempts.service';
@@ -13,8 +13,8 @@ interface QuizProps {
 export const Quiz = ({ quizId }: QuizProps) => {
   const queryClient = useQueryClient();
   const [isExpanded, setIsExpanded] = useState(false);
-  const [selectedAnswers, setSelectedAnswers] = useState<Record<string, string>>({});
-  const [attemptResult, setAttemptResult] = useState<QuizAttemptResult | null>(null);
+  const [newSelectedAnswers, setNewSelectedAnswers] = useState<Record<string, string>>({});
+  const [mutationResult, setMutationResult] = useState<QuizAttemptResult | null>(null);
 
   const { data: quiz, isLoading } = useQuery({
     queryKey: ['quiz', quizId],
@@ -29,27 +29,33 @@ export const Quiz = ({ quizId }: QuizProps) => {
     retry: false,
   });
 
-  useEffect(() => {
+  // Derive attemptResult from previousAttempt or mutationResult
+  const attemptResult = useMemo(() => {
+    return mutationResult || previousAttempt || null;
+  }, [mutationResult, previousAttempt]);
+
+  // Derive selectedAnswers from previousAttempt or use newSelectedAnswers
+  const selectedAnswers = useMemo(() => {
     if (previousAttempt) {
-      setAttemptResult(previousAttempt);
       const answers: Record<string, string> = {};
       previousAttempt.correctAnswersList.forEach((item) => {
         answers[item.question] = item.userAnswer;
       });
-      setSelectedAnswers(answers);
+      return answers;
     }
-  }, [previousAttempt]);
+    return newSelectedAnswers;
+  }, [previousAttempt, newSelectedAnswers]);
 
   const attemptMutation = useMutation({
     mutationFn: (answers: Array<{ question: string; answer: string }>) =>
       quizAttemptsService.create(quizId, { answers }),
     onSuccess: async (result) => {
-      setAttemptResult(result);
-      
+      setMutationResult(result);
+
       if (quiz?.lessonId) {
         try {
           const existingProgress = await progressService.findByLesson(quiz.lessonId);
-          
+
           if (existingProgress) {
             await progressService.update(existingProgress.id, {
               completed: result.attempt.score === 100,
@@ -61,9 +67,10 @@ export const Quiz = ({ quizId }: QuizProps) => {
               progress: result.attempt.score,
             });
           }
-          
+
           queryClient.invalidateQueries({ queryKey: ['progress'] });
           queryClient.invalidateQueries({ queryKey: ['enrollments'] });
+          queryClient.invalidateQueries({ queryKey: ['quiz-user-attempt', quizId] });
         } catch (error) {
           console.error('Failed to update progress:', error);
         }
@@ -76,8 +83,8 @@ export const Quiz = ({ quizId }: QuizProps) => {
   };
 
   const handleAnswerChange = (question: string, answer: string) => {
-    if (!previousAttempt) {
-      setSelectedAnswers((prev) => ({
+    if (!previousAttempt && !mutationResult) {
+      setNewSelectedAnswers((prev) => ({
         ...prev,
         [question]: answer,
       }));
@@ -85,11 +92,11 @@ export const Quiz = ({ quizId }: QuizProps) => {
   };
 
   const handleSubmit = () => {
-    if (!quiz || previousAttempt) return;
+    if (!quiz || attemptResult) return;
 
     const answers = quiz.questions.map((q) => ({
       question: q.question,
-      answer: selectedAnswers[q.question] || '',
+      answer: newSelectedAnswers[q.question] || '',
     }));
 
     attemptMutation.mutate(answers);
@@ -157,11 +164,11 @@ export const Quiz = ({ quizId }: QuizProps) => {
                             ? isCorrectAnswer
                               ? 'quiz__option--correct'
                               : isIncorrect
-                              ? 'quiz__option--incorrect'
-                              : ''
+                                ? 'quiz__option--incorrect'
+                                : ''
                             : isUserAnswer
-                            ? 'quiz__option--selected'
-                            : ''
+                              ? 'quiz__option--selected'
+                              : ''
                         }`}
                       >
                         <input
@@ -200,4 +207,3 @@ export const Quiz = ({ quizId }: QuizProps) => {
     </div>
   );
 };
-

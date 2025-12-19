@@ -30,7 +30,10 @@
     font-size: $font-size-4xl;
     font-weight: $font-weight-bold;
     margin: 0 auto $spacing-lg;
-    box-shadow: $shadow-xl, 0 0 0 4px white, 0 0 0 8px rgba($primary, 0.2);
+    box-shadow:
+      $shadow-xl,
+      0 0 0 4px white,
+      0 0 0 8px rgba($primary, 0.2);
   }
 
   &__name {

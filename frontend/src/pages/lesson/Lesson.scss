@@ -29,7 +29,10 @@
     font-size: $font-size-sm;
     font-weight: $font-weight-medium;
     cursor: pointer;
-    transition: background-color $transition-base, border-color $transition-base, transform $transition-fast;
+    transition:
+      background-color $transition-base,
+      border-color $transition-base,
+      transform $transition-fast;
     box-shadow: $shadow-sm;
 
     &:hover {
@@ -288,4 +291,3 @@
     }
   }
 }
-
