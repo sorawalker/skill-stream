@@ -6,9 +6,8 @@
 
   &__container {
     max-width: 900px;
-    margin: 0 auto;
     padding: $spacing-xl;
-    margin-top: $spacing-xl;
+    margin: $spacing-xl auto 0;
   }
 
   &__header {
@@ -128,7 +127,6 @@
 
     blockquote {
       border-left: 4px solid $primary;
-      padding-left: $spacing-md;
       margin: $spacing-md 0;
       color: $text-secondary;
       font-style: italic;

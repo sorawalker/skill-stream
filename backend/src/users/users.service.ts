@@ -158,7 +158,6 @@ export class UsersService {
         },
       });
 
-      // Now delete the user
       return await this.prisma.user.delete({
         where: {
           id,

@@ -164,7 +164,6 @@ export class CoursesService {
         });
       }
 
-      // Delete user progress for all lessons
       if (lessonIds.length > 0) {
         await this.prisma.userProgress.deleteMany({
           where: {
@@ -173,21 +172,18 @@ export class CoursesService {
         });
       }
 
-      // Delete lessons
       await this.prisma.lesson.deleteMany({
         where: {
           courseId: id,
         },
       });
 
-      // Delete enrollments
       await this.prisma.enrollment.deleteMany({
         where: {
           courseId: id,
         },
       });
 
-      // Now delete the course
       return await this.prisma.course.delete({
         where: {
           id,

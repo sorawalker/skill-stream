@@ -146,7 +146,7 @@ const technologies: Technology[] = [
   },
   {
     name: 'Turborepo',
-    icon:(
+    icon: (
       <img
         src="/technologies/turborepo.svg"
         alt="ESLint"

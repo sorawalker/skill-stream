@@ -13,9 +13,14 @@ import './Quiz.scss';
 interface QuizProps {
   quizId: number;
   quizTitle?: string;
+  onCompleted?: () => void;
 }
 
-export const Quiz = ({ quizId, quizTitle }: QuizProps) => {
+export const Quiz = ({
+  quizId,
+  quizTitle,
+  onCompleted,
+}: QuizProps) => {
   const queryClient = useQueryClient();
   const [isExpanded, setIsExpanded] = useState(false);
   const [newSelectedAnswers, setNewSelectedAnswers] =
@@ -36,8 +41,8 @@ export const Quiz = ({ quizId, quizTitle }: QuizProps) => {
     queryKey: ['quiz-user-attempt', quizId],
     queryFn: () =>
       quizAttemptsService.findUserAttempt(quizId),
-    enabled: isExpanded,
     retry: false,
+    throwOnError: false,
   });
 
   const attemptResult = useMemo(() => {
@@ -61,6 +66,8 @@ export const Quiz = ({ quizId, quizTitle }: QuizProps) => {
     ) => quizAttemptsService.create(quizId, { answers }),
     onSuccess: async (result) => {
       setMutationResult(result);
+
+      onCompleted?.();
 
       if (quiz?.lessonId) {
         try {
@@ -87,6 +94,11 @@ export const Quiz = ({ quizId, quizTitle }: QuizProps) => {
             });
           }
 
+          queryClient.setQueryData(
+            ['quiz-user-attempt', quizId],
+            result,
+          );
+
           queryClient.invalidateQueries({
             queryKey: ['progress'],
           });
@@ -95,6 +107,9 @@ export const Quiz = ({ quizId, quizTitle }: QuizProps) => {
           });
           queryClient.invalidateQueries({
             queryKey: ['quiz-user-attempt', quizId],
+          });
+          queryClient.invalidateQueries({
+            queryKey: ['progress', 'lesson'],
           });
         } catch (error) {
           console.error(

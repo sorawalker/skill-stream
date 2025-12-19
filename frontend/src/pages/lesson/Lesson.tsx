@@ -5,7 +5,7 @@ import {
   useQueries,
 } from '@tanstack/react-query';
 import { useParams, useNavigate } from 'react-router-dom';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { lessonsService } from '../../services/lessons.service';
 import { quizzesService } from '../../services/quizzes.service';
 import { progressService } from '../../services/progress.service';
@@ -95,6 +95,9 @@ export const Lesson = () => {
   });
 
   const hasQuizzes = (quizzes?.data.length ?? 0) > 0;
+  const [completedQuizIds, setCompletedQuizIds] = useState<
+    Set<number>
+  >(new Set());
 
   const quizAttemptsQueries = useQueries({
     queries: hasQuizzes
@@ -104,20 +107,39 @@ export const Lesson = () => {
             quizAttemptsService.findUserAttempt(quiz.id),
           enabled: true,
           retry: false,
+          onError: () => {
+            // Silently handle 404 - quiz attempt doesn't exist yet
+          },
         }))
       : [],
   });
 
+  // Check if quizzes are answered from queries or from completed state
   const allQuizzesAnswered = hasQuizzes
-    ? quizAttemptsQueries.every(
-        (query) =>
-          query.isSuccess &&
-          query.data !== null &&
-          query.data !== undefined,
-      )
+    ? quizAttemptsQueries.every((query, index) => {
+        const quizId = quizzes?.data[index]?.id;
+        if (!quizId) return false;
+        // Check if completed in this session OR if query succeeded with data
+        return (
+          completedQuizIds.has(quizId) ||
+          (query.isSuccess &&
+            query.data !== null &&
+            query.data !== undefined)
+        );
+      })
     : true;
 
   const canFinishLesson = !hasQuizzes || allQuizzesAnswered;
+
+  const handleQuizCompleted = (quizId: number) => {
+    setCompletedQuizIds((prev) =>
+      new Set(prev).add(quizId),
+    );
+    // Invalidate quiz attempts queries to refresh the check
+    queryClient.invalidateQueries({
+      queryKey: ['quiz-user-attempt'],
+    });
+  };
 
   const finishLessonMutation = useMutation({
     mutationFn: async () => {
@@ -252,6 +274,9 @@ export const Lesson = () => {
                 key={quiz.id}
                 quizId={quiz.id}
                 quizTitle={quiz.title}
+                onCompleted={() =>
+                  handleQuizCompleted(quiz.id)
+                }
               />
             ))}
           </div>
