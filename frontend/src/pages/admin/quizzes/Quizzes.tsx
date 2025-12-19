@@ -511,15 +511,15 @@ export const Quizzes = () => {
             </form>
           </AdminModal>
           <table>
-            <thead>
-              <tr>
-                <th>ID</th>
-                <th>Title</th>
-                <th>Questions</th>
-                <th>Actions</th>
-              </tr>
-            </thead>
-            <tbody>
+          <thead>
+            <tr>
+              <th>ID</th>
+              <th>Title</th>
+              <th>Questions</th>
+              <th>Actions</th>
+            </tr>
+          </thead>
+          <tbody>
               {isLoading && !data && (
                 <tr>
                   <td colSpan={4} style={{ textAlign: 'center', padding: '2rem' }}>
@@ -535,28 +535,28 @@ export const Quizzes = () => {
                 </tr>
               )}
               {!isLoading && !error && data?.data.map((quiz) => (
-                <tr key={quiz.id}>
-                  <td>{quiz.id}</td>
-                  <td>{quiz.title}</td>
-                  <td>{quiz.questions.length}</td>
-                  <td>
-                    <button
-                      className="admin-page__button admin-page__button--primary"
-                      onClick={() => handleEdit(quiz)}
-                    >
-                      Edit
-                    </button>
-                    <button
-                      className="admin-page__button admin-page__button--danger"
-                      onClick={() => handleDelete(quiz.id)}
-                    >
-                      Delete
-                    </button>
-                  </td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
+              <tr key={quiz.id}>
+                <td>{quiz.id}</td>
+                <td>{quiz.title}</td>
+                <td>{quiz.questions.length}</td>
+                <td>
+                  <button
+                    className="admin-page__button admin-page__button--primary"
+                    onClick={() => handleEdit(quiz)}
+                  >
+                    Edit
+                  </button>
+                  <button
+                    className="admin-page__button admin-page__button--danger"
+                    onClick={() => handleDelete(quiz.id)}
+                  >
+                    Delete
+                  </button>
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
         </>
       )}
     </div>

@@ -126,6 +126,68 @@ export class CoursesService {
 
   async remove(id: number): Promise<Course> {
     try {
+      const lessons = await this.prisma.lesson.findMany({
+        where: {
+          courseId: id,
+        },
+        select: {
+          id: true,
+        },
+      });
+
+      const lessonIds = lessons.map((lesson) => lesson.id);
+
+      if (lessonIds.length > 0) {
+        const quizzes = await this.prisma.quiz.findMany({
+          where: {
+            lessonId: { in: lessonIds },
+          },
+          select: {
+            id: true,
+          },
+        });
+
+        const quizIds = quizzes.map((quiz) => quiz.id);
+
+        if (quizIds.length > 0) {
+          await this.prisma.quizAttempt.deleteMany({
+            where: {
+              quizId: { in: quizIds },
+            },
+          });
+        }
+
+        await this.prisma.quiz.deleteMany({
+          where: {
+            lessonId: { in: lessonIds },
+          },
+        });
+      }
+
+      // Delete user progress for all lessons
+      if (lessonIds.length > 0) {
+        await this.prisma.userProgress.deleteMany({
+          where: {
+            lessonId: { in: lessonIds },
+          },
+        });
+      }
+
+      // Delete lessons
+      await this.prisma.lesson.deleteMany({
+        where: {
+          courseId: id,
+        },
+      });
+
+      // Delete enrollments
+      await this.prisma.enrollment.deleteMany({
+        where: {
+          courseId: id,
+        },
+      });
+
+      // Now delete the course
       return await this.prisma.course.delete({
         where: {
           id,
