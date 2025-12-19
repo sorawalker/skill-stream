@@ -26,7 +26,6 @@ import {
 } from '../shared/types';
 import { JwtAuthGuard } from '../auth/guards/jwt.guard';
 import { RolesGuard } from '../auth/guards/roles.guard';
-import { Roles } from '../common/decorators/roles.decorator';
 import { UsersService } from '../users/users.service';
 import { type RequestWithUser } from '../auth/types/jwt-payload.interface';
 
@@ -98,7 +97,6 @@ export class EnrollmentsController {
 
   @Get('enrollments')
   @UseGuards(JwtAuthGuard, RolesGuard)
-  @Roles('ADMIN', 'MANAGER', 'USER')
   async findMany(
     @Query() findManyEnrollmentsDto: FindManyEnrollmentsDto,
     @Request() req: RequestWithUser,

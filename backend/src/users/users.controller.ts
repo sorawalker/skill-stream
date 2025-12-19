@@ -16,7 +16,7 @@ import { UsersService } from './users.service';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { ChangePasswordDto } from './dto/change-password.dto';
-import { Prisma, User } from '#generated/prisma/client';
+import { Prisma, Role, User } from '#generated/prisma/client';
 import { FindManyUsersDto } from './dto/find-many-user.dto';
 import {
   CreateUserResponse,
@@ -36,7 +36,7 @@ export class UsersController {
 
   @Post()
   @UseGuards(JwtAuthGuard, RolesGuard)
-  @Roles('ADMIN')
+  @Roles(Role.ADMIN)
   async create(
     @Body() createUserDto: CreateUserDto,
   ): Promise<CreateUserResponse> {
@@ -81,7 +81,7 @@ export class UsersController {
 
   @Get()
   @UseGuards(JwtAuthGuard, RolesGuard)
-  @Roles('ADMIN')
+  @Roles(Role.ADMIN)
   async findMany(
     @Query() findManyUsersDto: FindManyUsersDto,
   ): Promise<FindManyUsersResponse> {
@@ -132,7 +132,7 @@ export class UsersController {
 
   @Patch(':id')
   @UseGuards(JwtAuthGuard, RolesGuard)
-  @Roles('ADMIN')
+  @Roles(Role.ADMIN)
   async update(
     @Param('id') id: number,
     @Body() updateUserDto: UpdateUserDto,
@@ -184,7 +184,7 @@ export class UsersController {
 
   @Delete(':id')
   @UseGuards(JwtAuthGuard, RolesGuard)
-  @Roles('ADMIN')
+  @Roles(Role.ADMIN)
   async remove(@Param('id') id: number): Promise<DeleteUserResponse> {
     try {
       return await this.usersService.remove(id);

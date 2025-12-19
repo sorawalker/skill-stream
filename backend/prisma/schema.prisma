@@ -5,8 +5,8 @@
 // Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
 
 generator client {
-  provider = "prisma-client"
-  output   = "../generated/prisma"
+  provider     = "prisma-client"
+  output       = "../generated/prisma"
   moduleFormat = "cjs"
 }
 
@@ -23,16 +23,16 @@ model User {
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
-  enrollments    Enrollment[]
-  progress       UserProgress[]
-  quizAttempts   QuizAttempt[]
+  enrollments  Enrollment[]
+  progress     UserProgress[]
+  quizAttempts QuizAttempt[]
 }
 
 model Course {
   id          Int      @id @default(autoincrement())
   title       String
   description String
-  image String
+  image       String
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt
 
@@ -49,9 +49,9 @@ model Lesson {
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
-  course    Course   @relation(fields: [courseId], references: [id])
-  quizzes   Quiz[]
-  progress  UserProgress[]
+  course   Course         @relation(fields: [courseId], references: [id])
+  quizzes  Quiz[]
+  progress UserProgress[]
 }
 
 model Quiz {
@@ -62,8 +62,8 @@ model Quiz {
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
-  lesson    Lesson   @relation(fields: [lessonId], references: [id])
-  attempts  QuizAttempt[]
+  lesson   Lesson        @relation(fields: [lessonId], references: [id])
+  attempts QuizAttempt[]
 }
 
 model Enrollment {
@@ -72,22 +72,22 @@ model Enrollment {
   courseId   Int
   enrolledAt DateTime @default(now())
   completed  Boolean  @default(false)
-  progress Float    @default(0.0)
+  progress   Float    @default(0.0)
 
-  user       User     @relation(fields: [userId], references: [id])
-  course     Course   @relation(fields: [courseId], references: [id])
+  user   User   @relation(fields: [userId], references: [id])
+  course Course @relation(fields: [courseId], references: [id])
 }
 
 model UserProgress {
-  id         Int      @id @default(autoincrement())
-  userId     Int
-  lessonId   Int
-  completed  Boolean  @default(false)
-  progress Float    @default(0.0)
-  updatedAt  DateTime @updatedAt
+  id        Int      @id @default(autoincrement())
+  userId    Int
+  lessonId  Int
+  completed Boolean  @default(false)
+  progress  Float    @default(0.0)
+  updatedAt DateTime @updatedAt
 
-  user       User     @relation(fields: [userId], references: [id])
-  lesson     Lesson   @relation(fields: [lessonId], references: [id])
+  user   User   @relation(fields: [userId], references: [id])
+  lesson Lesson @relation(fields: [lessonId], references: [id])
 
   @@unique([userId, lessonId])
 }
@@ -97,16 +97,15 @@ model QuizAttempt {
   userId      Int
   quizId      Int
   score       Float
-  answer Json
+  answer      Json
   attemptedAt DateTime @default(now())
 
-  user        User     @relation(fields: [userId], references: [id])
-  quiz        Quiz     @relation(fields: [quizId], references: [id])
+  user User @relation(fields: [userId], references: [id])
+  quiz Quiz @relation(fields: [quizId], references: [id])
 }
 
 enum Role {
   USER
-  SUPPORT
   MANAGER
   ADMIN
 }

@@ -15,7 +15,7 @@ import {
 import { LessonsService } from './lessons.service';
 import { CreateLessonDto } from './dto/create-lesson.dto';
 import { UpdateLessonDto } from './dto/update-lesson.dto';
-import { Prisma } from '#generated/prisma/client';
+import { Prisma, Role } from '#generated/prisma/client';
 import { FindManyLessonsDto } from './dto/find-many-lessons.dto';
 import {
   CreateLessonResponse,
@@ -35,7 +35,7 @@ export class LessonsController {
 
   @Post('courses/:courseId/lessons')
   @UseGuards(JwtAuthGuard, RolesGuard)
-  @Roles('ADMIN', 'MANAGER')
+  @Roles(Role.ADMIN, Role.MANAGER)
   async create(
     @Param('courseId', ParseIntPipe) courseId: number,
     @Body() createLessonDto: CreateLessonDto,
@@ -127,7 +127,7 @@ export class LessonsController {
 
   @Patch('lessons/:id')
   @UseGuards(JwtAuthGuard, RolesGuard)
-  @Roles('ADMIN', 'MANAGER')
+  @Roles(Role.ADMIN, Role.MANAGER)
   async update(
     @Param('id', ParseIntPipe) id: number,
     @Body() updateLessonDto: UpdateLessonDto,
@@ -171,7 +171,7 @@ export class LessonsController {
 
   @Delete('lessons/:id')
   @UseGuards(JwtAuthGuard, RolesGuard)
-  @Roles('ADMIN', 'MANAGER')
+  @Roles(Role.ADMIN, Role.MANAGER)
   async remove(
     @Param('id', ParseIntPipe) id: number,
   ): Promise<DeleteLessonResponse> {

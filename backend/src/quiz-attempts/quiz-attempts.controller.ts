@@ -16,7 +16,6 @@ import { CreateQuizAttemptDto } from './dto/create-quiz-attempt.dto';
 import { FindManyQuizAttemptsDto } from './dto/find-many-quiz-attempts.dto';
 import { Prisma } from '#generated/prisma/client';
 import { RolesGuard } from '../auth/guards/roles.guard';
-import { Roles } from '../common/decorators/roles.decorator';
 import { UsersService } from '../users/users.service';
 import {
   CreateQuizAttemptResponse,
@@ -97,7 +96,6 @@ export class QuizAttemptsController {
 
   @Get('quiz-attempts')
   @UseGuards(JwtAuthGuard, RolesGuard)
-  @Roles('ADMIN', 'MANAGER', 'USER')
   async findManyByUser(
     @Query() findManyQuizAttemptsDto: FindManyQuizAttemptsDto,
     @Request() req: RequestWithUser,

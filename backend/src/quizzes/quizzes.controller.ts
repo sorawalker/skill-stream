@@ -15,7 +15,7 @@ import {
 import { QuizzesService } from './quizzes.service';
 import { CreateQuizDto } from './dto/create-quiz.dto';
 import { UpdateQuizDto } from './dto/update-quiz.dto';
-import { Prisma } from '#generated/prisma/client';
+import { Prisma, Role } from '#generated/prisma/client';
 import {
   CreateQuizResponse,
   FindManyQuizzesResponse,
@@ -33,7 +33,7 @@ export class QuizzesController {
 
   @Post('lessons/:lessonId/quizzes')
   @UseGuards(JwtAuthGuard, RolesGuard)
-  @Roles('ADMIN', 'MANAGER')
+  @Roles(Role.ADMIN, Role.MANAGER)
   async create(
     @Param('lessonId', ParseIntPipe) lessonId: number,
     @Body() createQuizDto: CreateQuizDto,
@@ -153,7 +153,7 @@ export class QuizzesController {
 
   @Patch('quizzes/:id')
   @UseGuards(JwtAuthGuard, RolesGuard)
-  @Roles('ADMIN', 'MANAGER')
+  @Roles(Role.ADMIN, Role.MANAGER)
   async update(
     @Param('id', ParseIntPipe) id: number,
     @Body() updateQuizDto: UpdateQuizDto,
@@ -197,7 +197,7 @@ export class QuizzesController {
 
   @Delete('quizzes/:id')
   @UseGuards(JwtAuthGuard, RolesGuard)
-  @Roles('ADMIN', 'MANAGER')
+  @Roles(Role.ADMIN, Role.MANAGER)
   async remove(
     @Param('id', ParseIntPipe) id: number,
   ): Promise<DeleteQuizResponse> {

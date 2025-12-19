@@ -14,7 +14,7 @@ import {
 import { CoursesService } from './courses.service';
 import { CreateCourseDto } from './dto/create-course.dto';
 import { UpdateCourseDto } from './dto/update-course.dto';
-import { Prisma } from '#generated/prisma/client';
+import { Prisma, Role } from '#generated/prisma/client';
 import { FindManyCoursesDto } from './dto/find-many-courses.dto';
 import {
   CreateCourseResponse,
@@ -33,7 +33,7 @@ export class CoursesController {
 
   @Post()
   @UseGuards(JwtAuthGuard, RolesGuard)
-  @Roles('ADMIN', 'MANAGER')
+  @Roles(Role.ADMIN, Role.MANAGER)
   async create(
     @Body() createCourseDto: CreateCourseDto,
   ): Promise<CreateCourseResponse> {
@@ -99,7 +99,7 @@ export class CoursesController {
 
   @Patch(':id')
   @UseGuards(JwtAuthGuard, RolesGuard)
-  @Roles('ADMIN', 'MANAGER')
+  @Roles(Role.ADMIN, Role.MANAGER)
   async update(
     @Param('id') id: number,
     @Body() updateCourseDto: UpdateCourseDto,
@@ -143,7 +143,7 @@ export class CoursesController {
 
   @Delete(':id')
   @UseGuards(JwtAuthGuard, RolesGuard)
-  @Roles('ADMIN', 'MANAGER')
+  @Roles(Role.ADMIN, Role.MANAGER)
   async remove(@Param('id') id: number): Promise<DeleteCourseResponse> {
     try {
       return await this.coursesService.remove(id);
