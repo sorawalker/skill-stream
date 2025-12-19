@@ -7,6 +7,7 @@
     "module": "ESNext",
     "types": ["vite/client"],
     "skipLibCheck": true,
+    "skipDefaultLibCheck": true,
 
     /* Bundler mode */
     "moduleResolution": "bundler",
@@ -25,5 +26,6 @@
     "noUncheckedSideEffectImports": true,
     "resolvePackageJsonExports": true
   },
-  "include": ["src", "src/vite-env.d.ts"]
+  "include": ["src/**/*"],
+  "exclude": ["node_modules", "dist", "../backend"]
 }

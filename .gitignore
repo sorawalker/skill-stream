@@ -268,3 +268,13 @@ fabric.properties
 .idea/**/azureSettings.xml
 
 # End of https://www.toptal.com/developers/gitignore/api/node,webstorm,react
+
+# Created by https://www.toptal.com/developers/gitignore/api/turbo
+# Edit at https://www.toptal.com/developers/gitignore?templates=turbo
+
+### Turbo ###
+# Turborepo task cache
+.turbo
+
+# End of https://www.toptal.com/developers/gitignore/api/turbo
+

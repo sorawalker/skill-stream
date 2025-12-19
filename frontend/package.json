@@ -5,7 +5,7 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
-    "build": "tsc -b && vite build",
+    "build": "tsc --noEmit && vite build",
     "start": "vite preview",
     "start:prod": "vite preview",
     "lint": "eslint . --fix",
@@ -13,7 +13,8 @@
     "format": "prettier --write \"src/**/*.{ts,tsx,scss,css,json}\"",
     "format:check": "prettier --check \"src/**/*.{ts,tsx,scss,css,json}\"",
     "preview": "vite preview",
-    "type-check": "tsc --noEmit"
+    "type-check": "tsc --noEmit",
+    "clean": "rm -rf dist .vite .turbo"
   },
   "dependencies": {
     "@tanstack/react-query": "^5.90.12",

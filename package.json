@@ -3,16 +3,16 @@
   "version": "0.0.1",
   "private": true,
   "scripts": {
-    "dev": "pnpm --parallel --stream -r run dev",
-    "build": "pnpm --parallel --stream -r run build",
-    "start": "pnpm --parallel --stream -r run start",
-    "start:prod": "pnpm --parallel --stream -r run start:prod",
-    "lint": "pnpm --parallel --stream -r run lint",
-    "format": "pnpm --parallel --stream -r run format",
-    "test": "pnpm --parallel --stream -r run test",
-    "test:watch": "pnpm --parallel --stream -r run test:watch",
-    "test:cov": "pnpm --parallel --stream -r run test:cov",
-    "clean": "pnpm -r exec rm -rf dist node_modules/.vite .turbo",
+    "dev": "turbo run dev",
+    "build": "turbo run build",
+    "start": "turbo run start",
+    "start:prod": "turbo run start:prod",
+    "lint": "turbo run lint",
+    "format": "turbo run format",
+    "test": "turbo run test",
+    "test:watch": "turbo run test:watch",
+    "test:cov": "turbo run test:cov",
+    "clean": "turbo clean && pnpm -r exec rm -rf node_modules/.vite",
     "backend:dev": "pnpm --filter skill-stream-backend dev",
     "backend:build": "pnpm --filter skill-stream-backend build",
     "backend:start": "pnpm --filter skill-stream-backend start",
@@ -25,5 +25,13 @@
     "frontend:preview": "pnpm --filter skill-stream-frontend preview",
     "frontend:lint": "pnpm --filter skill-stream-frontend lint",
     "frontend:format": "pnpm --filter skill-stream-frontend format"
+  },
+  "devDependencies": {
+    "turbo": "^2.3.3"
+  },
+  "packageManager": "pnpm@9.0.0",
+  "engines": {
+    "node": ">=18.0.0",
+    "pnpm": ">=8.0.0"
   }
 }
