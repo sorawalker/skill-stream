@@ -4,6 +4,7 @@ import { quizzesService } from '../../../services/quizzes.service';
 import { lessonsService } from '../../../services/lessons.service';
 import { coursesService } from '../../../services/courses.service';
 import { AdminModal } from '../../../components/AdminModal/AdminModal';
+import { Spinner } from '../../../components/Spinner/Spinner';
 import type { QuizQuestion } from 'skill-stream-backend/shared/types';
 import '../admin-common.scss';
 
@@ -204,9 +205,6 @@ export const Quizzes = () => {
       deleteMutation.mutate(id);
     }
   };
-
-  if (isLoading) return <div className="admin-page__loading">Loading...</div>;
-  if (error) return <div className="admin-page__error">Error loading quizzes</div>;
 
   return (
     <div className="admin-page">
@@ -522,7 +520,21 @@ export const Quizzes = () => {
               </tr>
             </thead>
             <tbody>
-              {data?.data.map((quiz) => (
+              {isLoading && !data && (
+                <tr>
+                  <td colSpan={4} style={{ textAlign: 'center', padding: '2rem' }}>
+                    <Spinner />
+                  </td>
+                </tr>
+              )}
+              {error && !data && (
+                <tr>
+                  <td colSpan={4} style={{ textAlign: 'center', padding: '2rem', color: 'var(--danger)' }}>
+                    Error loading quizzes
+                  </td>
+                </tr>
+              )}
+              {!isLoading && !error && data?.data.map((quiz) => (
                 <tr key={quiz.id}>
                   <td>{quiz.id}</td>
                   <td>{quiz.title}</td>

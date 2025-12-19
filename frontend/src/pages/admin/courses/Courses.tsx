@@ -2,6 +2,7 @@ import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { useState, useDeferredValue, useMemo, useCallback } from 'react';
 import { coursesService } from '../../../services/courses.service';
 import { AdminModal } from '../../../components/AdminModal/AdminModal';
+import { Spinner } from '../../../components/Spinner/Spinner';
 import '../admin-common.scss';
 
 export const Courses = () => {
@@ -91,9 +92,6 @@ export const Courses = () => {
   }, []);
 
   const tableContent = useMemo(() => {
-    if (isLoading) return <div className="admin-page__loading">Loading...</div>;
-    if (error) return <div className="admin-page__error">Error loading courses</div>;
-
     return (
       <>
         <table>
@@ -108,7 +106,21 @@ export const Courses = () => {
             </tr>
           </thead>
           <tbody>
-            {data?.data.map((course) => (
+            {isLoading && !data && (
+              <tr>
+                <td colSpan={6} style={{ textAlign: 'center', padding: '2rem' }}>
+                  <Spinner />
+                </td>
+              </tr>
+            )}
+            {error && !data && (
+              <tr>
+                <td colSpan={6} style={{ textAlign: 'center', padding: '2rem', color: 'var(--danger)' }}>
+                  Error loading courses
+                </td>
+              </tr>
+            )}
+            {!isLoading && !error && data?.data.map((course) => (
               <tr key={course.id}>
                 <td>{course.id}</td>
                 <td>{course.title}</td>
@@ -157,9 +169,6 @@ export const Courses = () => {
       </>
     );
   }, [isLoading, error, data, page, handleDelete]);
-
-  if (isLoading && !data) return <div className="admin-page__loading">Loading...</div>;
-  if (error && !data) return <div className="admin-page__error">Error loading courses</div>;
 
   return (
     <div className="admin-page">
