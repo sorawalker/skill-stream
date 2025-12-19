@@ -14,7 +14,10 @@ export const progressService = {
       progress: number;
     },
   ): Promise<CreateProgressResponse> => {
-    return api.post<CreateProgressResponse>(`/lessons/${lessonId}/progress`, progressData);
+    return api.post<CreateProgressResponse>(
+      `/lessons/${lessonId}/progress`,
+      progressData,
+    );
   },
 
   findMany: async (params?: {
@@ -24,21 +27,35 @@ export const progressService = {
     sortBy?: string;
   }): Promise<FindManyProgressResponse> => {
     const queryParams = new URLSearchParams();
-    if (params?.page) queryParams.append('page', params.page.toString());
-    if (params?.limit) queryParams.append('limit', params.limit.toString());
-    if (params?.sortBy) queryParams.append('sortBy', params.sortBy);
-    if (params?.order) queryParams.append('order', params.order);
+    if (params?.page)
+      queryParams.append('page', params.page.toString());
+    if (params?.limit)
+      queryParams.append('limit', params.limit.toString());
+    if (params?.sortBy)
+      queryParams.append('sortBy', params.sortBy);
+    if (params?.order)
+      queryParams.append('order', params.order);
 
     const query = queryParams.toString();
-    return api.get<FindManyProgressResponse>(`/progress${query ? `?${query}` : ''}`);
+    return api.get<FindManyProgressResponse>(
+      `/progress${query ? `?${query}` : ''}`,
+    );
   },
 
-  findByLesson: async (lessonId: number): Promise<FindOneProgressResponse> => {
-    return api.get<FindOneProgressResponse>(`/progress/lesson/${lessonId}`);
+  findByLesson: async (
+    lessonId: number,
+  ): Promise<FindOneProgressResponse> => {
+    return api.get<FindOneProgressResponse>(
+      `/progress/lesson/${lessonId}`,
+    );
   },
 
-  findByCourse: async (courseId: number): Promise<FindManyProgressResponse> => {
-    return api.get<FindManyProgressResponse>(`/progress/course/${courseId}`);
+  findByCourse: async (
+    courseId: number,
+  ): Promise<FindManyProgressResponse> => {
+    return api.get<FindManyProgressResponse>(
+      `/progress/course/${courseId}`,
+    );
   },
 
   update: async (
@@ -48,6 +65,9 @@ export const progressService = {
       progress: number;
     }>,
   ): Promise<UpdateProgressResponse> => {
-    return api.patch<UpdateProgressResponse>(`/progress/${id}`, progressData);
+    return api.patch<UpdateProgressResponse>(
+      `/progress/${id}`,
+      progressData,
+    );
   },
 };

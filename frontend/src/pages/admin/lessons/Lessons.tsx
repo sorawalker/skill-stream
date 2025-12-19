@@ -1,4 +1,8 @@
-import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
+import {
+  useQuery,
+  useMutation,
+  useQueryClient,
+} from '@tanstack/react-query';
 import { useState } from 'react';
 import { lessonsService } from '../../../services/lessons.service';
 import { coursesService } from '../../../services/courses.service';
@@ -9,26 +13,45 @@ import '../admin-common.scss';
 
 export const Lessons = () => {
   const queryClient = useQueryClient();
-  const [selectedCourseId, setSelectedCourseId] = useState<number | null>(null);
+  const [selectedCourseId, setSelectedCourseId] = useState<
+    number | null
+  >(null);
   const [page, setPage] = useState(1);
   const [limit] = useState(10);
 
   const { data: courses } = useQuery({
     queryKey: ['courses'],
-    queryFn: () => coursesService.findMany({ page: 1, limit: 100, order: 'asc', sortBy: 'id' }),
+    queryFn: () =>
+      coursesService.findMany({
+        page: 1,
+        limit: 100,
+        order: 'asc',
+        sortBy: 'id',
+      }),
   });
 
   const { data, isLoading, error } = useQuery({
     queryKey: ['lessons', selectedCourseId, page, limit],
     queryFn: () => {
       if (!selectedCourseId)
-        return Promise.resolve({ data: [], meta: { total: 0, page: 1, limit: 10, totalPages: 0 } });
-      return lessonsService.findManyByCourse(selectedCourseId, {
-        page,
-        limit,
-        order: 'asc',
-        sortBy: 'order',
-      });
+        return Promise.resolve({
+          data: [],
+          meta: {
+            total: 0,
+            page: 1,
+            limit: 10,
+            totalPages: 0,
+          },
+        });
+      return lessonsService.findManyByCourse(
+        selectedCourseId,
+        {
+          page,
+          limit,
+          order: 'asc',
+          sortBy: 'order',
+        },
+      );
     },
     enabled: !!selectedCourseId,
   });
@@ -36,23 +59,48 @@ export const Lessons = () => {
   const deleteMutation = useMutation({
     mutationFn: (id: number) => lessonsService.delete(id),
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ['lessons'] });
+      queryClient.invalidateQueries({
+        queryKey: ['lessons'],
+      });
     },
   });
 
-  const [showCreateForm, setShowCreateForm] = useState(false);
-  const [newLesson, setNewLesson] = useState({ title: '', content: '', order: 1 });
-  const [editingLessonId, setEditingLessonId] = useState<number | null>(null);
-  const [editLesson, setEditLesson] = useState({ title: '', content: '', order: 1 });
-  const [viewingLessonId, setViewingLessonId] = useState<number | null>(null);
+  const [showCreateForm, setShowCreateForm] =
+    useState(false);
+  const [newLesson, setNewLesson] = useState({
+    title: '',
+    content: '',
+    order: 1,
+  });
+  const [editingLessonId, setEditingLessonId] = useState<
+    number | null
+  >(null);
+  const [editLesson, setEditLesson] = useState({
+    title: '',
+    content: '',
+    order: 1,
+  });
+  const [viewingLessonId, setViewingLessonId] = useState<
+    number | null
+  >(null);
 
   const createMutation = useMutation({
-    mutationFn: (lessonData: { title: string; content: string; order: number }) => {
-      if (!selectedCourseId) throw new Error('Please select a course');
-      return lessonsService.create(selectedCourseId, lessonData);
+    mutationFn: (lessonData: {
+      title: string;
+      content: string;
+      order: number;
+    }) => {
+      if (!selectedCourseId)
+        throw new Error('Please select a course');
+      return lessonsService.create(
+        selectedCourseId,
+        lessonData,
+      );
     },
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ['lessons'] });
+      queryClient.invalidateQueries({
+        queryKey: ['lessons'],
+      });
       setShowCreateForm(false);
       setNewLesson({ title: '', content: '', order: 1 });
     },
@@ -64,10 +112,16 @@ export const Lessons = () => {
       lessonData,
     }: {
       id: number;
-      lessonData: Partial<{ title: string; content: string; order: number }>;
+      lessonData: Partial<{
+        title: string;
+        content: string;
+        order: number;
+      }>;
     }) => lessonsService.update(id, lessonData),
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ['lessons'] });
+      queryClient.invalidateQueries({
+        queryKey: ['lessons'],
+      });
       setEditingLessonId(null);
       setEditLesson({ title: '', content: '', order: 1 });
     },
@@ -78,20 +132,36 @@ export const Lessons = () => {
     createMutation.mutate(newLesson);
   };
 
-  const handleEdit = (lesson: { id: number; title: string; content: string; order: number }) => {
+  const handleEdit = (lesson: {
+    id: number;
+    title: string;
+    content: string;
+    order: number;
+  }) => {
     setEditingLessonId(lesson.id);
-    setEditLesson({ title: lesson.title, content: lesson.content, order: lesson.order });
+    setEditLesson({
+      title: lesson.title,
+      content: lesson.content,
+      order: lesson.order,
+    });
   };
 
   const handleUpdate = (e: React.FormEvent) => {
     e.preventDefault();
     if (editingLessonId) {
-      updateMutation.mutate({ id: editingLessonId, lessonData: editLesson });
+      updateMutation.mutate({
+        id: editingLessonId,
+        lessonData: editLesson,
+      });
     }
   };
 
   const handleDelete = (id: number) => {
-    if (confirm('Are you sure you want to delete this lesson?')) {
+    if (
+      confirm(
+        'Are you sure you want to delete this lesson?',
+      )
+    ) {
       deleteMutation.mutate(id);
     }
   };
@@ -99,7 +169,9 @@ export const Lessons = () => {
   return (
     <div className="admin-page">
       <div className="admin-page__header">
-        <h1 className="admin-page__title">Lesson Management</h1>
+        <h1 className="admin-page__title">
+          Lesson Management
+        </h1>
       </div>
       <div className="admin-page__form-group">
         <label className="admin-page__form-label">
@@ -108,7 +180,11 @@ export const Lessons = () => {
             className="admin-page__form-input"
             value={selectedCourseId || ''}
             onChange={(e) => {
-              setSelectedCourseId(e.target.value ? parseInt(e.target.value) : null);
+              setSelectedCourseId(
+                e.target.value
+                  ? parseInt(e.target.value)
+                  : null,
+              );
               setPage(1);
             }}
           >
@@ -126,21 +202,32 @@ export const Lessons = () => {
           <div className="admin-page__actions">
             <button
               className="admin-page__button admin-page__button--secondary"
-              onClick={() => setShowCreateForm(!showCreateForm)}
+              onClick={() =>
+                setShowCreateForm(!showCreateForm)
+              }
             >
-              {showCreateForm ? 'Cancel' : 'Create New Lesson'}
+              {showCreateForm
+                ? 'Cancel'
+                : 'Create New Lesson'}
             </button>
           </div>
           <AdminModal
             isOpen={showCreateForm}
             onClose={() => {
               setShowCreateForm(false);
-              setNewLesson({ title: '', content: '', order: 1 });
+              setNewLesson({
+                title: '',
+                content: '',
+                order: 1,
+              });
             }}
             title="Create New Lesson"
             size="large"
           >
-            <form className="admin-page__form" onSubmit={handleCreate}>
+            <form
+              className="admin-page__form"
+              onSubmit={handleCreate}
+            >
               <div className="admin-page__form-group">
                 <label className="admin-page__form-label">
                   Title:
@@ -148,7 +235,12 @@ export const Lessons = () => {
                     className="admin-page__form-input"
                     type="text"
                     value={newLesson.title}
-                    onChange={(e) => setNewLesson({ ...newLesson, title: e.target.value })}
+                    onChange={(e) =>
+                      setNewLesson({
+                        ...newLesson,
+                        title: e.target.value,
+                      })
+                    }
                     required
                   />
                 </label>
@@ -159,7 +251,12 @@ export const Lessons = () => {
                   <textarea
                     className="admin-page__form-textarea"
                     value={newLesson.content}
-                    onChange={(e) => setNewLesson({ ...newLesson, content: e.target.value })}
+                    onChange={(e) =>
+                      setNewLesson({
+                        ...newLesson,
+                        content: e.target.value,
+                      })
+                    }
                     required
                     rows={10}
                   />
@@ -173,7 +270,11 @@ export const Lessons = () => {
                     type="number"
                     value={newLesson.order}
                     onChange={(e) =>
-                      setNewLesson({ ...newLesson, order: parseInt(e.target.value) || 1 })
+                      setNewLesson({
+                        ...newLesson,
+                        order:
+                          parseInt(e.target.value) || 1,
+                      })
                     }
                     required
                   />
@@ -185,7 +286,9 @@ export const Lessons = () => {
                   type="submit"
                   disabled={createMutation.isPending}
                 >
-                  {createMutation.isPending ? 'Creating...' : 'Create Lesson'}
+                  {createMutation.isPending
+                    ? 'Creating...'
+                    : 'Create Lesson'}
                 </button>
               </div>
             </form>
@@ -195,12 +298,19 @@ export const Lessons = () => {
             isOpen={editingLessonId !== null}
             onClose={() => {
               setEditingLessonId(null);
-              setEditLesson({ title: '', content: '', order: 1 });
+              setEditLesson({
+                title: '',
+                content: '',
+                order: 1,
+              });
             }}
             title="Edit Lesson"
             size="large"
           >
-            <form className="admin-page__form" onSubmit={handleUpdate}>
+            <form
+              className="admin-page__form"
+              onSubmit={handleUpdate}
+            >
               <div className="admin-page__form-group">
                 <label className="admin-page__form-label">
                   Title:
@@ -208,7 +318,12 @@ export const Lessons = () => {
                     className="admin-page__form-input"
                     type="text"
                     value={editLesson.title}
-                    onChange={(e) => setEditLesson({ ...editLesson, title: e.target.value })}
+                    onChange={(e) =>
+                      setEditLesson({
+                        ...editLesson,
+                        title: e.target.value,
+                      })
+                    }
                     required
                   />
                 </label>
@@ -219,7 +334,12 @@ export const Lessons = () => {
                   <textarea
                     className="admin-page__form-textarea"
                     value={editLesson.content}
-                    onChange={(e) => setEditLesson({ ...editLesson, content: e.target.value })}
+                    onChange={(e) =>
+                      setEditLesson({
+                        ...editLesson,
+                        content: e.target.value,
+                      })
+                    }
                     required
                     rows={10}
                   />
@@ -233,7 +353,11 @@ export const Lessons = () => {
                     type="number"
                     value={editLesson.order}
                     onChange={(e) =>
-                      setEditLesson({ ...editLesson, order: parseInt(e.target.value) || 1 })
+                      setEditLesson({
+                        ...editLesson,
+                        order:
+                          parseInt(e.target.value) || 1,
+                      })
                     }
                     required
                   />
@@ -245,14 +369,20 @@ export const Lessons = () => {
                   type="submit"
                   disabled={updateMutation.isPending}
                 >
-                  {updateMutation.isPending ? 'Saving...' : 'Save Changes'}
+                  {updateMutation.isPending
+                    ? 'Saving...'
+                    : 'Save Changes'}
                 </button>
                 <button
                   className="admin-page__button admin-page__button--secondary"
                   type="button"
                   onClick={() => {
                     setEditingLessonId(null);
-                    setEditLesson({ title: '', content: '', order: 1 });
+                    setEditLesson({
+                      title: '',
+                      content: '',
+                      order: 1,
+                    });
                   }}
                 >
                   Cancel
@@ -279,46 +409,65 @@ export const Lessons = () => {
             <tbody>
               {isLoading && !data && (
                 <tr>
-                  <td colSpan={5} style={{ textAlign: 'center', padding: '2rem' }}>
+                  <td
+                    colSpan={5}
+                    style={{
+                      textAlign: 'center',
+                      padding: '2rem',
+                    }}
+                  >
                     <Spinner />
                   </td>
                 </tr>
               )}
               {error && !data && (
                 <tr>
-                  <td colSpan={5} style={{ textAlign: 'center', padding: '2rem', color: 'var(--danger)' }}>
+                  <td
+                    colSpan={5}
+                    style={{
+                      textAlign: 'center',
+                      padding: '2rem',
+                      color: 'var(--danger)',
+                    }}
+                  >
                     Error loading lessons
                   </td>
                 </tr>
               )}
-              {!isLoading && !error && data?.data.map((lesson) => (
-                <tr key={lesson.id}>
-                  <td>{lesson.id}</td>
-                  <td>{lesson.title}</td>
-                  <td>{lesson.order}</td>
-                  <td>{lesson._count?.quizzes || 0}</td>
-                  <td>
-                    <button
-                      className="admin-page__button admin-page__button--primary"
-                      onClick={() => setViewingLessonId(lesson.id)}
-                    >
-                      View
-                    </button>
-                    <button
-                      className="admin-page__button admin-page__button--primary"
-                      onClick={() => handleEdit(lesson)}
-                    >
-                      Edit
-                    </button>
-                    <button
-                      className="admin-page__button admin-page__button--danger"
-                      onClick={() => handleDelete(lesson.id)}
-                    >
-                      Delete
-                    </button>
-                  </td>
-                </tr>
-              ))}
+              {!isLoading &&
+                !error &&
+                data?.data.map((lesson) => (
+                  <tr key={lesson.id}>
+                    <td>{lesson.id}</td>
+                    <td>{lesson.title}</td>
+                    <td>{lesson.order}</td>
+                    <td>{lesson._count?.quizzes || 0}</td>
+                    <td>
+                      <button
+                        className="admin-page__button admin-page__button--primary"
+                        onClick={() =>
+                          setViewingLessonId(lesson.id)
+                        }
+                      >
+                        View
+                      </button>
+                      <button
+                        className="admin-page__button admin-page__button--primary"
+                        onClick={() => handleEdit(lesson)}
+                      >
+                        Edit
+                      </button>
+                      <button
+                        className="admin-page__button admin-page__button--danger"
+                        onClick={() =>
+                          handleDelete(lesson.id)
+                        }
+                      >
+                        Delete
+                      </button>
+                    </td>
+                  </tr>
+                ))}
             </tbody>
           </table>
           {data?.meta && data.meta.totalPages > 0 && (
@@ -331,7 +480,8 @@ export const Lessons = () => {
                 Previous
               </button>
               <span className="admin-page__pagination-info">
-                Page {data.meta.page} of {data.meta.totalPages}
+                Page {data.meta.page} of{' '}
+                {data.meta.totalPages}
               </span>
               <button
                 className="admin-page__pagination-button"

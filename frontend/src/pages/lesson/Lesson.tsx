@@ -1,4 +1,9 @@
-import { useQuery, useMutation, useQueryClient, useQueries } from '@tanstack/react-query';
+import {
+  useQuery,
+  useMutation,
+  useQueryClient,
+  useQueries,
+} from '@tanstack/react-query';
 import { useParams, useNavigate } from 'react-router-dom';
 import { useEffect } from 'react';
 import { lessonsService } from '../../services/lessons.service';
@@ -24,49 +29,66 @@ export const Lesson = () => {
   } = useQuery({
     queryKey: ['lesson', lessonId],
     queryFn: () => {
-      if (!lessonId) throw new Error('Lesson ID is required');
+      if (!lessonId)
+        throw new Error('Lesson ID is required');
       return lessonsService.findOne(lessonId);
     },
     enabled: !!lessonId,
   });
 
-  const { data: quizzes, isLoading: isLoadingQuizzes } = useQuery({
-    queryKey: ['quizzes', lessonId],
-    queryFn: () => {
-      if (!lessonId) throw new Error('Lesson ID is required');
-      return quizzesService.findManyByLesson(lessonId);
-    },
-    enabled: !!lessonId,
-  });
+  const { data: quizzes, isLoading: isLoadingQuizzes } =
+    useQuery({
+      queryKey: ['quizzes', lessonId],
+      queryFn: () => {
+        if (!lessonId)
+          throw new Error('Lesson ID is required');
+        return quizzesService.findManyByLesson(lessonId);
+      },
+      enabled: !!lessonId,
+    });
 
   const { data: courseLessons } = useQuery({
     queryKey: ['lessons', lesson?.courseId],
     queryFn: () => {
-      if (!lesson?.courseId) throw new Error('Course ID is required');
-      return lessonsService.findManyByCourse(lesson.courseId, {
-        page: 1,
-        limit: 100,
-        order: 'asc',
-        sortBy: 'order',
-      });
+      if (!lesson?.courseId)
+        throw new Error('Course ID is required');
+      return lessonsService.findManyByCourse(
+        lesson.courseId,
+        {
+          page: 1,
+          limit: 100,
+          order: 'asc',
+          sortBy: 'order',
+        },
+      );
     },
     enabled: !!lesson?.courseId,
   });
 
-  const currentLessonIndex = courseLessons?.data.findIndex((l) => l.id === lessonId) ?? -1;
+  const currentLessonIndex =
+    courseLessons?.data.findIndex(
+      (l) => l.id === lessonId,
+    ) ?? -1;
   const previousLesson =
-    currentLessonIndex > 0 ? courseLessons?.data[currentLessonIndex - 1] : null;
+    currentLessonIndex > 0
+      ? courseLessons?.data[currentLessonIndex - 1]
+      : null;
   const nextLesson =
-    currentLessonIndex >= 0 && currentLessonIndex < (courseLessons?.data.length ?? 0) - 1
+    currentLessonIndex >= 0 &&
+    currentLessonIndex <
+      (courseLessons?.data.length ?? 0) - 1
       ? courseLessons?.data[currentLessonIndex + 1]
       : null;
   const isLastLesson =
-    currentLessonIndex >= 0 && currentLessonIndex === (courseLessons?.data.length ?? 0) - 1;
+    currentLessonIndex >= 0 &&
+    currentLessonIndex ===
+      (courseLessons?.data.length ?? 0) - 1;
 
   const { data: lessonProgress } = useQuery({
     queryKey: ['progress', 'lesson', lessonId],
     queryFn: () => {
-      if (!lessonId) throw new Error('Lesson ID is required');
+      if (!lessonId)
+        throw new Error('Lesson ID is required');
       return progressService.findByLesson(lessonId);
     },
     enabled: !!lessonId,
@@ -78,7 +100,8 @@ export const Lesson = () => {
     queries: hasQuizzes
       ? (quizzes?.data || []).map((quiz) => ({
           queryKey: ['quiz-user-attempt', quiz.id],
-          queryFn: () => quizAttemptsService.findUserAttempt(quiz.id),
+          queryFn: () =>
+            quizAttemptsService.findUserAttempt(quiz.id),
           enabled: true,
           retry: false,
         }))
@@ -87,7 +110,10 @@ export const Lesson = () => {
 
   const allQuizzesAnswered = hasQuizzes
     ? quizAttemptsQueries.every(
-        (query) => query.isSuccess && query.data !== null && query.data !== undefined,
+        (query) =>
+          query.isSuccess &&
+          query.data !== null &&
+          query.data !== undefined,
       )
     : true;
 
@@ -96,7 +122,9 @@ export const Lesson = () => {
   const finishLessonMutation = useMutation({
     mutationFn: async () => {
       if (!lessonId || !lesson?.courseId) {
-        throw new Error('Lesson ID and Course ID are required');
+        throw new Error(
+          'Lesson ID and Course ID are required',
+        );
       }
 
       if (lessonProgress) {
@@ -111,8 +139,12 @@ export const Lesson = () => {
         });
       }
 
-      queryClient.invalidateQueries({ queryKey: ['progress'] });
-      queryClient.invalidateQueries({ queryKey: ['enrollments'] });
+      queryClient.invalidateQueries({
+        queryKey: ['progress'],
+      });
+      queryClient.invalidateQueries({
+        queryKey: ['enrollments'],
+      });
     },
     onSuccess: () => {
       if (isLastLesson && lesson?.courseId) {
@@ -140,7 +172,12 @@ export const Lesson = () => {
       finishLessonMutation.mutate();
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [hasQuizzes, lessonProgress?.completed, isLoadingQuizzes, quizzes?.data]);
+  }, [
+    hasQuizzes,
+    lessonProgress?.completed,
+    isLoadingQuizzes,
+    quizzes?.data,
+  ]);
 
   if (isLoading) {
     return (
@@ -168,7 +205,12 @@ export const Lesson = () => {
   if (!lesson) {
     return (
       <ApiErrorHandler
-        error={{ status: 404, message: 'Lesson not found' } as ApiError}
+        error={
+          {
+            status: 404,
+            message: 'Lesson not found',
+          } as ApiError
+        }
         customMessages={{
           404: 'Lesson not found',
         }}
@@ -181,18 +223,30 @@ export const Lesson = () => {
       <Header />
       <div className="lesson-page__container">
         <div className="lesson-page__header">
-          <button onClick={() => navigate(-1)} className="lesson-page__back">
+          <button
+            onClick={() => navigate(-1)}
+            className="lesson-page__back"
+          >
             Back
           </button>
-          <h1 className="lesson-page__title">{lesson.title}</h1>
+          <h1 className="lesson-page__title">
+            {lesson.title}
+          </h1>
         </div>
         <div className="lesson-page__content">
-          <div className="lesson-page__text" dangerouslySetInnerHTML={{ __html: lesson.content }} />
+          <div
+            className="lesson-page__text"
+            dangerouslySetInnerHTML={{
+              __html: lesson.content,
+            }}
+          />
         </div>
 
         {quizzes && quizzes.data.length > 0 && (
           <div className="lesson-page__quizzes-section">
-            <h2 className="lesson-page__quizzes-title">Quizzes</h2>
+            <h2 className="lesson-page__quizzes-title">
+              Quizzes
+            </h2>
             {quizzes.data.map((quiz) => (
               <Quiz key={quiz.id} quizId={quiz.id} />
             ))}
@@ -202,7 +256,10 @@ export const Lesson = () => {
         <div className="lesson-page__navigation">
           <button
             className="lesson-page__nav-button lesson-page__nav-button--previous"
-            onClick={() => previousLesson && navigate(`/lessons/${previousLesson.id}`)}
+            onClick={() =>
+              previousLesson &&
+              navigate(`/lessons/${previousLesson.id}`)
+            }
             disabled={!previousLesson}
           >
             ← Previous Lesson
@@ -214,7 +271,9 @@ export const Lesson = () => {
                 onClick={handleFinishLesson}
                 disabled={finishLessonMutation.isPending}
               >
-                {finishLessonMutation.isPending ? 'Finishing...' : 'Finish Course'}
+                {finishLessonMutation.isPending
+                  ? 'Finishing...'
+                  : 'Finish Course'}
               </button>
             ) : canFinishLesson ? (
               <button
@@ -222,12 +281,17 @@ export const Lesson = () => {
                 onClick={handleFinishLesson}
                 disabled={finishLessonMutation.isPending}
               >
-                {finishLessonMutation.isPending ? 'Finishing...' : 'Finish Lesson'}
+                {finishLessonMutation.isPending
+                  ? 'Finishing...'
+                  : 'Finish Lesson'}
               </button>
             ) : (
               <button
                 className="lesson-page__nav-button lesson-page__nav-button--next"
-                onClick={() => nextLesson && navigate(`/lessons/${nextLesson.id}`)}
+                onClick={() =>
+                  nextLesson &&
+                  navigate(`/lessons/${nextLesson.id}`)
+                }
                 disabled={!nextLesson}
               >
                 Next Lesson →

@@ -18,36 +18,65 @@ export const usersService = {
     return api.post<CreateUserResponse>('/users', userData);
   },
 
-  findMany: async (params?: FindManyUsersRequest): Promise<FindManyUsersResponse> => {
+  findMany: async (
+    params?: FindManyUsersRequest,
+  ): Promise<FindManyUsersResponse> => {
     const queryParams = new URLSearchParams();
-    if (params?.page) queryParams.append('page', params.page.toString());
-    if (params?.limit) queryParams.append('limit', params.limit.toString());
-    if (params?.search) queryParams.append('search', params.search);
-    if (params?.sortBy) queryParams.append('sortBy', params.sortBy);
-    if (params?.order) queryParams.append('order', params.order);
+    if (params?.page)
+      queryParams.append('page', params.page.toString());
+    if (params?.limit)
+      queryParams.append('limit', params.limit.toString());
+    if (params?.search)
+      queryParams.append('search', params.search);
+    if (params?.sortBy)
+      queryParams.append('sortBy', params.sortBy);
+    if (params?.order)
+      queryParams.append('order', params.order);
 
     const query = queryParams.toString();
-    return api.get<FindManyUsersResponse>(`/users${query ? `?${query}` : ''}`);
+    return api.get<FindManyUsersResponse>(
+      `/users${query ? `?${query}` : ''}`,
+    );
   },
 
-  findOne: async (identifier: string | number): Promise<FindOneUserResponse> => {
-    return api.get<FindOneUserResponse>(`/users/${identifier}`);
+  findOne: async (
+    identifier: string | number,
+  ): Promise<FindOneUserResponse> => {
+    return api.get<FindOneUserResponse>(
+      `/users/${identifier}`,
+    );
   },
 
   update: async (
     id: number,
-    userData: Partial<{ email: string; name: string; password: string; role: string }>,
+    userData: Partial<{
+      email: string;
+      name: string;
+      password: string;
+      role: string;
+    }>,
   ): Promise<UpdateUserResponse> => {
-    return api.patch<UpdateUserResponse>(`/users/${id}`, userData);
+    return api.patch<UpdateUserResponse>(
+      `/users/${id}`,
+      userData,
+    );
   },
 
-  delete: async (id: number): Promise<DeleteUserResponse> => {
+  delete: async (
+    id: number,
+  ): Promise<DeleteUserResponse> => {
     return api.delete<DeleteUserResponse>(`/users/${id}`);
   },
 
-  changePassword: async (id: number, newPassword: string): Promise<{ message: string }> => {
-    return api.patch<{ message: string }>(`/users/${id}/password`, {
-      newPassword,
-    });
+  changePassword: async (
+    id: number,
+    newPassword: string,
+  ): Promise<{ message: string }> => {
+    return api.patch<{ message: string }>(
+      `/users/${id}/password`,
+      {
+        newPassword,
+      },
+    );
   },
 };

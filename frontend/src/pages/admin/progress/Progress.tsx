@@ -10,13 +10,21 @@ export const Progress = () => {
 
   const { data, isLoading, error } = useQuery({
     queryKey: ['progress', page, limit],
-    queryFn: () => progressService.findMany({ page, limit, order: 'desc', sortBy: 'updatedAt' }),
+    queryFn: () =>
+      progressService.findMany({
+        page,
+        limit,
+        order: 'desc',
+        sortBy: 'updatedAt',
+      }),
   });
 
   return (
     <div className="admin-page">
       <div className="admin-page__header">
-        <h1 className="admin-page__title">Progress Tracking</h1>
+        <h1 className="admin-page__title">
+          Progress Tracking
+        </h1>
       </div>
       <table>
         <thead>
@@ -32,35 +40,56 @@ export const Progress = () => {
         <tbody>
           {isLoading && !data && (
             <tr>
-              <td colSpan={6} style={{ textAlign: 'center', padding: '2rem' }}>
+              <td
+                colSpan={6}
+                style={{
+                  textAlign: 'center',
+                  padding: '2rem',
+                }}
+              >
                 <Spinner />
               </td>
             </tr>
           )}
           {error && !data && (
             <tr>
-              <td colSpan={6} style={{ textAlign: 'center', padding: '2rem', color: 'var(--danger)' }}>
+              <td
+                colSpan={6}
+                style={{
+                  textAlign: 'center',
+                  padding: '2rem',
+                  color: 'var(--danger)',
+                }}
+              >
                 Error loading progress
               </td>
             </tr>
           )}
-          {!isLoading && !error && data?.data.map((progress) => (
-            <tr key={progress.id}>
-              <td>{progress.id}</td>
-              <td>{progress.user?.name || 'N/A'}</td>
-              <td>{progress.lesson?.title || 'N/A'}</td>
-              <td>{progress.progress}%</td>
-              <td>{progress.completed ? 'Yes' : 'No'}</td>
-              <td>{new Date(progress.updatedAt).toLocaleDateString()}</td>
-            </tr>
-          ))}
+          {!isLoading &&
+            !error &&
+            data?.data.map((progress) => (
+              <tr key={progress.id}>
+                <td>{progress.id}</td>
+                <td>{progress.user?.name || 'N/A'}</td>
+                <td>{progress.lesson?.title || 'N/A'}</td>
+                <td>{progress.progress}%</td>
+                <td>{progress.completed ? 'Yes' : 'No'}</td>
+                <td>
+                  {new Date(
+                    progress.updatedAt,
+                  ).toLocaleDateString()}
+                </td>
+              </tr>
+            ))}
         </tbody>
       </table>
       {data?.meta && (
         <div className="admin-page__pagination">
           <button
             className="admin-page__pagination-button"
-            onClick={() => setPage((p) => Math.max(1, p - 1))}
+            onClick={() =>
+              setPage((p) => Math.max(1, p - 1))
+            }
             disabled={page === 1}
           >
             Previous
@@ -70,7 +99,11 @@ export const Progress = () => {
           </span>
           <button
             className="admin-page__pagination-button"
-            onClick={() => setPage((p) => Math.min(data.meta.totalPages, p + 1))}
+            onClick={() =>
+              setPage((p) =>
+                Math.min(data.meta.totalPages, p + 1),
+              )
+            }
             disabled={page >= data.meta.totalPages}
           >
             Next

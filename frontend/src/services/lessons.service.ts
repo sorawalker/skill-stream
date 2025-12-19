@@ -17,7 +17,10 @@ export const lessonsService = {
       order: number;
     },
   ): Promise<CreateLessonResponse> => {
-    return api.post<CreateLessonResponse>(`/courses/${courseId}/lessons`, lessonData);
+    return api.post<CreateLessonResponse>(
+      `/courses/${courseId}/lessons`,
+      lessonData,
+    );
   },
 
   findManyByCourse: async (
@@ -25,11 +28,16 @@ export const lessonsService = {
     params?: FindManyLessonsRequest,
   ): Promise<FindManyLessonsResponse> => {
     const queryParams = new URLSearchParams();
-    if (params?.page) queryParams.append('page', params.page.toString());
-    if (params?.limit) queryParams.append('limit', params.limit.toString());
-    if (params?.search) queryParams.append('search', params.search);
-    if (params?.sortBy) queryParams.append('sortBy', params.sortBy);
-    if (params?.order) queryParams.append('order', params.order);
+    if (params?.page)
+      queryParams.append('page', params.page.toString());
+    if (params?.limit)
+      queryParams.append('limit', params.limit.toString());
+    if (params?.search)
+      queryParams.append('search', params.search);
+    if (params?.sortBy)
+      queryParams.append('sortBy', params.sortBy);
+    if (params?.order)
+      queryParams.append('order', params.order);
 
     const query = queryParams.toString();
     return api.get<FindManyLessonsResponse>(
@@ -37,7 +45,9 @@ export const lessonsService = {
     );
   },
 
-  findOne: async (id: number): Promise<FindOneLessonResponse> => {
+  findOne: async (
+    id: number,
+  ): Promise<FindOneLessonResponse> => {
     return api.get<FindOneLessonResponse>(`/lessons/${id}`);
   },
 
@@ -49,10 +59,17 @@ export const lessonsService = {
       order: number;
     }>,
   ): Promise<UpdateLessonResponse> => {
-    return api.patch<UpdateLessonResponse>(`/lessons/${id}`, lessonData);
+    return api.patch<UpdateLessonResponse>(
+      `/lessons/${id}`,
+      lessonData,
+    );
   },
 
-  delete: async (id: number): Promise<DeleteLessonResponse> => {
-    return api.delete<DeleteLessonResponse>(`/lessons/${id}`);
+  delete: async (
+    id: number,
+  ): Promise<DeleteLessonResponse> => {
+    return api.delete<DeleteLessonResponse>(
+      `/lessons/${id}`,
+    );
   },
 };

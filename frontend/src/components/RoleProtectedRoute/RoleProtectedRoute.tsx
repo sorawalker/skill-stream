@@ -7,8 +7,12 @@ interface RoleProtectedRouteProps {
   allowedRoles: UserRole | UserRole[];
 }
 
-export const RoleProtectedRoute = ({ children, allowedRoles }: RoleProtectedRouteProps) => {
-  const { isAuthenticated, user, hasRole } = useAuthContext();
+export const RoleProtectedRoute = ({
+  children,
+  allowedRoles,
+}: RoleProtectedRouteProps) => {
+  const { isAuthenticated, user, hasRole } =
+    useAuthContext();
 
   if (!isAuthenticated) {
     return <Navigate to="/login" replace />;

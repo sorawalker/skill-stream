@@ -109,8 +109,11 @@ export class EnrollmentsController {
       const user = await this.usersService.findById(userId);
       const isAdmin = user?.role === 'ADMIN' || user?.role === 'MANAGER';
 
+      const filterUserId =
+        isAdmin && findManyEnrollmentsDto.all === true ? undefined : userId;
+
       return await this.enrollmentsService.findMany(
-        isAdmin ? undefined : userId,
+        filterUserId,
         findManyEnrollmentsDto,
       );
     } catch (error) {

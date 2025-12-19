@@ -1,11 +1,16 @@
-const API_BASE_URL = import.meta.env.VITE_API_URL || 'http://localhost:3000';
+const API_BASE_URL =
+  import.meta.env.VITE_API_URL || 'http://localhost:3000';
 
 export interface ApiError extends Error {
   status: number;
   data?: unknown;
 }
 
-export function createApiError(status: number, message: string, data?: unknown): ApiError {
+export function createApiError(
+  status: number,
+  message: string,
+  data?: unknown,
+): ApiError {
   const error = new Error(message) as ApiError;
   error.name = 'ApiError';
   error.status = status;
@@ -17,7 +22,10 @@ const getAuthToken = (): string | null => {
   return localStorage.getItem('auth_token');
 };
 
-async function fetchApi<T>(endpoint: string, options?: RequestInit): Promise<T> {
+async function fetchApi<T>(
+  endpoint: string,
+  options?: RequestInit,
+): Promise<T> {
   const url = `${API_BASE_URL}${endpoint}`;
   const token = getAuthToken();
 
@@ -47,7 +55,11 @@ async function fetchApi<T>(endpoint: string, options?: RequestInit): Promise<T> 
       errorMessage = response.statusText || errorMessage;
     }
 
-    throw createApiError(response.status, errorMessage, errorData);
+    throw createApiError(
+      response.status,
+      errorMessage,
+      errorData,
+    );
   }
 
   return response.json();
@@ -57,14 +69,22 @@ export const api = {
   get: <T>(endpoint: string, options?: RequestInit) =>
     fetchApi<T>(endpoint, { ...options, method: 'GET' }),
 
-  post: <T>(endpoint: string, data?: unknown, options?: RequestInit) =>
+  post: <T>(
+    endpoint: string,
+    data?: unknown,
+    options?: RequestInit,
+  ) =>
     fetchApi<T>(endpoint, {
       ...options,
       method: 'POST',
       body: data ? JSON.stringify(data) : undefined,
     }),
 
-  patch: <T>(endpoint: string, data?: unknown, options?: RequestInit) =>
+  patch: <T>(
+    endpoint: string,
+    data?: unknown,
+    options?: RequestInit,
+  ) =>
     fetchApi<T>(endpoint, {
       ...options,
       method: 'PATCH',

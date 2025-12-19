@@ -7,9 +7,13 @@ interface ChangePasswordModalProps {
   onClose: () => void;
 }
 
-export const ChangePasswordModal = ({ userId, onClose }: ChangePasswordModalProps) => {
+export const ChangePasswordModal = ({
+  userId,
+  onClose,
+}: ChangePasswordModalProps) => {
   const [newPassword, setNewPassword] = useState('');
-  const [confirmPassword, setConfirmPassword] = useState('');
+  const [confirmPassword, setConfirmPassword] =
+    useState('');
   const [error, setError] = useState('');
   const [isLoading, setIsLoading] = useState(false);
 
@@ -22,12 +26,20 @@ export const ChangePasswordModal = ({ userId, onClose }: ChangePasswordModalProp
     }
 
     if (newPassword.length < 8 || newPassword.length > 32) {
-      setError('Password must be between 8 and 32 characters');
+      setError(
+        'Password must be between 8 and 32 characters',
+      );
       return false;
     }
 
-    if (!/(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])/.test(newPassword)) {
-      setError('Password must contain uppercase, lowercase, number and special character');
+    if (
+      !/(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])/.test(
+        newPassword,
+      )
+    ) {
+      setError(
+        'Password must contain uppercase, lowercase, number and special character',
+      );
       return false;
     }
 
@@ -50,13 +62,19 @@ export const ChangePasswordModal = ({ userId, onClose }: ChangePasswordModalProp
     setError('');
 
     try {
-      await usersService.changePassword(userId, newPassword);
+      await usersService.changePassword(
+        userId,
+        newPassword,
+      );
       alert('Password changed successfully!');
       onClose();
       setNewPassword('');
       setConfirmPassword('');
     } catch (err: unknown) {
-      const errorMessage = err instanceof Error ? err.message : 'Failed to change password';
+      const errorMessage =
+        err instanceof Error
+          ? err.message
+          : 'Failed to change password';
       setError(errorMessage);
     } finally {
       setIsLoading(false);
@@ -64,18 +82,36 @@ export const ChangePasswordModal = ({ userId, onClose }: ChangePasswordModalProp
   };
 
   return (
-    <div className="change-password-modal__overlay" onClick={onClose}>
-      <div className="change-password-modal__content" onClick={(e) => e.stopPropagation()}>
+    <div
+      className="change-password-modal__overlay"
+      onClick={onClose}
+    >
+      <div
+        className="change-password-modal__content"
+        onClick={(e) => e.stopPropagation()}
+      >
         <div className="change-password-modal__header">
-          <h2 className="change-password-modal__title">Change Password</h2>
-          <button className="change-password-modal__close" onClick={onClose} aria-label="Close">
+          <h2 className="change-password-modal__title">
+            Change Password
+          </h2>
+          <button
+            className="change-password-modal__close"
+            onClick={onClose}
+            aria-label="Close"
+          >
             ×
           </button>
         </div>
 
-        <form onSubmit={handleSubmit} className="change-password-modal__form">
+        <form
+          onSubmit={handleSubmit}
+          className="change-password-modal__form"
+        >
           <div className="change-password-modal__field">
-            <label htmlFor="newPassword" className="change-password-modal__label">
+            <label
+              htmlFor="newPassword"
+              className="change-password-modal__label"
+            >
               New Password
             </label>
             <input
@@ -83,14 +119,19 @@ export const ChangePasswordModal = ({ userId, onClose }: ChangePasswordModalProp
               type="password"
               className="change-password-modal__input"
               value={newPassword}
-              onChange={(e) => setNewPassword(e.target.value)}
+              onChange={(e) =>
+                setNewPassword(e.target.value)
+              }
               disabled={isLoading}
               autoComplete="new-password"
             />
           </div>
 
           <div className="change-password-modal__field">
-            <label htmlFor="confirmPassword" className="change-password-modal__label">
+            <label
+              htmlFor="confirmPassword"
+              className="change-password-modal__label"
+            >
               Confirm Password
             </label>
             <input
@@ -98,13 +139,19 @@ export const ChangePasswordModal = ({ userId, onClose }: ChangePasswordModalProp
               type="password"
               className="change-password-modal__input"
               value={confirmPassword}
-              onChange={(e) => setConfirmPassword(e.target.value)}
+              onChange={(e) =>
+                setConfirmPassword(e.target.value)
+              }
               disabled={isLoading}
               autoComplete="new-password"
             />
           </div>
 
-          {error && <div className="change-password-modal__error">{error}</div>}
+          {error && (
+            <div className="change-password-modal__error">
+              {error}
+            </div>
+          )}
 
           <div className="change-password-modal__actions">
             <button
@@ -120,7 +167,9 @@ export const ChangePasswordModal = ({ userId, onClose }: ChangePasswordModalProp
               className="change-password-modal__button change-password-modal__button--primary"
               disabled={isLoading}
             >
-              {isLoading ? 'Changing...' : 'Change Password'}
+              {isLoading
+                ? 'Changing...'
+                : 'Change Password'}
             </button>
           </div>
         </form>

@@ -1,5 +1,11 @@
-import { IsOptional, IsPositive, IsString, IsIn } from 'class-validator';
-import { Type } from 'class-transformer';
+import {
+  IsOptional,
+  IsPositive,
+  IsString,
+  IsIn,
+  IsBoolean,
+} from 'class-validator';
+import { Type, Transform } from 'class-transformer';
 
 export class FindManyEnrollmentsDto {
   @IsOptional()
@@ -25,4 +31,9 @@ export class FindManyEnrollmentsDto {
   @IsString()
   @IsIn(['id', 'enrolledAt', 'completed', 'progress'])
   sortBy: 'id' | 'enrolledAt' | 'completed' | 'progress' = 'enrolledAt';
+
+  @IsOptional()
+  @Transform(({ value }) => value === 'true' || value === true)
+  @IsBoolean()
+  all?: boolean;
 }

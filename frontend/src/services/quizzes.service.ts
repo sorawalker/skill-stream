@@ -19,16 +19,30 @@ export const quizzesService = {
       }>;
     },
   ): Promise<CreateQuizResponse> => {
-    return api.post<CreateQuizResponse>(`/lessons/${lessonId}/quizzes`, quizData);
+    return api.post<CreateQuizResponse>(
+      `/lessons/${lessonId}/quizzes`,
+      quizData,
+    );
   },
 
-  findManyByLesson: async (lessonId: number): Promise<FindManyQuizzesResponse> => {
-    return api.get<FindManyQuizzesResponse>(`/lessons/${lessonId}/quizzes`);
+  findManyByLesson: async (
+    lessonId: number,
+  ): Promise<FindManyQuizzesResponse> => {
+    return api.get<FindManyQuizzesResponse>(
+      `/lessons/${lessonId}/quizzes`,
+    );
   },
 
-  findOne: async (id: number, includeAnswers?: boolean): Promise<FindOneQuizResponse> => {
-    const query = includeAnswers ? '?includeAnswers=true' : '';
-    return api.get<FindOneQuizResponse>(`/quizzes/${id}${query}`);
+  findOne: async (
+    id: number,
+    includeAnswers?: boolean,
+  ): Promise<FindOneQuizResponse> => {
+    const query = includeAnswers
+      ? '?includeAnswers=true'
+      : '';
+    return api.get<FindOneQuizResponse>(
+      `/quizzes/${id}${query}`,
+    );
   },
 
   update: async (
@@ -42,10 +56,15 @@ export const quizzesService = {
       }>;
     }>,
   ): Promise<UpdateQuizResponse> => {
-    return api.patch<UpdateQuizResponse>(`/quizzes/${id}`, quizData);
+    return api.patch<UpdateQuizResponse>(
+      `/quizzes/${id}`,
+      quizData,
+    );
   },
 
-  delete: async (id: number): Promise<DeleteQuizResponse> => {
+  delete: async (
+    id: number,
+  ): Promise<DeleteQuizResponse> => {
     return api.delete<DeleteQuizResponse>(`/quizzes/${id}`);
   },
 };

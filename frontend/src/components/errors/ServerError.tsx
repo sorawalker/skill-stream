@@ -17,7 +17,9 @@ export const ServerError = ({
       <div className="error-page__container">
         <div className="error-page__content">
           <div className="error-page__icon">⚠️</div>
-          <h1 className="error-page__title">500 - Server Error</h1>
+          <h1 className="error-page__title">
+            500 - Server Error
+          </h1>
           <p className="error-page__message">{message}</p>
           <div className="error-page__actions">
             {showBackButton && (
@@ -28,7 +30,10 @@ export const ServerError = ({
                 Go Back
               </button>
             )}
-            <Link to="/" className="error-page__button error-page__button--secondary">
+            <Link
+              to="/"
+              className="error-page__button error-page__button--secondary"
+            >
               Back to Home
             </Link>
           </div>

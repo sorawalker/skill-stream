@@ -1,4 +1,9 @@
-import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
+import {
+  BrowserRouter,
+  Routes,
+  Route,
+  Navigate,
+} from 'react-router-dom';
 import { Login } from './pages/login/Login.tsx';
 import { Register } from './pages/register/Register.tsx';
 import { Home } from './pages/home/Home.tsx';
@@ -19,7 +24,11 @@ import { Dashboard } from './pages/admin/Dashboard.tsx';
 import { useAuthContext } from './contexts/auth.context';
 import React from 'react';
 
-const ProtectedRoute = ({ children }: { children: React.ReactNode }) => {
+const ProtectedRoute = ({
+  children,
+}: {
+  children: React.ReactNode;
+}) => {
   const { isAuthenticated } = useAuthContext();
 
   if (!isAuthenticated) {
@@ -78,7 +87,9 @@ function App() {
         <Route
           path="/admin"
           element={
-            <RoleProtectedRoute allowedRoles={['ADMIN', 'MANAGER']}>
+            <RoleProtectedRoute
+              allowedRoles={['ADMIN', 'MANAGER']}
+            >
               <AdminLayout />
             </RoleProtectedRoute>
           }
@@ -86,7 +97,9 @@ function App() {
           <Route
             index
             element={
-              <RoleProtectedRoute allowedRoles={['ADMIN', 'MANAGER']}>
+              <RoleProtectedRoute
+                allowedRoles={['ADMIN', 'MANAGER']}
+              >
                 <Dashboard />
               </RoleProtectedRoute>
             }
@@ -102,7 +115,9 @@ function App() {
           <Route
             path="courses"
             element={
-              <RoleProtectedRoute allowedRoles={['ADMIN', 'MANAGER']}>
+              <RoleProtectedRoute
+                allowedRoles={['ADMIN', 'MANAGER']}
+              >
                 <Courses />
               </RoleProtectedRoute>
             }
@@ -110,7 +125,9 @@ function App() {
           <Route
             path="lessons"
             element={
-              <RoleProtectedRoute allowedRoles={['ADMIN', 'MANAGER']}>
+              <RoleProtectedRoute
+                allowedRoles={['ADMIN', 'MANAGER']}
+              >
                 <Lessons />
               </RoleProtectedRoute>
             }
@@ -118,7 +135,9 @@ function App() {
           <Route
             path="quizzes"
             element={
-              <RoleProtectedRoute allowedRoles={['ADMIN', 'MANAGER']}>
+              <RoleProtectedRoute
+                allowedRoles={['ADMIN', 'MANAGER']}
+              >
                 <Quizzes />
               </RoleProtectedRoute>
             }
@@ -126,7 +145,9 @@ function App() {
           <Route
             path="enrollments"
             element={
-              <RoleProtectedRoute allowedRoles={['ADMIN', 'MANAGER']}>
+              <RoleProtectedRoute
+                allowedRoles={['ADMIN', 'MANAGER']}
+              >
                 <Enrollments />
               </RoleProtectedRoute>
             }
@@ -134,7 +155,9 @@ function App() {
           <Route
             path="progress"
             element={
-              <RoleProtectedRoute allowedRoles={['ADMIN', 'MANAGER']}>
+              <RoleProtectedRoute
+                allowedRoles={['ADMIN', 'MANAGER']}
+              >
                 <Progress />
               </RoleProtectedRoute>
             }
@@ -142,13 +165,18 @@ function App() {
           <Route
             path="quiz-attempts"
             element={
-              <RoleProtectedRoute allowedRoles={['ADMIN', 'MANAGER']}>
+              <RoleProtectedRoute
+                allowedRoles={['ADMIN', 'MANAGER']}
+              >
                 <QuizAttempts />
               </RoleProtectedRoute>
             }
           />
         </Route>
-        <Route path="*" element={<Navigate to="/" replace />} />
+        <Route
+          path="*"
+          element={<Navigate to="/" replace />}
+        />
       </Routes>
     </BrowserRouter>
   );

@@ -6,10 +6,14 @@ export const LoginForm = () => {
   const { signIn, isSigningIn, signInError } = useAuth();
   const [login, setLogin] = useState('');
   const [password, setPassword] = useState('');
-  const [errors, setErrors] = useState<{ login?: string; password?: string }>({});
+  const [errors, setErrors] = useState<{
+    login?: string;
+    password?: string;
+  }>({});
 
   const validate = () => {
-    const newErrors: { login?: string; password?: string } = {};
+    const newErrors: { login?: string; password?: string } =
+      {};
 
     if (!login.trim()) {
       newErrors.login = 'Login is required';
@@ -36,7 +40,10 @@ export const LoginForm = () => {
   return (
     <form className="login-form" onSubmit={handleSubmit}>
       <div className="login-form__field">
-        <label htmlFor="login" className="login-form__label">
+        <label
+          htmlFor="login"
+          className="login-form__label"
+        >
           Login (Email or Name)
         </label>
         <input
@@ -47,11 +54,18 @@ export const LoginForm = () => {
           onChange={(e) => setLogin(e.target.value)}
           disabled={isSigningIn}
         />
-        {errors.login && <span className="login-form__error">{errors.login}</span>}
+        {errors.login && (
+          <span className="login-form__error">
+            {errors.login}
+          </span>
+        )}
       </div>
 
       <div className="login-form__field">
-        <label htmlFor="password" className="login-form__label">
+        <label
+          htmlFor="password"
+          className="login-form__label"
+        >
           Password
         </label>
         <input
@@ -62,12 +76,24 @@ export const LoginForm = () => {
           onChange={(e) => setPassword(e.target.value)}
           disabled={isSigningIn}
         />
-        {errors.password && <span className="login-form__error">{errors.password}</span>}
+        {errors.password && (
+          <span className="login-form__error">
+            {errors.password}
+          </span>
+        )}
       </div>
 
-      {signInError && <div className="login-form__error-message">{signInError.message}</div>}
+      {signInError && (
+        <div className="login-form__error-message">
+          {signInError.message}
+        </div>
+      )}
 
-      <button type="submit" className="login-form__submit" disabled={isSigningIn}>
+      <button
+        type="submit"
+        className="login-form__submit"
+        disabled={isSigningIn}
+      >
         {isSigningIn ? 'Signing in...' : 'Sign In'}
       </button>
     </form>
