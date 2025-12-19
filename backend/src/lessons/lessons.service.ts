@@ -136,6 +136,25 @@ export class LessonsService {
 
   async remove(id: number): Promise<Lesson> {
     try {
+      const quizzes = await this.prisma.quiz.findMany({
+        where: {
+          lessonId: id,
+        },
+        select: {
+          id: true,
+        },
+      });
+
+      const quizIds = quizzes.map((quiz) => quiz.id);
+
+      if (quizIds.length > 0) {
+        await this.prisma.quizAttempt.deleteMany({
+          where: {
+            quizId: { in: quizIds },
+          },
+        });
+      }
+
       await this.prisma.quiz.deleteMany({
         where: {
           lessonId: id,
