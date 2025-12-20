@@ -22,12 +22,41 @@ const getAuthToken = (): string | null => {
   return localStorage.getItem('auth_token');
 };
 
+export const isTokenExpired = (
+  token: string | null,
+): boolean => {
+  if (!token) return true;
+
+  try {
+    const payload = JSON.parse(atob(token.split('.')[1]));
+    const exp = payload.exp;
+    if (!exp) return true;
+
+    return Date.now() >= exp * 1000 - 5000;
+  } catch {
+    return true;
+  }
+};
+
+const handleTokenExpiration = () => {
+  localStorage.removeItem('auth_token');
+  localStorage.removeItem('auth_user');
+  window.dispatchEvent(
+    new CustomEvent('auth:token-expired'),
+  );
+};
+
 async function fetchApi<T>(
   endpoint: string,
   options?: RequestInit,
 ): Promise<T> {
   const url = `${API_BASE_URL}${endpoint}`;
   const token = getAuthToken();
+
+  if (token && isTokenExpired(token)) {
+    handleTokenExpiration();
+    throw createApiError(401, 'Token expired');
+  }
 
   const headers: Record<string, string> = {
     'Content-Type': 'application/json',
@@ -44,6 +73,11 @@ async function fetchApi<T>(
   });
 
   if (!response.ok) {
+    // Handle 401 Unauthorized (expired/invalid token)
+    if (response.status === 401) {
+      handleTokenExpiration();
+    }
+
     let errorMessage = 'An error occurred';
     let errorData: unknown;
 

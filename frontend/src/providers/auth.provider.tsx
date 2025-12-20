@@ -5,6 +5,7 @@ import type {
   UserRole,
 } from 'skill-stream-backend/shared/types';
 import { usersService } from '../services/users.service';
+import { isTokenExpired } from '../utils/api';
 
 const TOKEN_STORAGE_KEY = 'auth_token';
 const USER_STORAGE_KEY = 'auth_user';
@@ -18,7 +19,21 @@ export const AuthProvider = ({
 }: AuthProviderProps) => {
   const [token, setTokenState] = useState<string | null>(
     () => {
-      return localStorage.getItem(TOKEN_STORAGE_KEY);
+      const storedToken = localStorage.getItem(
+        TOKEN_STORAGE_KEY,
+      );
+      if (storedToken && isTokenExpired(storedToken)) {
+        localStorage.removeItem(TOKEN_STORAGE_KEY);
+        localStorage.removeItem(USER_STORAGE_KEY);
+        if (
+          window.location.pathname !== '/login' &&
+          window.location.pathname !== '/register'
+        ) {
+          window.location.href = '/login';
+        }
+        return null;
+      }
+      return storedToken;
     },
   );
 
@@ -26,7 +41,10 @@ export const AuthProvider = ({
     const storedUser = localStorage.getItem(
       USER_STORAGE_KEY,
     );
-    return storedUser ? JSON.parse(storedUser) : null;
+    if (storedUser && token && !isTokenExpired(token)) {
+      return JSON.parse(storedUser);
+    }
+    return null;
   });
 
   const setToken = (newToken: string | null) => {
@@ -61,8 +79,59 @@ export const AuthProvider = ({
   };
 
   useEffect(() => {
+    if (!token) return;
+
+    const checkTokenExpiration = () => {
+      if (isTokenExpired(token)) {
+        setToken(null);
+        setUser(null);
+        if (
+          window.location.pathname !== '/login' &&
+          window.location.pathname !== '/register'
+        ) {
+          window.location.href = '/login';
+        }
+      }
+    };
+
+    checkTokenExpiration();
+
+    const interval = setInterval(
+      checkTokenExpiration,
+      60000,
+    );
+
+    return () => clearInterval(interval);
+  }, [token]);
+
+  useEffect(() => {
+    const handleTokenExpired = () => {
+      setToken(null);
+      setUser(null);
+      if (
+        window.location.pathname !== '/login' &&
+        window.location.pathname !== '/register'
+      ) {
+        window.location.href = '/login';
+      }
+    };
+
+    window.addEventListener(
+      'auth:token-expired',
+      handleTokenExpired,
+    );
+
+    return () => {
+      window.removeEventListener(
+        'auth:token-expired',
+        handleTokenExpired,
+      );
+    };
+  }, []);
+
+  useEffect(() => {
     const fetchUser = async () => {
-      if (token && !user) {
+      if (token && !user && !isTokenExpired(token)) {
         try {
           const tokenData = JSON.parse(
             atob(token.split('.')[1]),
@@ -73,6 +142,15 @@ export const AuthProvider = ({
           setUser(fetchedUser);
         } catch (error) {
           console.error('Failed to fetch user:', error);
+          if (
+            error &&
+            typeof error === 'object' &&
+            'status' in error &&
+            error.status === 401
+          ) {
+            setToken(null);
+            setUser(null);
+          }
         }
       }
     };
