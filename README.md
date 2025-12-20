@@ -56,7 +56,8 @@ Copy `.env.example` to `.env` and fill in the values.
 **Important:** set `DATABASE_URL` (PostgreSQL connection string).
 
 ```bash
-cp ./backend/.env.example ./backend/.env
+cd backend
+cp .env.example .env
 ```
 
 ### 4. Generate Prisma client
@@ -70,12 +71,14 @@ pnpm prisma:generate
 Creates tables and applies schema changes.
 
 ```bash
-pnpm prisma:migrate-dev
+
+pnpm prisma:migrate
 ```
 
 ### 6. Start development servers (backend + frontend)
 
 ```bash
+cd ..
 pnpm turbo dev
 ```
 
